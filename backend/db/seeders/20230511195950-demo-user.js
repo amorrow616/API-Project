@@ -10,9 +10,9 @@ if (process.env.NODE_ENV === 'production') {
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  up: async (queryInterface, Sequelize) => {
     options.tableName = 'Users';
-    await queryInterface.bulkInsert(options, [
+    return queryInterface.bulkInsert(options, [
       {
         email: 'demo@demos.com',
         username: 'TestUser1',
@@ -31,9 +31,9 @@ module.exports = {
     ], {});
   },
 
-  async down(queryInterface, Sequelize) {
+  down: async (queryInterface, Sequelize) => {
     options.tableName = 'Users';
-    await queryInterface.bulkDelete(options, {
+    return queryInterface.bulkDelete(options, {
       username: {
         [Op.in]: ['TestUser1', 'TestUser2', 'TestUser3']
       }
