@@ -1,7 +1,7 @@
 'use strict';
 
 const { Op } = require('sequelize');
-const { Spot } = require('../models')
+const { Spot } = require('../models');
 
 const spots = [
   {
