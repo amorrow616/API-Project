@@ -27,10 +27,10 @@ module.exports = {
         type: Sequelize.STRING
       },
       lat: {
-        type: Sequelize.DECIMAL
+        type: Sequelize.DECIMAL(6, 4)
       },
       lng: {
-        type: Sequelize.DECIMAL
+        type: Sequelize.DECIMAL(6, 4)
       },
       name: {
         type: Sequelize.STRING
