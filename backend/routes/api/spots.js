@@ -5,12 +5,35 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const { requireAuth } = require('../../utils/auth');
 
-const { Spot, SpotImage, Review } = require('../../db/models');
+const { Spot, SpotImage, Review, ReviewImage, User } = require('../../db/models');
+const { Sequelize } = require('sequelize');
 
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
-    const spots = await Spot.findAll();
+    const Spots = await Spot.findAll({
+        raw: true
+    });
+
+    for (let spot of Spots) {
+        const reviewAvg = await Review.findOne({
+            attributes: [[Sequelize.fn('avg', Sequelize.col('stars')), 'avgRating']],
+            where: {
+                spotId: spot.id
+            },
+            raw: true
+        });
+        spot.avgRating = reviewAvg.avgRating;
+    }
+
+    for (let spot of Spots) {
+        const spotImg = await SpotImage.findOne({
+            where: {
+                spotId: spot.id
+            }
+        });
+        spot.previewImage = spotImg.url
+    }
 
     let { page, size, minLat, maxLat, minLng, minPrice, maxPrice } = req.query;
 
@@ -18,7 +41,7 @@ router.get('/', async (req, res, next) => {
     size = size === undefined ? 20 : size;
 
     res.json({
-        spots,
+        Spots,
         page,
         size
     });
@@ -26,12 +49,33 @@ router.get('/', async (req, res, next) => {
 
 router.get('/current', requireAuth, async (req, res, next) => {
     const { user } = req;
-    const userSpots = await Spot.findAll({
+    const Spots = await Spot.findAll({
         where: {
             ownerId: user.id
-        }
+        },
+        raw: true
     });
-    res.json(userSpots);
+
+    for (let spot of Spots) {
+        const reviewAvg = await Review.findOne({
+            attributes: [[Sequelize.fn('avg', Sequelize.col('stars')), 'avgRating']],
+            where: {
+                spotId: spot.id
+            },
+            raw: true
+        });
+        spot.avgRating = reviewAvg.avgRating;
+    }
+
+    for (let spot of Spots) {
+        const spotImg = await SpotImage.findOne({
+            where: {
+                spotId: spot.id
+            }
+        });
+        spot.previewImage = spotImg.url
+    }
+    res.status(200).json(Spots);
 });
 
 router.get('/:spotId', async (req, res, next) => {
@@ -47,6 +91,25 @@ router.get('/:spotId', async (req, res, next) => {
     }
 });
 
+router.get('/:spotId/reviews', async (req, res, next) => {
+    const spotId = req.params.spotId;
+    const spot = await Spot.findByPk(spotId);
+
+    if (spot) {
+        const spotReview = await Review.findAll({
+            where: {
+                spotId: spotId
+            },
+            include: ReviewImage
+        });
+        res.json(spotReview);
+    } else {
+        res.status(404).json({
+            message: "Spot couldn't be found"
+        })
+    }
+});
+
 const checkProvidedData = [
     check('address')
         .exists({ checkFalsy: true })
@@ -54,27 +117,35 @@ const checkProvidedData = [
         .withMessage('Street address is required'),
     check('city')
         .exists({ checkFalsy: true })
+        .notEmpty()
         .withMessage('City is required'),
     check('state')
         .exists({ checkFalsy: true })
+        .notEmpty()
         .withMessage('State is required'),
     check('country')
         .exists({ checkFalsy: true })
+        .notEmpty()
         .withMessage('Country is required'),
     check('lat')
         .exists({ checkFalsy: true })
+        .notEmpty()
         .withMessage('Latitude is not valid'),
     check('lng')
         .exists({ checkFalsy: true })
+        .notEmpty()
         .withMessage('Longitude is not valid'),
     check('name')
         .exists({ checkFalsy: true })
+        .notEmpty()
         .withMessage('Name must be less than 50 characters'),
     check('description')
         .exists({ checkFalsy: true })
+        .notEmpty()
         .withMessage('Description is required'),
     check('price')
         .exists({ checkFalsy: true })
+        .notEmpty()
         .withMessage('Price per day is required'),
     handleValidationErrors
 ];
