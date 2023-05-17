@@ -5,20 +5,12 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const { requireAuth } = require('../../utils/auth');
 
-const { Spot, SpotImage, Review, sequelize } = require('../../db/models');
+const { Spot, SpotImage, Review } = require('../../db/models');
 
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
-    const spots = await Spot.findAll({
-        attributes: [sequelize.fn('SUM', sequelize.col('stars')), 'avgRating'],
-        include: [
-            {
-                // model: SpotImage, attributes: ['name'],
-                model: Review, attributes: ['stars']
-            }
-        ]
-    });
+    const spots = await Spot.findAll();
 
     let { page, size, minLat, maxLat, minLng, minPrice, maxPrice } = req.query;
 
