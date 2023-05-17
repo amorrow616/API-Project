@@ -5,6 +5,7 @@ const { Spot } = require('../models');
 
 const spots = [
   {
+    ownerId: 1,
     address: '206 Sister Street',
     city: 'Syracuse',
     state: 'New York',
@@ -16,6 +17,7 @@ const spots = [
     price: 50
   },
   {
+    ownerId: 2,
     address: '555 Dunder Way',
     city: 'Scranton',
     state: 'Pennsylvania',
@@ -27,6 +29,7 @@ const spots = [
     price: 600
   },
   {
+    ownerId: 3,
     address: '1 Shrute Ave',
     city: 'Scranton',
     state: 'Pennsylvania',
@@ -38,6 +41,7 @@ const spots = [
     price: 175
   },
   {
+    ownerId: 2,
     address: '214 Oak Tree Lane',
     city: 'Stars Hollow',
     state: 'Connecticut',
