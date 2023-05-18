@@ -29,7 +29,7 @@ const spots = [
     price: 600
   },
   {
-    ownerId: 3,
+    ownerId: 2,
     address: '1 Shrute Ave',
     city: 'Scranton',
     state: 'Pennsylvania',
@@ -41,7 +41,7 @@ const spots = [
     price: 175
   },
   {
-    ownerId: 2,
+    ownerId: 3,
     address: '214 Oak Tree Lane',
     city: 'Stars Hollow',
     state: 'Connecticut',

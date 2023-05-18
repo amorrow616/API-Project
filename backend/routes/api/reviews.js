@@ -5,7 +5,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const { requireAuth } = require('../../utils/auth');
 
-const { Review, Spot, User } = require('../../db/models');
+const { Review } = require('../../db/models');
 
 const router = express.Router();
 
@@ -49,7 +49,7 @@ router.put('/:reviewId', requireAuth, checkProvidedData, async (req, res, next) 
             await foundReview.save();
             res.status(200).json(foundReview);
         } else {
-            res.json({
+            res.status(400).json({
                 message: 'Review must belong to you in order to edit it.'
             });
         }
@@ -72,7 +72,7 @@ router.delete('/:reviewId', requireAuth, async (req, res, next) => {
                 message: 'Successfully deleted'
             });
         } else {
-            res.json({
+            res.status(400).json({
                 message: 'Review must belong to you in order to delete it.'
             });
         }

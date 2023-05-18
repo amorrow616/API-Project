@@ -96,13 +96,13 @@ router.get('/:spotId/reviews', async (req, res, next) => {
     const spot = await Spot.findByPk(spotId);
 
     if (spot) {
-        const spotReview = await Review.findAll({
-            where: {
-                spotId: spotId
-            },
-            include: ReviewImage
-        });
-        res.json(spotReview);
+        const spotReview = await spot.getReviews();
+        const reviewImages = await spotReview.getReviewImages();
+        const payload = {
+            Reviews: spotReview,
+            ReviewImages: reviewImages
+        }
+        res.status(200).json(payload);
     } else {
         res.status(404).json({
             message: "Spot couldn't be found"
@@ -191,7 +191,7 @@ router.put('/:spotId', requireAuth, checkProvidedData, async (req, res, next) =>
             await spot.save();
             res.status(200).json(spot);
         } else {
-            res.json({
+            res.status(400).json({
                 message: "Spot must belong to you in order to edit it."
             });
         }
@@ -216,7 +216,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
             });
             res.status(200).json(spotImage);
         } else {
-            res.json({
+            res.status(400).json({
                 message: 'Spot must belong to you in order to add an image.'
             })
         }

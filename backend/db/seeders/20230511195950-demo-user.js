@@ -48,7 +48,9 @@ module.exports = {
       }
     }, {});
     // return queryInterface.bulkDelete(options, {
-    //   where: { username: users.map(user => user.username) }
+    //   where: {
+    //     username: users.map(user => user.username)
+    //   }
     // }, {});
   }
 };
