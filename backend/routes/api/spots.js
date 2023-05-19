@@ -5,7 +5,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const { requireAuth } = require('../../utils/auth');
 
-const { Spot, SpotImage, Review, ReviewImage, User } = require('../../db/models');
+const { Spot, SpotImage, Review } = require('../../db/models');
 const { Sequelize } = require('sequelize');
 
 const router = express.Router();
@@ -14,7 +14,6 @@ router.get('/', async (req, res, next) => {
     const Spots = await Spot.findAll({
         raw: true
     });
-
     for (let spot of Spots) {
         const reviewAvg = await Review.findOne({
             attributes: [[Sequelize.fn('avg', Sequelize.col('stars')), 'avgRating']],
@@ -23,7 +22,11 @@ router.get('/', async (req, res, next) => {
             },
             raw: true
         });
-        spot.avgRating = reviewAvg.avgRating;
+        if (reviewAvg) {
+            spot.avgRating = reviewAvg.avgRating;
+        } else {
+            spot.avgRating = 'No ratings yet.'
+        }
     }
 
     for (let spot of Spots) {
@@ -32,9 +35,12 @@ router.get('/', async (req, res, next) => {
                 spotId: spot.id
             }
         });
-        spot.previewImage = spotImg.url
+        if (spotImg) {
+            spot.previewImage = spotImg.url
+        } else {
+            spot.previewImage = 'No images provided.'
+        }
     }
-
     let { page, size, minLat, maxLat, minLng, minPrice, maxPrice } = req.query;
 
     page = page === undefined ? 1 : page;
@@ -50,10 +56,10 @@ router.get('/', async (req, res, next) => {
 router.get('/current', requireAuth, async (req, res, next) => {
     const { user } = req;
     const Spots = await Spot.findAll({
+        raw: true,
         where: {
             ownerId: user.id
-        },
-        raw: true
+        }
     });
 
     for (let spot of Spots) {
@@ -64,7 +70,11 @@ router.get('/current', requireAuth, async (req, res, next) => {
             },
             raw: true
         });
-        spot.avgRating = reviewAvg.avgRating;
+        if (reviewAvg) {
+            spot.avgRating = reviewAvg.avgRating;
+        } else {
+            spot.avgRating = 'No ratings yet.'
+        }
     }
 
     for (let spot of Spots) {
@@ -73,7 +83,11 @@ router.get('/current', requireAuth, async (req, res, next) => {
                 spotId: spot.id
             }
         });
-        spot.previewImage = spotImg.url
+        if (spotImg) {
+            spot.previewImage = spotImg.url
+        } else {
+            spot.previewImage = 'No images provided.'
+        }
     }
     res.status(200).json(Spots);
 });
@@ -82,10 +96,12 @@ router.get('/:spotId', async (req, res, next) => {
     const spotId = req.params.spotId;
     const spot = await Spot.findByPk(spotId);
 
+    spot.numReviews = 11;
+
     if (spot) {
         res.json(spot);
     } else {
-        res.json({
+        res.status(404).json({
             message: "Spot couldn't be found"
         })
     }
@@ -96,13 +112,13 @@ router.get('/:spotId/reviews', async (req, res, next) => {
     const spot = await Spot.findByPk(spotId);
 
     if (spot) {
-        const spotReview = await Review.findAll({
-            where: {
-                spotId: spotId
-            },
-            include: ReviewImage
-        });
-        res.json(spotReview);
+        const spotReview = await spot.getReviews();
+        const reviewImages = await spotReview.getReviewImages();
+        const payload = {
+            Reviews: spotReview,
+            ReviewImages: reviewImages
+        }
+        res.status(200).json(payload);
     } else {
         res.status(404).json({
             message: "Spot couldn't be found"
@@ -191,7 +207,7 @@ router.put('/:spotId', requireAuth, checkProvidedData, async (req, res, next) =>
             await spot.save();
             res.status(200).json(spot);
         } else {
-            res.json({
+            res.status(403).json({
                 message: "Spot must belong to you in order to edit it."
             });
         }
@@ -210,13 +226,23 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
     if (spot) {
         if (spot.ownerId === user.id) {
-            const spotImage = SpotImage.create({
+            const wantedSpot = await SpotImage.findOne({
+                where: {
+                    spotId: spotId
+                }
+            })
+            const spotImage = wantedSpot.set({
                 url,
                 preview
             });
-            res.status(200).json(spotImage);
+            await spotImage.save();
+            res.status(200).json({
+                id: spotImage.id,
+                url: spotImage.url,
+                preview: spotImage.preview
+            });
         } else {
-            res.json({
+            res.status(403).json({
                 message: 'Spot must belong to you in order to add an image.'
             })
         }
@@ -224,6 +250,32 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
         res.status(404).json({
             message: "Spot couldn't be found"
         })
+    }
+});
+
+router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
+    const { review, stars } = req.body;
+    const { user } = req;
+    const spotId = req.params.spotId;
+    const spot = await Spot.findByPk(spotId);
+
+    if (spot) {
+        if (spot.ownerId === user.id) {
+            const addReview = await spot.set({
+                review,
+                stars
+            });
+            await addReview.save();
+            return res.status(201).json(spot);
+        } else {
+            res.status(403).json({
+                message: 'Spot must belong to you in order to add a review.'
+            })
+        }
+    } else {
+        return res.status(404).json({
+            message: "Spot couldn't be found"
+        });
     }
 });
 
@@ -235,11 +287,11 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
     if (spot) {
         if (spot.ownerId === user.id) {
             await spot.destroy();
-            res.json({
+            res.status(200).json({
                 message: 'Successfully deleted'
             })
         } else {
-            res.json({
+            res.status(403).json({
                 message: 'Spot must belong to you in order to delete it.'
             });
         }
