@@ -24,24 +24,6 @@ module.exports = (sequelize, DataTypes) => {
         models.Booking,
         { foreignKey: 'spotId', onDelete: 'CASCADE', hooks: true }
       );
-
-      // Spot.belongsToMany(
-      //   models.User,
-      //   {
-      //     through: 'Bookings',
-      //     otherKey: 'userId',
-      //     foreignKey: 'spotId'
-      //   }
-      // );
-
-      // Spot.belongsToMany(
-      //   models.User,
-      //   {
-      //     through: 'Reviews',
-      //     otherKey: 'userId',
-      //     foreignKey: 'spotId'
-      //   }
-      // );
     }
   }
   Spot.init({

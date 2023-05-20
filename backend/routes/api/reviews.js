@@ -14,7 +14,7 @@ const reviewExists = async (req, res, next) => {
     const review = await Review.findByPk(reviewId);
 
     if (!review) {
-        res.status(404).json({
+        return res.status(404).json({
             message: "Review couldn't be found"
         })
     }
@@ -25,7 +25,7 @@ const authorizationReq = async (req, res, next) => {
     const { user } = req;
 
     if (Review.userId !== user.id) {
-        res.status(403).json({
+        return res.status(403).json({
             message: "Review must belong to you in order to manipulate it."
         });
     }
@@ -35,7 +35,7 @@ const authorizationReq = async (req, res, next) => {
 router.get('/current', requireAuth, async (req, res, next) => {
     const { user } = req;
 
-    const userReviews = await Review.findAll({
+    let userReviews = await Review.findAll({
         where: {
             userId: user.id
         },
@@ -85,7 +85,18 @@ router.put('/:reviewId', [requireAuth, reviewExists, authorizationReq], checkPro
 
     await foundReview.save();
     res.status(200).json(foundReview);
+});
 
+router.post('/:reviewId/images', [requireAuth, authorizationReq], async (req, res, next) => {
+    const { url } = req.body;
+    const reviewId = req.params.reviewId;
+    const review = await Review.findByPk(reviewId);
+
+    const addImages = await review.set({
+        url
+    });
+    await review.save();
+    return res.status(200).json(addImages)
 });
 
 router.delete('/:reviewId', [requireAuth, reviewExists, authorizationReq], async (req, res, next) => {

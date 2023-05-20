@@ -49,7 +49,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
     currentUserBookings.forEach(booking => {
         bookingsList.push(booking.toJSON());
     })
-    res.status(200).json({
+    return res.status(200).json({
         Bookings: bookingsList
     });
 });
@@ -66,10 +66,20 @@ const checkProvidedData = [
     handleValidationErrors
 ];
 
-router.put(':bookingId', [requireAuth, bookingExists, authorizationReq], checkProvidedData, async (req, res, next) => {
+router.put('/:bookingId', [requireAuth, bookingExists], checkProvidedData, async (req, res, next) => {
     const { startDate, endDate } = req.body;
     const bookingId = req.params.bookingId;
     const booking = await Booking.findByPk(bookingId);
+
+    if (booking.startDate === startDate || booking.endDate === endDate) {
+        return res.status(403).json({
+            message: 'Sorry, this spot is already booked for the specified dates',
+            errors: {
+                startDate: "Start date conflicts with an existing booking",
+                endDate: "End date conflicts with an existing booking"
+            }
+        })
+    }
 
     booking.set({
         startDate: startDate || booking.startDate,
@@ -77,15 +87,22 @@ router.put(':bookingId', [requireAuth, bookingExists, authorizationReq], checkPr
     });
 
     await booking.save();
-    res.status(200).json(booking)
+    return res.status(200).json(booking)
 });
 
-router.delete(':bookingId', [requireAuth, bookingExists, authorizationReq], async (req, res, next) => {
+router.delete('/:bookingId', [requireAuth, bookingExists], async (req, res, next) => {
     const bookingId = req.params.bookingId;
     const booking = await Booking.findByPk(bookingId);
+    const { user } = req;
+
+    if (booking.userId !== user.id) {
+        return res.status(403).json({
+            message: "Booking must belong to you in order to manipulate it."
+        });
+    }
 
     if (booking.startDate < new Date()) {
-        res.status(403).json({
+        return res.status(403).json({
             message: "Bookings that have been started can't be deleted"
         });
     }

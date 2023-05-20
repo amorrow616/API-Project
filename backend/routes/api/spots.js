@@ -92,10 +92,10 @@ router.get('/current', [requireAuth, addAggregateData], async (req, res, next) =
     res.status(200).json({ Spots: ownerSpots });
 });
 
-router.get('/:spotId', [spotExists, addAggregateData], async (req, res, next) => {
+router.get('/:spotId', spotExists, async (req, res, next) => {
     const spotId = req.params.spotId;
 
-    const spot = await Spot.findOne({
+    let spot = await Spot.findOne({
         where: {
             id: spotId
         },
@@ -107,21 +107,24 @@ router.get('/:spotId', [spotExists, addAggregateData], async (req, res, next) =>
             {
                 model: User,
                 attributes: ['id', 'firstName', 'lastName'],
-                alias: 'Owner'
+                // as: 'Owner'
             }
         ]
     });
 
     const countReviews = await spot.getReviews({
-        attributes: [[Sequelize.fn('SUM', Sequelize.col('review')), 'numReviews'], [Sequelize.fn('AVG', Sequelize.col('stars')), 'avgStarRating']],
+        attributes: [[Sequelize.fn('COUNT', Sequelize.col('review')), 'numReviews'], [Sequelize.fn('AVG', Sequelize.col('stars')), 'avgStarRating']],
         where: {
             spotId: spot.id
         },
         raw: true
     });
 
+    spot = spot.toJSON();
+
     spot.numReviews = countReviews[0].numReviews;
     spot.avgStarRating = countReviews[0].avgStarRating;
+
     res.status(200).json(spot);
 });
 
@@ -219,22 +222,15 @@ const checkProvidedData = [
         .exists({ checkFalsy: true })
         .notEmpty()
         .withMessage('Price per day is required'),
-    check('startDate')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .withMessage('startDate is required'),
-    check('endDate')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .withMessage('endDate cannot come before startDate'),
     handleValidationErrors
 ];
 
 router.post('/', requireAuth, checkProvidedData, async (req, res, next) => {
-    const { ownerId, address, city, state, country, lat, lng, name, description, price } = req.body;
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    const { user } = req;
 
     const spot = await Spot.create({
-        ownerId,
+        ownerId: user.id,
         address,
         city,
         state,
@@ -289,17 +285,46 @@ router.post('/:spotId/images', [requireAuth, authorizationReq, spotExists], asyn
     });
 });
 
-router.post('/:spotId/reviews', [requireAuth, spotExists, authorizationReq], async (req, res, next) => {
+const checkReview = [
+    check('review')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage('Review text is required'),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isNumeric({ min: 1, max: 5 })
+        .withMessage('Stars must be an integer from 1 to 5'),
+    handleValidationErrors
+]
+
+router.post('/:spotId/reviews', [requireAuth, spotExists], checkReview, async (req, res, next) => {
     const { review, stars } = req.body;
     const spotId = req.params.spotId;
     const spot = await Spot.findByPk(spotId);
+    const { user } = req;
 
-    const addReview = await spot.set({
+    let findReviews = await Review.findAll({
+        where: {
+            spotId: spotId
+        }
+    });
+
+    for (let oneReview of findReviews) {
+        if (oneReview.userId === user.id) {
+            return res.status(500).json({
+                message: 'User already has a review for this spot'
+            });
+        }
+    }
+    const addReview = Review.create({
+        userId: user.id,
+        spotId: spotId,
         review,
         stars
     });
-    await addReview.save();
-    return res.status(201).json(spot);
+
+    return res.status(201).json(addReview);
 });
 
 router.post('/:spotId/bookings', [requireAuth, spotExists], async (req, res, next) => {
