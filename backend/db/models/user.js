@@ -31,24 +31,6 @@ module.exports = (sequelize, DataTypes) => {
           hooks: true
         }
       );
-
-      // User.belongsToMany(
-      //   models.Spot,
-      //   {
-      //     through: 'Bookings',
-      //     otherKey: 'spotId',
-      //     foreignKey: 'userId'
-      //   }
-      // );
-
-      // User.belongsToMany(
-      //   models.Spot,
-      //   {
-      //     through: 'Reviews',
-      //     otherKey: 'spotId',
-      //     foreignKey: 'userId'
-      //   }
-      // );
     }
   }
   User.init({
