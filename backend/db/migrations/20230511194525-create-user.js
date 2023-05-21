@@ -12,10 +12,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
-        references: { model: 'Spots' },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+        type: Sequelize.INTEGER
       },
       username: {
         type: Sequelize.STRING(30),
