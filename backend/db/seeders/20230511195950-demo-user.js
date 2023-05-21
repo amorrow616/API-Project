@@ -47,10 +47,5 @@ module.exports = {
         [Op.in]: ['TestUser1', 'TestUser2', 'TestUser3']
       }
     }, {});
-    // return queryInterface.bulkDelete(options, {
-    //   where: {
-    //     username: users.map(user => user.username)
-    //   }
-    // }, {});
   }
 };
