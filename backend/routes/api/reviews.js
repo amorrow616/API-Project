@@ -35,6 +35,12 @@ const authorizationReq = async (req, res, next) => {
 router.get('/current', requireAuth, async (req, res, next) => {
     const { user } = req;
 
+    let previewImage = await SpotImage.findOne({
+        where: {
+
+        }
+    })
+
     let userReviews = await Review.findAll({
         where: {
             userId: user.id
