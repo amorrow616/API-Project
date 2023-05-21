@@ -25,6 +25,13 @@ const users = [
     hashedPassword: bcrypt.hashSync('password3'),
     firstName: 'Bigwig',
     lastName: 'Rabbit'
+  },
+  {
+    email: 'demo4@demos.com',
+    username: 'TestUser4',
+    hashedPassword: bcrypt.hashSync('password4'),
+    firstName: 'Larry',
+    lastName: 'TheDog'
   }
 ];
 
@@ -44,7 +51,7 @@ module.exports = {
     options.tableName = 'Users';
     return queryInterface.bulkDelete(options, {
       username: {
-        [Op.in]: ['TestUser1', 'TestUser2', 'TestUser3']
+        [Op.in]: ['TestUser1', 'TestUser2', 'TestUser3', 'TestUser4']
       }
     }, {});
   }

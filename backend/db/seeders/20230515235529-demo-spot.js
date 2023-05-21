@@ -29,7 +29,7 @@ const spots = [
     price: 600
   },
   {
-    ownerId: 2,
+    ownerId: 3,
     address: '1 Shrute Ave',
     city: 'Scranton',
     state: 'Pennsylvania',
@@ -41,7 +41,7 @@ const spots = [
     price: 175
   },
   {
-    ownerId: 3,
+    ownerId: 4,
     address: '214 Oak Tree Lane',
     city: 'Stars Hollow',
     state: 'Connecticut',
@@ -70,8 +70,8 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     options.tableName = 'Spots';
     return queryInterface.bulkDelete(options, {
-      name: {
-        [Op.in]: ["Little Sister's House", 'Dunder Mifflin', 'Shrute Farms BnB', 'The Dragonfly Inn']
+      address: {
+        [Op.in]: ['206 Sister Street', '555 Dunder Way', '1 Shrute Ave', '214 Oak Tree Lane']
       }
     }, {});
   }
