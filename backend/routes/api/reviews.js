@@ -5,7 +5,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const { requireAuth } = require('../../utils/auth');
 
-const { Review, Spot, User, SpotImage, ReviewImage } = require('../../db/models');
+const { Review, Spot, User, ReviewImage } = require('../../db/models');
 
 const router = express.Router();
 
