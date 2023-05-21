@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         models.SpotImage,
         {
           foreignKey: 'spotId',
-          onDelete: 'CASCADE',
+          onDelete: 'RESTRICT',
           onUpdate: 'CASCADE',
           hooks: true
         }

@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         models.Spot,
         {
           foreignKey: 'ownerId',
-          onDelete: 'CASCADE',
+          onDelete: 'RESTRICT',
           onUpdate: 'CASCADE',
           hooks: true
         }
