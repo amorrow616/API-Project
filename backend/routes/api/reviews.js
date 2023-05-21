@@ -87,16 +87,40 @@ router.put('/:reviewId', [requireAuth, reviewExists, authorizationReq], checkPro
     res.status(200).json(foundReview);
 });
 
-router.post('/:reviewId/images', [requireAuth, authorizationReq], async (req, res, next) => {
+router.post('/:reviewId/images', [requireAuth, reviewExists], async (req, res, next) => {
     const { url } = req.body;
     const reviewId = req.params.reviewId;
     const review = await Review.findByPk(reviewId);
+    const { user } = req;
 
-    const addImages = await review.set({
+    const allImages = await ReviewImage.findAll({
+        where: {
+            reviewId: review.id
+        }
+    });
+
+    if (user.id !== review.userId) {
+        return res.status(403).json({
+            message: "Review must belong to you in order to manipulate it."
+        });
+    }
+
+    if (allImages.length >= 10) {
+        return res.status(403).json({
+            message: 'Maximum number of images for this resource was reached'
+        });
+    }
+
+    const addImages = await ReviewImage.create({
+        reviewId: reviewId,
         url
     });
-    await review.save();
-    return res.status(200).json(addImages)
+
+    return res.status(200).json({
+        id: addImages.id,
+        url: addImages.url
+    });
+
 });
 
 router.delete('/:reviewId', [requireAuth, reviewExists, authorizationReq], async (req, res, next) => {
