@@ -15,7 +15,7 @@ const spotExists = async (req, res, next) => {
     const spot = await Spot.findByPk(spotId);
 
     if (!spot) {
-        res.status(404).json({
+        return res.status(404).json({
             message: "Spot couldn't be found"
         })
     }
@@ -61,7 +61,7 @@ const authorizationReq = async (req, res, next) => {
     const { user } = req;
 
     if (Spot.ownerId !== user.id) {
-        res.status(403).json({
+        return res.status(403).json({
             message: "Spot must belong to you in order to manipulate it."
         });
     }
@@ -264,21 +264,37 @@ router.put('/:spotId', [requireAuth, spotExists, authorizationReq], checkProvide
     res.status(200).json(spot);
 });
 
-router.post('/:spotId/images', [requireAuth, authorizationReq, spotExists], async (req, res, next) => {
+const checkImageData = [
+    check('url')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage('Spot image must have a url'),
+    check('preview')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage('Spot image must indicate if it has a preview or not'),
+    handleValidationErrors
+];
+
+router.post('/:spotId/images', [requireAuth, spotExists], checkImageData, async (req, res, next) => {
     const { url, preview } = req.body;
     const spotId = req.params.spotId;
+    const spot = await Spot.findByPk(spotId);
+    const { user } = req;
 
-    const wantedSpot = await SpotImage.findOne({
-        where: {
-            spotId: spotId
-        }
-    })
-    const spotImage = wantedSpot.set({
+    if (user.id !== spot.ownerId) {
+        return res.status(403).json({
+            message: "Spot must belong to you in order to manipulate it."
+        });
+    }
+
+    const spotImage = await SpotImage.create({
+        spotId: spotId,
         url,
         preview
     });
-    await spotImage.save();
-    res.status(200).json({
+
+    return res.status(200).json({
         id: spotImage.id,
         url: spotImage.url,
         preview: spotImage.preview
@@ -332,30 +348,51 @@ router.post('/:spotId/bookings', [requireAuth, spotExists], async (req, res, nex
     const spotId = req.params.spotId;
     const spot = await Spot.findByPk(spotId);
     const { user } = req;
-    const booking = await Booking.findOne({
+
+    const allBookings = await Booking.findAll({
         where: {
             spotId: spotId
         }
-    })
+    });
 
     if (spot.ownerId !== user.id) {
+        for (let booking of allBookings) {
+            if (booking.startDate === startDate) {
+                return res.status(403).json({
+                    message: 'Sorry, this spot is already booked for the specified dates',
+                    errors: {
+                        startDate: 'Start date conflicts with an existing booking'
+                    }
+                });
+            } else if (booking.endDate === endDate) {
+                return res.status(403).json({
+                    message: 'Sorry, this spot is already booked for the specified dates',
+                    errors: {
+                        endDate: 'End date conflicts with an existing booking'
+                    }
+                });
+            }
+        }
+
         if (startDate < endDate) {
-            const createBooking = await booking.set({
+            const createBooking = await Booking.create({
+                spotId: spotId,
+                userId: user.id,
                 startDate,
                 endDate
             });
-            await booking.save();
+
             return res.status(200).json(createBooking);
         } else {
             res.status(400).json({
                 message: "Bad Request",
                 errors: "endDate cannot be on or before startDate"
-            })
+            });
         }
     } else {
         res.status(403).json({
             message: 'You cannot book your own spot silly!'
-        })
+        });
     }
 })
 
