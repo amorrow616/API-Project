@@ -74,8 +74,5 @@ module.exports = {
         [Op.in]: ["Little Sister's House", 'Dunder Mifflin', 'Shrute Farms BnB', 'The Dragonfly Inn']
       }
     }, {});
-    // return queryInterface.bulkDelete(options, {
-    //   where: { address: spots.map(spot => spot.address) }
-    // }, {});
   }
 };
