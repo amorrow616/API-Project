@@ -62,7 +62,7 @@ const authorizationReq = async (req, res, next) => {
 
     if (Spot.ownerId !== user.id) {
         return res.status(403).json({
-            message: "Spot must belong to you in order to manipulate it."
+            message: "Forbidden"
         });
     }
     next();
@@ -106,8 +106,8 @@ router.get('/:spotId', spotExists, async (req, res, next) => {
             },
             {
                 model: User,
-                attributes: ['id', 'firstName', 'lastName'],
-                // as: 'Owner'
+                as: 'Owner',
+                attributes: ['id', 'firstName', 'lastName']
             }
         ]
     });
@@ -284,7 +284,7 @@ router.post('/:spotId/images', [requireAuth, spotExists], checkImageData, async 
 
     if (user.id !== spot.ownerId) {
         return res.status(403).json({
-            message: "Spot must belong to you in order to manipulate it."
+            message: "Forbidden"
         });
     }
 
@@ -333,7 +333,7 @@ router.post('/:spotId/reviews', [requireAuth, spotExists], checkReview, async (r
             });
         }
     }
-    const addReview = Review.create({
+    const addReview = await Review.create({
         userId: user.id,
         spotId: spotId,
         review,

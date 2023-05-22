@@ -5,8 +5,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const { requireAuth } = require('../../utils/auth');
 
-const { Booking, Spot } = require('../../db/models');
-const { Sequelize } = require('sequelize');
+const { Booking, Spot, SpotImage } = require('../../db/models');
 
 const router = express.Router();
 
@@ -22,17 +21,6 @@ const bookingExists = async (req, res, next) => {
     next();
 };
 
-const authorizationReq = async (req, res, next) => {
-    const { user } = req;
-
-    if (Booking.userId !== user.id) {
-        res.status(403).json({
-            message: "Booking must belong to you in order to manipulate it."
-        });
-    }
-    next();
-};
-
 router.get('/current', requireAuth, async (req, res, next) => {
     const { user } = req;
     const currentUserBookings = await Booking.findAll({
@@ -44,11 +32,21 @@ router.get('/current', requireAuth, async (req, res, next) => {
             userId: user.id
         }
     });
+
     let bookingsList = [];
 
-    currentUserBookings.forEach(booking => {
-        bookingsList.push(booking.toJSON());
-    })
+    for (let book of currentUserBookings) {
+        bookingsList.push(book.toJSON());
+    }
+
+    for (let book of bookingsList) {
+        const previewImage = await SpotImage.findOne({
+            where: {
+                spotId: book.spotId
+            }
+        });
+        book.Spot.previewImage = previewImage.url;
+    }
     return res.status(200).json({
         Bookings: bookingsList
     });
@@ -70,24 +68,50 @@ router.put('/:bookingId', [requireAuth, bookingExists], checkProvidedData, async
     const { startDate, endDate } = req.body;
     const bookingId = req.params.bookingId;
     const booking = await Booking.findByPk(bookingId);
+    const { user } = req;
 
-    if (booking.startDate === startDate || booking.endDate === endDate) {
-        return res.status(403).json({
-            message: 'Sorry, this spot is already booked for the specified dates',
-            errors: {
-                startDate: "Start date conflicts with an existing booking",
-                endDate: "End date conflicts with an existing booking"
+    if (booking.userId === user.id) {
+        if (booking.startDate < new Date()) {
+            return res.status(403).json({
+                message: "Past bookings can't be modified"
+            });
+        }
+
+        const currentBookings = await Booking.findAll({
+            where: {
+                spotId: booking.spotId
             }
-        })
+        });
+
+        for (let book of currentBookings) {
+            if (book.startDate === startDate) {
+                return res.status(403).json({
+                    message: 'Sorry, this spot is already booked for the specified dates',
+                    errors: {
+                        startDate: "Start date conflicts with an existing booking"
+                    }
+                });
+            } else if (book.endDate === endDate) {
+                return res.status(403).json({
+                    message: 'Sorry, this spot is already booked for the specified dates',
+                    errors: {
+                        endDate: "End date conflicts with an existing booking"
+                    }
+                });
+            }
+        }
+
+        const editedBooking = await booking.set({
+            startDate: startDate || booking.startDate,
+            endDate: endDate || booking.endDate
+        });
+        await booking.save();
+        return res.status(200).json(editedBooking);
+    } else {
+        return res.status(403).json({
+            message: 'Forbidden'
+        });
     }
-
-    booking.set({
-        startDate: startDate || booking.startDate,
-        endDate: endDate || booking.endDate
-    });
-
-    await booking.save();
-    return res.status(200).json(booking)
 });
 
 router.delete('/:bookingId', [requireAuth, bookingExists], async (req, res, next) => {
@@ -97,7 +121,7 @@ router.delete('/:bookingId', [requireAuth, bookingExists], async (req, res, next
 
     if (booking.userId !== user.id) {
         return res.status(403).json({
-            message: "Booking must belong to you in order to manipulate it."
+            message: "Forbidden"
         });
     }
 
