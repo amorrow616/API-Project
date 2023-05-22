@@ -21,17 +21,6 @@ const reviewExists = async (req, res, next) => {
     next();
 };
 
-const authorizationReq = async (req, res, next) => {
-    const { user } = req;
-
-    if (Review.userId !== user.id) {
-        return res.status(403).json({
-            message: "Forbidden"
-        });
-    }
-    next();
-};
-
 router.get('/current', requireAuth, async (req, res, next) => {
     const { user } = req;
 
@@ -86,19 +75,26 @@ const checkProvidedData = [
     handleValidationErrors
 ];
 
-router.put('/:reviewId', [requireAuth, reviewExists, authorizationReq], checkProvidedData, async (req, res, next) => {
+router.put('/:reviewId', [requireAuth, reviewExists], checkProvidedData, async (req, res, next) => {
     const reviewId = req.params.reviewId;
     const foundReview = await Review.findByPk(reviewId);
+    const { user } = req;
 
     const { review, stars } = req.body;
 
-    foundReview.set({
-        review: review || foundReview.review,
-        stars: stars || foundReview.stars
-    });
+    if (user.id === foundReview.userId) {
+        foundReview.set({
+            review: review || foundReview.review,
+            stars: stars || foundReview.stars
+        });
 
-    await foundReview.save();
-    res.status(200).json(foundReview);
+        await foundReview.save();
+        res.status(200).json(foundReview);
+    } else {
+        return res.status(403).json({
+            message: "Forbidden"
+        });
+    }
 });
 
 router.post('/:reviewId/images', [requireAuth, reviewExists], async (req, res, next) => {
@@ -137,15 +133,21 @@ router.post('/:reviewId/images', [requireAuth, reviewExists], async (req, res, n
 
 });
 
-router.delete('/:reviewId', [requireAuth, reviewExists, authorizationReq], async (req, res, next) => {
+router.delete('/:reviewId', [requireAuth, reviewExists], async (req, res, next) => {
     const reviewId = req.params.reviewId;
     const review = await Review.findByPk(reviewId);
+    const { user } = req;
 
-
-    await review.destroy();
-    res.status(200).json({
-        message: 'Successfully deleted'
-    });
+    if (user.id === review.userId) {
+        await review.destroy();
+        res.status(200).json({
+            message: 'Successfully deleted'
+        });
+    } else {
+        return res.status(403).json({
+            message: "Forbidden"
+        });
+    }
 });
 
 module.exports = router;
