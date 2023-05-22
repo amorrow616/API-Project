@@ -5,7 +5,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const { requireAuth } = require('../../utils/auth');
 
-const { Review, Spot, User, ReviewImage } = require('../../db/models');
+const { Review, Spot, User, ReviewImage, SpotImage } = require('../../db/models');
 
 const router = express.Router();
 
@@ -26,7 +26,7 @@ const authorizationReq = async (req, res, next) => {
 
     if (Review.userId !== user.id) {
         return res.status(403).json({
-            message: "Review must belong to you in order to manipulate it."
+            message: "Forbidden"
         });
     }
     next();
@@ -34,12 +34,6 @@ const authorizationReq = async (req, res, next) => {
 
 router.get('/current', requireAuth, async (req, res, next) => {
     const { user } = req;
-
-    let previewImage = await SpotImage.findOne({
-        where: {
-
-        }
-    })
 
     let userReviews = await Review.findAll({
         where: {
@@ -61,8 +55,22 @@ router.get('/current', requireAuth, async (req, res, next) => {
         ]
     });
 
+    let reviewList = [];
+    for (let review of userReviews) {
+        reviewList.push(review.toJSON());
+    }
+
+    for (let review of reviewList) {
+        const previewImage = await SpotImage.findOne({
+            where: {
+                spotId: review.spotId
+            }
+        });
+        review.Spot.previewImage = previewImage.url;
+    }
+
     res.status(200).json({
-        Reviews: userReviews
+        Reviews: reviewList
     });
 });
 
@@ -107,7 +115,7 @@ router.post('/:reviewId/images', [requireAuth, reviewExists], async (req, res, n
 
     if (user.id !== review.userId) {
         return res.status(403).json({
-            message: "Review must belong to you in order to manipulate it."
+            message: "Forbidden"
         });
     }
 
