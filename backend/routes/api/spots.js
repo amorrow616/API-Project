@@ -68,17 +68,61 @@ const authorizationReq = async (req, res, next) => {
     next();
 };
 
-router.get('/', addAggregateData, async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     let { page, size, minLat, maxLat, minLng, minPrice, maxPrice } = req.query;
+    let pagination = {};
 
     page = page === undefined ? 1 : page;
     size = size === undefined ? 20 : size;
 
-    req.Spots.page = page;
-    req.Spots.size = size;
+    page = parseInt(page);
+    size = parseInt(size);
+
+    if (page < 1 || page > 10) {
+        throw new Error('Page must be between 1 and 10')
+    } else if (size < 1 || size > 20) {
+        throw new Error('Size must be between 1 and 20')
+    } else {
+        pagination.limit = size;
+        pagination.offset = size * (page - 1);
+    }
+
+    const Spots = await Spot.findAll({
+        raw: true,
+        ...pagination
+    });
+
+    for (let spot of Spots) {
+        const reviewAvg = await Review.findOne({
+            attributes: [[Sequelize.fn('AVG', Sequelize.col('stars')), 'avgRating']],
+            where: {
+                spotId: spot.id
+            },
+            raw: true
+        });
+        if (reviewAvg) {
+            spot.avgRating = reviewAvg.avgRating;
+        } else {
+            spot.avgRating = 'No ratings yet.'
+        }
+    }
+
+    for (let spot of Spots) {
+        const spotImg = await SpotImage.findOne({
+            where: {
+                spotId: spot.id
+            }
+        });
+        if (spotImg) {
+            spot.previewImage = spotImg.url
+        } else {
+            spot.previewImage = 'No images provided.'
+        }
+    }
+
 
     res.status(200).json({
-        Spots: req.Spots,
+        Spots: Spots,
         page,
         size
     });
