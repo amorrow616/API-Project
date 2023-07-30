@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import * as sessionActions from '../../store/session';
+import './LoginForm.css';
 
 export default function LoginFormPage() {
     const dispatch = useDispatch(); // how to make the action work
@@ -24,28 +25,32 @@ export default function LoginFormPage() {
     };
     return (
         <>
-            <h1>Log In</h1>
+            <h1>Welcome to Waterbnb</h1>
+            <h2>Log In</h2>
             <form onSubmit={handleSubmit}>
                 <label>
-                    Username or Email
+                    {/* Username or Email */}
                     <input
                         type='text'
+                        placeholder='Username or Email'
                         value={credential}
                         onChange={(e) => setCredential(e.target.value)}
                         required
                     />
                 </label>
                 <label>
-                    Password
+                    {/* Password */}
                     <input
                         type='password'
+                        placeholder='Password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                 </label>
+                <p>If you'd like to sign in using your phone number, that's just too bad.</p>
                 {errors.credential && <p>{errors.credential}</p>}
-                <button type='submit'>Log In</button>
+                <button type='submit' className='loginButton'>Log In</button>
             </form>
         </>
     );
