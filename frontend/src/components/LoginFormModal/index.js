@@ -11,7 +11,7 @@ export default function LoginFormModal() {
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
 
-    useEffect(() => {
+    useEffect(() => { // setting up a useeffect to show errors anytime a change is made to the credential or password fields until validations are met
         const errors = {};
         if (credential.length < 4) {
             errors.credential = 'Username or email must be longer than 4 characters.'
