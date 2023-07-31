@@ -30,3 +30,7 @@ h2 {
     margin-bottom: 10%;
     cursor: pointer;
 }
+
+button:disabled {
+    background-color: rgba(150, 150, 150, 0.918);
+}
