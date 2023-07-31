@@ -1,8 +1,15 @@
 {
+  "name": "api-project",
+  "version": "1.0.0",
+  "description": "<!--!!START SILENT --> # AirBnB Clone <!--!!END --> <!--!!ADD --> <!-- # `<name of application here>` --> <!--!!END_ADD -->",
+  "main": "index.js",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "express-validator": "^7.0.1"
+    "express-validator": "^7.0.1",
+    "lodash": "^4.17.21",
+    "validator": "^13.9.0"
   },
+  "devDependencies": {},
   "scripts": {
     "render-postbuild": "npm run build --prefix frontend",
     "install": "npm --prefix backend install backend && npm --prefix frontend install frontend",
@@ -12,5 +19,8 @@
     "sequelize-cli": "npm run --prefix backend sequelize-cli",
     "start": "npm start --prefix backend",
     "build": "npm run build --prefix backend"
-  }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
