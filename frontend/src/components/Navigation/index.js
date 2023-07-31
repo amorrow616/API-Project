@@ -9,7 +9,7 @@ export default function Navigation({ isLoaded }) {
     return (
         <ul>
             <li>
-                <NavLink exact to="/"><i class='fa-solid fa-water' />Waterbnb</NavLink>
+                <NavLink exact to="/" className='homeLink'><i class='fa-solid fa-water' /> Waterbnb</NavLink>
             </li>
             {isLoaded && (
                 <li>

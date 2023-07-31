@@ -2,3 +2,9 @@ ul,
 li {
     list-style: none;
 }
+
+.homeLink {
+    color: rgb(120, 24, 245);
+    text-decoration: none;
+    font-size: 200%;
+}
