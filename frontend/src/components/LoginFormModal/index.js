@@ -49,7 +49,7 @@ export default function LoginFormModal() {
                 {errors.credential && (
                     <p>{errors.credential}</p>
                 )}
-                <button type="submit" className='loginButton'>Log In</button>
+                <button type="submit" className='loginButton' disabled={Object.keys(errors) > 0}>Log In</button>
             </form>
         </>
     );

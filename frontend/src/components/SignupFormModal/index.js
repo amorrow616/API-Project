@@ -107,7 +107,7 @@ export default function SignupFormModal() {
                 {errors.confirmPassword && (
                     <p>{errors.confirmPassword}</p>
                 )}
-                <button type="submit" className='signupSubmit'>Sign Up</button>
+                <button type="submit" className='signupSubmit' disabled={Object.keys(errors) > 0}>Sign Up</button>
             </form>
         </>
     );

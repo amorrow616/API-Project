@@ -28,4 +28,5 @@ h2 {
     height: 50px;
     border-radius: 10px;
     margin-bottom: 10%;
+    cursor: pointer;
 }
