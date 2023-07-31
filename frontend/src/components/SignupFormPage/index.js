@@ -42,7 +42,7 @@ export default function SignupFormPage() {
     return (
         <>
             <h1>Sign Up</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className='signupForm'>
                 <label>
                     <input
                         type='text'
@@ -103,7 +103,7 @@ export default function SignupFormPage() {
                     />
                 </label>
                 {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-                <button type='submit'>Sign Up</button>
+                <button type='submit' className='signupSubmit'>Sign Up</button>
             </form>
         </>
     )
