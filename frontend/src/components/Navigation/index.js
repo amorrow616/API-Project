@@ -1,15 +1,17 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import ProfileButton from './ProfileButton';
-import './Navigation.css';
-
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
+import ProfileButton from "./ProfileButton";
+import OpenModalButton from "../OpenModalButton";
+import LoginFormModal from "../LoginFormModal";
+import SignupFormModal from "../SignupFormModal";
+import "./Navigation.css";
 
 export default function Navigation({ isLoaded }) {
-    const sessionUser = useSelector(state => state.session.user);
+    const sessionUser = useSelector((state) => state.session.user);
 
-    let sessionLinks; // declaring this so it can be manipulated to our needs
-    if (sessionUser) { // if a user is logged in, make a button to log them out
+    let sessionLinks;
+    if (sessionUser) {
         sessionLinks = (
             <li>
                 <ProfileButton user={sessionUser} />
@@ -18,17 +20,26 @@ export default function Navigation({ isLoaded }) {
     } else {
         sessionLinks = (
             <li>
-                <NavLink to='/login' className='loginLink'>Log In</NavLink>
-                <NavLink to='/signup' className='signupLink'>Sign Up</NavLink>
+                <OpenModalButton
+                    buttonText="Log In"
+                    modalComponent={<LoginFormModal />}
+                />
+                <OpenModalButton
+                    buttonText="Sign Up"
+                    modalComponent={<SignupFormModal />}
+                />
             </li>
         );
     }
+
     return (
         <ul>
             <li>
-                <NavLink exact to='/'>Home</NavLink>
+                <NavLink exact to="/">
+                    Home
+                </NavLink>
             </li>
             {isLoaded && sessionLinks}
         </ul>
-    )
-};
+    );
+}
