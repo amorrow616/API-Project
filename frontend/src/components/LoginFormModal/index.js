@@ -33,10 +33,17 @@ export default function LoginFormModal() {
                 }
             });
     };
+
+    const demoUser = async () => {
+        setCredential('TestUser2');
+        setPassword('password2');
+
+        document.getElementById('loginForm').submit();
+    };
     return (
         <>
             <h1>Log In</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} id='loginForm'>
                 <label>
                     <input
                         type="text"
@@ -60,6 +67,7 @@ export default function LoginFormModal() {
                 )}
                 <button type="submit" className='loginButton' disabled={Object.keys(errors) > 0 || credential.length < 4 || password.length < 6}>Log In</button>
             </form>
+            <button onClick={demoUser}>Demo User</button>
         </>
     );
 }
