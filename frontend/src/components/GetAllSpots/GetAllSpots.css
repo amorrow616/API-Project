@@ -1,0 +1,35 @@
+.gridArea {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(200px, 1fr));
+    margin-top: 30px;
+}
+
+.spotsList {
+    display: grid;
+    grid-template-areas: "image image image"
+        "location . reviews"
+        "price . .";
+    max-width: 220px;
+    max-height: 200px;
+}
+
+.spotImage {
+    grid-area: image;
+    width: 220px;
+    height: 220px;
+}
+
+.spotLocation {
+    grid-area: location;
+    margin-top: 5px;
+}
+
+.spotRating {
+    grid-area: reviews;
+    margin-top: 5px;
+}
+
+.spotPrice {
+    grid-area: price;
+    margin-top: 5px;
+}

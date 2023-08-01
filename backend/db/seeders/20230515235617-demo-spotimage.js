@@ -6,22 +6,22 @@ const { SpotImage } = require('../models');
 const spotImages = [
   {
     spotId: 1,
-    url: 'google.com',
+    url: 'https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?cs=srgb&dl=pexels-binyamin-mellish-186077.jpg&fm=jpg',
     preview: true
   },
   {
     spotId: 2,
-    url: 'testurl.com',
+    url: 'https://hips.hearstapps.com/hmg-prod/images/dunagan-diverio-design-group-1487169401.jpg',
     preview: false
   },
   {
     spotId: 3,
-    url: 'anothertesturl.com',
+    url: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/ef/4e/56/schrute-farms.jpg?w=700&h=-1&s=1',
     preview: false
   },
   {
     spotId: 4,
-    url: 'images.com',
+    url: 'https://cdn.homedsgn.com/wp-content/uploads/2017/11/Waterfront-Home-Coogee-by-MPR-Design-Group-Infint-pool.jpg',
     preview: true
   }
 ];
