@@ -19,6 +19,10 @@ h2 {
     justify-content: center;
 }
 
+p {
+    color: red;
+}
+
 button:disabled {
     background-color: rgba(150, 150, 150, 0.918);
     cursor: not-allowed;
