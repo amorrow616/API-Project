@@ -19,6 +19,25 @@ h2 {
     justify-content: center;
 }
 
+button:disabled {
+    background-color: rgba(150, 150, 150, 0.918);
+    cursor: not-allowed;
+}
+
+.demoUser {
+    background-color: white;
+    border: none;
+    text-decoration: underline;
+    font-size: 150%;
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+    cursor: pointer;
+}
+
 .loginButton {
     background-color: rgb(80, 70, 177);
     color: white;
@@ -29,9 +48,4 @@ h2 {
     border-radius: 10px;
     margin-bottom: 10%;
     cursor: pointer;
-}
-
-button:disabled {
-    background-color: rgba(150, 150, 150, 0.918);
-    cursor: not-allowed;
 }

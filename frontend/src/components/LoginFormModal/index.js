@@ -34,11 +34,8 @@ export default function LoginFormModal() {
             });
     };
 
-    const demoUser = async () => {
-        setCredential('TestUser2');
-        setPassword('password2');
-
-        document.getElementById('loginForm').submit();
+    const demoUser = () => {
+        dispatch(sessionActions.login({ credential: 'TestUser2', password: 'password2' })).then(closeModal);
     };
     return (
         <>
@@ -67,7 +64,7 @@ export default function LoginFormModal() {
                 )}
                 <button type="submit" className='loginButton' disabled={Object.keys(errors) > 0 || credential.length < 4 || password.length < 6}>Log In</button>
             </form>
-            <button onClick={demoUser}>Demo User</button>
+            <button onClick={demoUser} className='demoUser'>Demo User</button>
         </>
     );
 }
