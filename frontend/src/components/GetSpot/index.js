@@ -22,7 +22,7 @@ export default function GetSpot() {
         <>
             <h1>{spot.name}</h1>
             <div>{spot.city}, {spot.state}, {spot.country}</div>
-            <img src={spot.SpotImages.url} alt='preview of the spot'></img>
+            {/* <img src={spot.SpotImages} alt='preview of the spot'></img> */}
             <h2>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h2>
             <div>${spot.price} night</div>
             <div>{spot.avgStarRating}</div>

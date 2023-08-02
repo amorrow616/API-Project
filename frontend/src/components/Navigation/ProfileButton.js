@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from "./OpemModalMenuItem";
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
+import ManageSpots from "../ManageSpots";
 import './ProfileButton.css';
 
 export default function ProfileButton({ user }) {
@@ -51,7 +53,9 @@ export default function ProfileButton({ user }) {
                     <>
                         <li>Hello, {user.firstName}</li>
                         <li>{user.email}</li>
-                        <li>link to manage spots</li>
+                        <li>
+                            <NavLink to='/spots/current' className='manageLink'> Manage Spots</NavLink>
+                        </li>
                         <li>
                             <button onClick={logout}>Log Out</button>
                         </li >
