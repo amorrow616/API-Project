@@ -1,6 +1,7 @@
 // to help with typos
 const GET_SPOTS = '/spots/GET_SPOTS';
 const FIND_SPOT = '/spots/FIND_SPOT';
+const MANAGE_SPOTS = '/spots/MANAGE_SPOTS';
 
 // action for getting all spots
 export const getSpots = (spots) => {
@@ -18,6 +19,14 @@ export const findSpot = (spot) => {
     }
 };
 
+//action for finding spots information for specific user
+export const manageSpots = (spots) => {
+    return {
+        type: MANAGE_SPOTS,
+        spots
+    }
+};
+
 // get all spots thunk
 export const fetchSpots = () => async (dispatch) => {
     const response = await fetch('/api/spots');
@@ -27,7 +36,7 @@ export const fetchSpots = () => async (dispatch) => {
 
     const emptyObj = {};
     spots.Spots.map((spot) => {
-        return emptyObj[spot.id] = spot
+        return emptyObj[spot.id] = spot;
     }) // this is to flatten the data
 
     dispatch(getSpots(emptyObj));
@@ -41,6 +50,19 @@ export const fetchOneSpot = (spotId) => async (dispatch) => {
     dispatch(findSpot(spot));
 };
 
+// get spots for current user thunk
+export const fetchUserSpots = () => async (dispatch) => {
+    const response = await fetch('/api/spots/current');
+    const spots = await response.json();
+
+    const emptyObj = {};
+    spots.Spots.map((spot) => {
+        return emptyObj[spot.id] = spot;
+    });
+
+    dispatch(manageSpots(emptyObj));
+};
+
 const initialState = {};
 // reducer
 const spotsReducer = (state = initialState, action) => {
@@ -49,6 +71,8 @@ const spotsReducer = (state = initialState, action) => {
             return { ...state, spots: { ...action.spots } }
         case FIND_SPOT:
             return { ...state, spot: { ...action.spot } }
+        case MANAGE_SPOTS:
+            return { ...state, spots: { ...action.spots } }
         default:
             return state;
     }

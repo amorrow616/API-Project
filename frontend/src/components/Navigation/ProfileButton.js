@@ -5,7 +5,6 @@ import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from "./OpemModalMenuItem";
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
-import ManageSpots from "../ManageSpots";
 import './ProfileButton.css';
 
 export default function ProfileButton({ user }) {
