@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import * as spotActions from '../../store/spots';
 import './GetAllSpots.css';
@@ -17,12 +18,15 @@ export default function GetAllSpots() {
             <ul className='gridArea'>
                 {Object.values(spots).map((spot) => (
                     <li key={spot.id} className='spotsList'>
-                        <img className='spotImage' src={spot.previewImage}></img>
-                        <div className='spotLocation'>{spot.city}, {spot.state}</div>
-                        <div className='spotRating'><i class='fa-solid fa-star' /> {spot.avgRating}</div>
-                        <div className='spotPrice'>${spot.price} night</div></li>
+                        <Link to={`/spots/${spot.id}`} id='spotLink'>
+                            <img className='spotImage' id='wrapThis' src={spot.previewImage} alt='a preview of the spot you can book' title={spot.name}></img>
+                            <div className='spotLocation' id='wrapThis'>{spot.city}, {spot.state}</div>
+                            <div className='spotRating'><i class='fa-solid fa-star' /> {spot.avgRating || 'New'}</div>
+                            <div className='spotPrice'>${spot.price} night</div>
+                        </Link>
+                    </li>
                 ))}
-            </ul>
+            </ul >
         </>
     )
 };

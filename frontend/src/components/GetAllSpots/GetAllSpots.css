@@ -1,7 +1,7 @@
 .gridArea {
     display: grid;
     grid-template-columns: repeat(4, minmax(200px, 1fr));
-    margin-top: 30px;
+    margin-top: 60px;
 }
 
 .spotsList {
@@ -10,7 +10,7 @@
         "location . reviews"
         "price . .";
     max-width: 220px;
-    max-height: 200px;
+    max-height: 300px;
 }
 
 .spotImage {
@@ -32,4 +32,9 @@
 .spotPrice {
     grid-area: price;
     margin-top: 5px;
+}
+
+#spotLink {
+    text-decoration: none;
+    color: black;
 }
