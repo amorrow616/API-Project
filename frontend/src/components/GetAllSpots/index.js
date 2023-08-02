@@ -19,8 +19,8 @@ export default function GetAllSpots() {
                 {Object.values(spots).map((spot) => (
                     <li key={spot.id} className='spotsList'>
                         <Link to={`/spots/${spot.id}`} id='spotLink'>
-                            <img className='spotImage' id='wrapThis' src={spot.previewImage} alt='a preview of the spot you can book' title={spot.name}></img>
-                            <div className='spotLocation' id='wrapThis'>{spot.city}, {spot.state}</div>
+                            <img className='spotImage' src={spot.previewImage} alt='a preview of the spot you can book' title={spot.name}></img>
+                            <div className='spotLocation'>{spot.city}, {spot.state}</div>
                             <div className='spotRating'><i class='fa-solid fa-star' /> {spot.avgRating || 'New'}</div>
                             <div className='spotPrice'>${spot.price} night</div>
                         </Link>

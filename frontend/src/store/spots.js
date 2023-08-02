@@ -1,6 +1,6 @@
 // to help with typos
 const GET_SPOTS = '/spots/GET_SPOTS';
-// const FIND_SPOT = '/spots/FIND_SPOT';
+const FIND_SPOT = '/spots/FIND_SPOT';
 
 // action for getting all spots
 export const getSpots = (spots) => {
@@ -11,12 +11,12 @@ export const getSpots = (spots) => {
 };
 
 // action for finding specific spot base on params
-// export const findSpot = (spotId) => {
-//     return {
-//         type: FIND_SPOT,
-//         spotId
-//     }
-// };
+export const findSpot = (spot) => {
+    return {
+        type: FIND_SPOT,
+        spot
+    }
+};
 
 // get all spots thunk
 export const fetchSpots = () => async (dispatch) => {
@@ -34,12 +34,11 @@ export const fetchSpots = () => async (dispatch) => {
 };
 
 // get one spot thunk
-export const fetchOneSpot = () => async (dispatch, spotId) => {
+export const fetchOneSpot = (spotId) => async (dispatch) => {
     const response = await fetch(`/api/spots/${spotId}`);
     const spot = await response.json();
-    console.log('this is the spot', spot)
 
-    dispatch()
+    dispatch(findSpot(spot));
 };
 
 const initialState = {};
@@ -48,6 +47,8 @@ const spotsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_SPOTS:
             return { ...state, spots: { ...action.spots } }
+        case FIND_SPOT:
+            return { ...state, spot: { ...action.spot } }
         default:
             return state;
     }
