@@ -14,6 +14,10 @@ export default function GetSpot() {
     }, [dispatch, spotId]);
 
     if (!spot) return null;
+
+    const reserveButton = () => {
+        alert('Feature coming soon');
+    }
     return (
         <>
             <h1>{spot.name}</h1>
@@ -23,7 +27,7 @@ export default function GetSpot() {
             <div>${spot.price} night</div>
             <div>{spot.avgStarRating}</div>
             <div>{spot.numReviews} reviews</div>
-            <button>Reserve</button>
+            <button onClick={reserveButton}>Reserve</button>
             <h3>Reviews will go here</h3>
         </>
     )
