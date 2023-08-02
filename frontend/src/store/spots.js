@@ -3,6 +3,7 @@ const GET_SPOTS = '/spots/GET_SPOTS';
 const FIND_SPOT = '/spots/FIND_SPOT';
 const MANAGE_SPOTS = '/spots/MANAGE_SPOTS';
 const DELETE_SPOT = '/spots/DELETE_SPOT';
+const CREATE_SPOT = '/spots/CREATE_SPOT';
 
 // action for getting all spots
 export const getSpots = (spots) => {
@@ -35,6 +36,14 @@ export const deleteSpot = (spotId) => {
         spotId
     }
 };
+
+// action for creating a spot
+export const createSpot = (spot) => {
+    return {
+        type: CREATE_SPOT,
+        spot
+    }
+}
 
 // get all spots thunk
 export const fetchSpots = () => async (dispatch) => {
@@ -72,6 +81,21 @@ export const fetchUserSpots = () => async (dispatch) => {
     dispatch(manageSpots(emptyObj));
 };
 
+// create spot thunk
+export const createSpotThunk = (payload) => async (dispatch) => {
+    const response = await fetch('/api/spots', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+        const spot = await response.json();
+        dispatch(createSpot(spot));
+        return spot;
+    }
+}
+
 const initialState = {};
 // reducer
 const spotsReducer = (state = initialState, action) => {
@@ -86,6 +110,8 @@ const spotsReducer = (state = initialState, action) => {
             const newState = { ...state };
             delete newState[action.reportId];
             return newState;
+        case CREATE_SPOT:
+            return { ...state, spot: { ...action.spots, ...action.spot } }
         default:
             return state;
     }

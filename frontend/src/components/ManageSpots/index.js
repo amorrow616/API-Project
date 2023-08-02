@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
+import './ManageSpots.css';
 
 export default function ManageSpots() {
     const dispatch = useDispatch();
@@ -24,7 +25,7 @@ export default function ManageSpots() {
             <h1>Manage Your Spots</h1>
             {Object.keys(spots) > 0 ? (
                 <>
-                    <button>Create a New Spot</button>
+                    <NavLink to='/spots' id='createButton'>Create a New Spot</NavLink>
                     <ul className='gridArea'>
                         {Object.values(spots).map((spot) => (
                             <li key={spot.id} className='spotsList'>
