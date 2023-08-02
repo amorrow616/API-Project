@@ -2,6 +2,7 @@
 const GET_SPOTS = '/spots/GET_SPOTS';
 const FIND_SPOT = '/spots/FIND_SPOT';
 const MANAGE_SPOTS = '/spots/MANAGE_SPOTS';
+const DELETE_SPOT = '/spots/DELETE_SPOT';
 
 // action for getting all spots
 export const getSpots = (spots) => {
@@ -24,6 +25,14 @@ export const manageSpots = (spots) => {
     return {
         type: MANAGE_SPOTS,
         spots
+    }
+};
+
+// action for deleting a spot
+export const deleteSpot = (spotId) => {
+    return {
+        type: DELETE_SPOT,
+        spotId
     }
 };
 
@@ -73,6 +82,10 @@ const spotsReducer = (state = initialState, action) => {
             return { ...state, spot: { ...action.spot } }
         case MANAGE_SPOTS:
             return { ...state, spots: { ...action.spots } }
+        case DELETE_SPOT:
+            const newState = { ...state };
+            delete newState[action.reportId];
+            return newState;
         default:
             return state;
     }

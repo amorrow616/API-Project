@@ -7,6 +7,13 @@ export default function ManageSpots() {
     const dispatch = useDispatch();
     const spots = useSelector((state) => state.spots.spots);
 
+    // const spotId = Object.values(spots).filter
+
+    // const spotDelete = (e) => {
+    //     e.preventDefault();
+    //     dispatch(spotActions.deleteSpot());
+    // };
+
     useEffect(() => {
         dispatch(spotActions.fetchUserSpots());
     }, [dispatch]);
@@ -26,9 +33,9 @@ export default function ManageSpots() {
                                     <div className='spotLocation'>{spot.city}, {spot.state}</div>
                                     <div className='spotRating'><i class='fa-solid fa-star' /> {spot.avgRating || 'New'}</div>
                                     <div className='spotPrice'>${spot.price} night</div>
-                                    <button>Update</button>
-                                    <button>Delete</button>
                                 </NavLink>
+                                <button>Update</button>
+                                <button>Delete</button>
                             </li>
                         ))}
                     </ul>
