@@ -19,7 +19,7 @@ export default function ManageSpots() {
         dispatch(spotActions.fetchUserSpots());
     }, [dispatch]);
 
-    if (!spots) return null;
+    if (spots === undefined) return null;
     return (
         <>
             <h1>Manage Your Spots</h1>
@@ -43,7 +43,8 @@ export default function ManageSpots() {
                 </>
             ) : (
                 <>
-                    <NavLink to='/spots'>Create a New Spot</NavLink>
+                    <div>Looks like you don't have any spots! Create one here:</div>
+                    <NavLink to='/spots' id='noSpots'>Create a New Spot</NavLink>
                 </>
             )}
         </>

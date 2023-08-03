@@ -6,3 +6,10 @@
     border: 2px solid black;
     padding: 5px;
 }
+
+#noSpots {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    color: black;
+}

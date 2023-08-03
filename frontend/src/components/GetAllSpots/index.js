@@ -12,7 +12,7 @@ export default function GetAllSpots() {
         dispatch(spotActions.fetchSpots());
     }, [dispatch]);
 
-    if (!spots) return null;
+    if (spots === undefined) return null;
     return (
         <>
             <ul className='gridArea'>

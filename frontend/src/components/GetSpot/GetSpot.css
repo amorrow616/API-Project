@@ -1,0 +1,9 @@
+#prevImg {
+    width: 50%;
+    height: 50%;
+}
+
+#spotName {
+    display: flex;
+    justify-content: start;
+}

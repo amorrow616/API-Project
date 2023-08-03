@@ -34,3 +34,15 @@
     border-radius: 45%;
     padding: 10px;
 }
+
+.header {
+    text-decoration: none;
+    color: rgb(15, 87, 109);
+    font-weight: bold;
+    margin-right: 140px;
+    top: 0;
+    position: absolute;
+    right: 0;
+    margin-top: 30px;
+    font-size: 120%;
+}

@@ -7,15 +7,17 @@ import "./Navigation.css";
 export default function Navigation({ isLoaded }) {
     const sessionUser = useSelector((state) => state.session.user);
     return (
-        <ul>
-            <li>
-                <NavLink exact to="/" className='homeLink'><i class='fa-solid fa-water' /> Waterbnb</NavLink>
-            </li>
-            {isLoaded && (
+        <header>
+            <ul>
                 <li>
-                    <ProfileButton user={sessionUser} />
+                    <NavLink exact to="/" id='homeLink'><i class='fa-solid fa-water' /> Waterbnb</NavLink>
                 </li>
-            )}
-        </ul>
+                {isLoaded && (
+                    <li>
+                        <ProfileButton user={sessionUser} />
+                    </li>
+                )}
+            </ul>
+        </header>
     );
 }

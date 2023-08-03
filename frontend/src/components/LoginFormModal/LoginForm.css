@@ -1,8 +1,9 @@
-form {
+#loginForm {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 250px;
 }
 
 input {
@@ -12,11 +13,8 @@ input {
     margin: 10px;
 }
 
-h1,
-h2 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.loginTitle {
+    margin-left: 100px;
 }
 
 p {
@@ -35,9 +33,6 @@ button:disabled {
     font-size: 150%;
     position: relative;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     margin-bottom: 40px;
     cursor: pointer;
 }
@@ -52,4 +47,12 @@ button:disabled {
     border-radius: 10px;
     margin-bottom: 10%;
     cursor: pointer;
+}
+
+#modal-content {
+    border-radius: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

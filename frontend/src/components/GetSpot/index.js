@@ -13,7 +13,7 @@ export default function GetSpot() {
         dispatch(spotActions.fetchOneSpot(spotId));
     }, [dispatch, spotId]);
 
-    if (!spot) return null;
+    if (spot === undefined) return null;
 
     const reserveButton = () => {
         alert('Feature coming soon');
@@ -22,11 +22,11 @@ export default function GetSpot() {
         <>
             <h1>{spot.name && spot.name}</h1>
             <div>{spot.city && spot.city}, {spot.state && spot.state}, {spot.country && spot.country}</div>
-            <img src={spot.SpotImages.length && spot.SpotImages[0].url} alt='preview of the spot'></img>
+            <img src={spot.SpotImages.length && spot.SpotImages[0].url} alt='preview of the spot' id='prevImg'></img>
             <h2>Hosted by {spot.Owner.firstName && spot.Owner.firstName} {spot.Owner.lastName && spot.Owner.lastName}</h2>
             <div>{spot.description && spot.description}</div>
             <div>${spot.price && spot.price} night</div>
-            <div>{spot.avgStarRating && spot.avgStarRating || 'New'}</div>
+            <div>{spot.avgStarRating && spot.avgStarRating}</div>
             <div>{spot.numReviews && spot.numReviews} reviews</div>
             <button onClick={reserveButton}>Reserve</button>
             <h3>Reviews will go here</h3>
