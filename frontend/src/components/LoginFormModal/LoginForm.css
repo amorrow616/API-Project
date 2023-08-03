@@ -3,7 +3,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 250px;
 }
 
 input {
@@ -11,10 +10,6 @@ input {
     height: 30px;
     border-radius: 10px;
     margin: 10px;
-}
-
-.loginTitle {
-    margin-left: 100px;
 }
 
 p {

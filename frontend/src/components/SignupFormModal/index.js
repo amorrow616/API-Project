@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
@@ -15,16 +15,16 @@ export default function SignupFormModal() {
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
 
-    useEffect(() => {
-        const errors = {};
-        if (username.length < 4) {
-            errors.username = 'Username cannot be less than 4 characters.'
-        }
-        if (password.length < 6) {
-            errors.password = 'Password must be at least 6 characters.'
-        }
-        setErrors(errors)
-    }, [username, password]);
+    // useEffect(() => {
+    //     const errors = {};
+    //     if (username.length < 4) {
+    //         errors.username = 'Username cannot be less than 4 characters.'
+    //     }
+    //     if (password.length < 6) {
+    //         errors.password = 'Password must be at least 6 characters.'
+    //     }
+    //     setErrors(errors)
+    // }, [username, password]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -55,7 +55,7 @@ export default function SignupFormModal() {
     return (
         <>
             <h1>Sign Up</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} id='signupForm'>
                 <label>
                     <input
                         type="text"

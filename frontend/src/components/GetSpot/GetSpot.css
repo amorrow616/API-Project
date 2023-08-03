@@ -4,6 +4,6 @@
 }
 
 #spotName {
-    display: flex;
+    display: flex-start;
     justify-content: start;
 }
