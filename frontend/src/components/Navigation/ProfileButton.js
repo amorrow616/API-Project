@@ -45,6 +45,7 @@ export default function ProfileButton({ user }) {
 
     return (
         <>
+            {user ? (<NavLink to='/spots' className='header'>Create a New Spot</NavLink>) : (<><div></div></>)}
             <button onClick={openMenu} className='profileButton'>
                 <i className='fa-solid fa-bars' />
                 <i className="fas fa-user-circle" />
