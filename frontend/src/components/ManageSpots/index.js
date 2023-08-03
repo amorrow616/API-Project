@@ -7,13 +7,11 @@ import './ManageSpots.css';
 export default function ManageSpots() {
     const dispatch = useDispatch();
     const history = useHistory();
-    const spots = useSelector((state) => state.spots.userSpots);
-
-    // const spotId = Object.values(spots).filter
+    const spots = useSelector((state) => state.spots.allSpots);
 
     const spotDelete = (e, spotId) => {
         e.preventDefault();
-        dispatch(spotActions.deleteSpot(spotId));
+        dispatch(spotActions.deleteSpotThunk(spotId));
         history.push('/');
     };
 
@@ -22,7 +20,6 @@ export default function ManageSpots() {
     }, [dispatch]);
 
     if (!spots) return null;
-    console.log(spots)
     return (
         <>
             <h1>Manage Your Spots</h1>

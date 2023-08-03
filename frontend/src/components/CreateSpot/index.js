@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
@@ -19,6 +19,7 @@ export default function CreateSpot() {
 
     const newSpotInfo = useSelector((state) => state.spots.newSpot); // watch for changes
     const spreadInfo = { ...newSpotInfo };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const newSpot = {
@@ -42,9 +43,9 @@ export default function CreateSpot() {
             <h1>Create a New Spot</h1>
             <h2>Where's your place located?</h2>
             <div>Guests will only get your exact address once they booked a reservation.</div>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <label>
-                    Country
+                    Country {errors.country && <p>{errors.country}</p>}
                     <input
                         type='text'
                         onChange={(e) => setCountry(e.target.value)}
@@ -54,7 +55,7 @@ export default function CreateSpot() {
                     />
                 </label>
                 <label>
-                    Street Address
+                    Street Address {errors.address && <p>{errors.address}</p>}
                     <input
                         type='text'
                         onChange={(e) => setAddress(e.target.value)}
@@ -64,7 +65,7 @@ export default function CreateSpot() {
                     />
                 </label>
                 <label>
-                    City
+                    City {errors.city && <p>{errors.city}</p>}
                     <input
                         type='text'
                         onChange={(e) => setCity(e.target.value)}
@@ -75,7 +76,7 @@ export default function CreateSpot() {
                 </label>
                 ,
                 <label>
-                    State
+                    State {errors.state && <p>{errors.state}</p>}
                     <input
                         type='text'
                         onChange={(e) => setState(e.target.value)}
@@ -116,6 +117,7 @@ export default function CreateSpot() {
                         required
                     />
                 </label>
+                {errors.description && <p>{errors.description}</p>}
                 <h2>Create a title for your spot</h2>
                 <label>
                     Catch guests' attention with a spot title that highlights what makes your place special.
@@ -127,6 +129,7 @@ export default function CreateSpot() {
                         required
                     />
                 </label>
+                {errors.name && <p>{errors.name}</p>}
                 <h2>Set a base price for your spot</h2>
                 <label>
                     Competitive pricing can help your listing stand out and rank higher in search results.
@@ -138,6 +141,7 @@ export default function CreateSpot() {
                         required
                     />
                 </label>
+                {errors.price && <p>{errors.price}</p>}
                 <h2>Liven up your spot with photos</h2>
                 <label>
                     Submit a link to at least one photo to publish your spot.
@@ -177,7 +181,7 @@ export default function CreateSpot() {
                         required
                     />
                 </label>
-                <button type='submit' onClick={(e) => handleSubmit(e)}>Create Spot</button>
+                <button type='submit'>Create Spot</button>
             </form>
         </>
     )

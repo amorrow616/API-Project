@@ -26,7 +26,7 @@ export default function GetSpot() {
             <h2>Hosted by {spot.Owner.firstName && spot.Owner.firstName} {spot.Owner.lastName && spot.Owner.lastName}</h2>
             <div>{spot.description && spot.description}</div>
             <div>${spot.price && spot.price} night</div>
-            <div>{spot.avgStarRating && spot.avgStarRating}</div>
+            <div>{spot.avgStarRating && spot.avgStarRating || 'New'}</div>
             <div>{spot.numReviews && spot.numReviews} reviews</div>
             <button onClick={reserveButton}>Reserve</button>
             <h3>Reviews will go here</h3>
