@@ -24,7 +24,7 @@ export default function SignupFormModal() {
             errors.password = 'Password must be at least 6 characters.'
         }
         setErrors(errors)
-    }, [email, username, firstName, lastName, password, confirmPassword]);
+    }, [username, password]);
 
     const handleSubmit = (e) => {
         e.preventDefault();

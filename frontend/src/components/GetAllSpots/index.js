@@ -6,7 +6,7 @@ import './GetAllSpots.css';
 
 export default function GetAllSpots() {
     const dispatch = useDispatch();
-    const spots = useSelector((state) => state.spots.spots);
+    const spots = useSelector((state) => state.spots.allSpots);
 
     useEffect(() => {
         dispatch(spotActions.fetchSpots());

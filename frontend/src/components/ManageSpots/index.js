@@ -1,29 +1,32 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
 import './ManageSpots.css';
 
 export default function ManageSpots() {
     const dispatch = useDispatch();
-    const spots = useSelector((state) => state.spots.spots);
+    const history = useHistory();
+    const spots = useSelector((state) => state.spots.userSpots);
 
     // const spotId = Object.values(spots).filter
 
-    // const spotDelete = (e) => {
-    //     e.preventDefault();
-    //     dispatch(spotActions.deleteSpot());
-    // };
+    const spotDelete = (e, spotId) => {
+        e.preventDefault();
+        dispatch(spotActions.deleteSpot(spotId));
+        history.push('/');
+    };
 
     useEffect(() => {
         dispatch(spotActions.fetchUserSpots());
     }, [dispatch]);
 
     if (!spots) return null;
+    console.log(spots)
     return (
         <>
             <h1>Manage Your Spots</h1>
-            {Object.keys(spots) > 0 ? (
+            {Object.keys(spots).length > 0 ? (
                 <>
                     <NavLink to='/spots' id='createButton'>Create a New Spot</NavLink>
                     <ul className='gridArea'>
@@ -36,7 +39,7 @@ export default function ManageSpots() {
                                     <div className='spotPrice'>${spot.price} night</div>
                                 </NavLink>
                                 <button>Update</button>
-                                <button>Delete</button>
+                                <button onClick={(e) => spotDelete(e, spot.id)}>Delete</button>
                             </li>
                         ))}
                     </ul>

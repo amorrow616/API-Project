@@ -1,9 +1,11 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
 
 export default function CreateSpot() {
     const dispatch = useDispatch();
+    const history = useHistory();
     const [address, setAddress] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
@@ -12,10 +14,13 @@ export default function CreateSpot() {
     const [lng, setLng] = useState('');
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState('');
+    const [errors, setErrors] = useState({});
 
+    const newSpotInfo = useSelector((state) => state.spots.newSpot); // watch for changes
+    const spreadInfo = { ...newSpotInfo };
     const handleSubmit = (e) => {
-        e.preventdefault();
+        e.preventDefault();
         const newSpot = {
             address,
             city,
@@ -27,24 +32,17 @@ export default function CreateSpot() {
             description,
             price
         };
+        // put spot images in an array, dispatch, loop
 
         dispatch(spotActions.createSpotThunk(newSpot));
-        setAddress('');
-        setCity('');
-        setState('');
-        setCountry('');
-        setLat('');
-        setLng('');
-        setName('');
-        setDescription('');
-        setPrice('')
-    }
+        history.push(`/spots/${spreadInfo.id}`);
+    };
     return (
         <>
-            <h1>Create a new Spot</h1>
+            <h1>Create a New Spot</h1>
             <h2>Where's your place located?</h2>
             <div>Guests will only get your exact address once they booked a reservation.</div>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <label>
                     Country
                     <input
@@ -143,14 +141,43 @@ export default function CreateSpot() {
                 <h2>Liven up your spot with photos</h2>
                 <label>
                     Submit a link to at least one photo to publish your spot.
-                    {/* <input
-                        type='url'
+                    <input
+                        type='text'
                         onChange={(e) => (e.target.value)}
-                        value={ }
+                        // value goes here
                         placeholder='Preview Image URL'
                         required
-                    /> */}
+                    />
+                    <input
+                        type='text'
+                        onChange={(e) => (e.target.value)}
+                        // value goes here
+                        placeholder='Image URL'
+                        required
+                    />
+                    <input
+                        type='text'
+                        onChange={(e) => (e.target.value)}
+                        // value goes here
+                        placeholder='Image URL'
+                        required
+                    />
+                    <input
+                        type='text'
+                        onChange={(e) => (e.target.value)}
+                        // value goes here
+                        placeholder='Image URL'
+                        required
+                    />
+                    <input
+                        type='text'
+                        onChange={(e) => (e.target.value)}
+                        // value goes here
+                        placeholder='Image URL'
+                        required
+                    />
                 </label>
+                <button type='submit' onClick={(e) => handleSubmit(e)}>Create Spot</button>
             </form>
         </>
     )
