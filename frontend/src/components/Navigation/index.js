@@ -7,9 +7,9 @@ import "./Navigation.css";
 export default function Navigation({ isLoaded }) {
     const sessionUser = useSelector((state) => state.session.user);
     return (
-        <header>
+        <>
             <ul>
-                <li>
+                <li id='headerItems'>
                     <NavLink exact to="/" id='homeLink'><i class='fa-solid fa-water' /> Waterbnb</NavLink>
                 </li>
                 {isLoaded && (
@@ -18,6 +18,7 @@ export default function Navigation({ isLoaded }) {
                     </li>
                 )}
             </ul>
-        </header>
+            <hr></hr>
+        </>
     );
 }

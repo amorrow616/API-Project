@@ -6,13 +6,15 @@
 .profile-dropdown {
     text-decoration: none;
     cursor: pointer;
-    position: absolute;
+    position: fixed;
     right: 0;
     margin-right: 17px;
-    margin-top: 5px;
+    top: 70px;
     font-size: 100%;
     border: 3px solid black;
-    padding: 5px 13px 10px 15px;
+    padding: 5px 13px 4px 15px;
+    z-index: 999;
+    background-color: white;
 }
 
 .profile-dropdown-hidden {
@@ -45,4 +47,14 @@
     right: 0;
     margin-top: 30px;
     font-size: 120%;
+}
+
+#logoutButton {
+    background-color: gray;
+    border: 2px solid black;
+    color: white;
+    border-radius: 25%;
+    font-size: 100%;
+    margin-left: 20px;
+    padding: 10px;
 }

@@ -8,3 +8,7 @@ li {
     text-decoration: none;
     font-size: 250%;
 }
+
+#headerItems {
+    margin-bottom: 30px;
+}
