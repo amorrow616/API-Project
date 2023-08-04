@@ -17,11 +17,11 @@ export default function GetAllSpots() {
         <>
             <ul className='gridArea'>
                 {Object.values(spots).map((spot) => (
-                    <li key={spot.id} className='spotsList'>
+                    <li key={spot.id}>
                         <Link to={`/spots/${spot.id}`} id='spotLink'>
                             <img className='spotImage' src={spot.previewImage} alt='a preview of the spot you can book' title={spot.name}></img>
-                            <div className='spotLocation'>{spot.city}, {spot.state}</div>
-                            <div className='spotRating'><i class='fa-solid fa-star' /> {spot.avgRating || 'New'}</div>
+                            <span className='spotLocation'>{spot.city}, {spot.state}</span>
+                            <span className='spotRating'><i class='fa-solid fa-star' /> {spot.avgRating || 'New'}</span>
                             <div className='spotPrice'>${spot.price} night</div>
                         </Link>
                     </li>

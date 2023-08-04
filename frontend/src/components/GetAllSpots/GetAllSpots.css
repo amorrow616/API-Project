@@ -1,16 +1,7 @@
 .gridArea {
     display: grid;
     grid-template-columns: repeat(4, minmax(200px, 1fr));
-    margin-top: 60px;
-}
-
-.spotsList {
-    display: grid;
-    grid-template-areas: "image image image"
-        "location . reviews"
-        "price . .";
-    max-width: 220px;
-    max-height: 300px;
+    margin-top: 25px;
 }
 
 .spotImage {
@@ -22,11 +13,17 @@
 .spotLocation {
     grid-area: location;
     margin-top: 5px;
+    width: 180px;
 }
 
 .spotRating {
     grid-area: reviews;
     margin-top: 5px;
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    margin-top: 5px;
+    z-index: 1;
 }
 
 .spotPrice {
@@ -37,4 +34,10 @@
 #spotLink {
     text-decoration: none;
     color: black;
+    display: grid;
+    grid-template-areas: "image image"
+        "location reviews"
+        "price .";
+    max-width: 220px;
+    max-height: 300px;
 }
