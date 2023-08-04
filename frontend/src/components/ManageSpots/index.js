@@ -1,8 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
-import { useModal } from "../../context/Modal";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import DeleteSpot from "../DeleteSpot";
 import './ManageSpots.css';
@@ -10,7 +9,12 @@ import './ManageSpots.css';
 export default function ManageSpots() {
     const dispatch = useDispatch();
     const spots = useSelector((state) => state.spots.allSpots);
-    const { closeModal } = useModal();
+    const [showMenu, setShowMenu] = useState(false);
+
+    const openMenu = () => {
+        if (showMenu) return;
+        setShowMenu(true);
+    };
 
     useEffect(() => {
         dispatch(spotActions.fetchUserSpots());
@@ -33,14 +37,10 @@ export default function ManageSpots() {
                                     <div className='spotPrice'>${spot.price} night</div>
                                 </NavLink>
                                 <button className='manageSpotButtons'>Update</button>
-                                {/* <OpenModalMenuItem
+                                <button onClick={openMenu} className='manageSpotButtons'> <OpenModalMenuItem
                                     itemText='Delete'
-                                    onItemClick={closeModal}
-                                    className='manageSpotButtons'
-                                    modalComponent={<DeleteSpot />}
-                                /> */}
-                                {/* {(e) => spotDelete(e, spot.id)} */}
-                                <button className='manageSpotButtons'>Delete</button>
+                                    modalComponent={<DeleteSpot props={spot.id} />}
+                                /></button>
                             </li>
                         ))}
                     </ul>

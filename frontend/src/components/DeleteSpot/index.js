@@ -1,22 +1,25 @@
-import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
+// import { useState } from "react";
+import { useModal } from "../../context/Modal";
 import * as spotActions from '../../store/spots';
 
-export default function DeleteSpot() {
-    const history = useHistory();
+export default function DeleteSpot(props) {
     const dispatch = useDispatch();
+    const { closeModal } = useModal();
+    const spotId = props.props;
 
     const spotDelete = (e, spotId) => {
         e.preventDefault();
         dispatch(spotActions.deleteSpotThunk(spotId));
-        history.push('/');
+        closeModal();
     };
+
     return (
         <>
-            <h1>Confirm Delete</h1>
-            <h2>Are you sure you want to remove this spot from the listings?</h2>
-            <button onClick={(e) => spotDelete(e)}>Yes (Delete Spot)</button>
-            <button>No (Keep Spot)</button>
+            <h1 id='deleteSpotHead'>Confirm Delete</h1>
+            <h2 id='deleteSpotBlurb'>Are you sure you want to remove this spot from the listings?</h2>
+            <button onClick={(e) => spotDelete(e, spotId)} id='deleteButton'>Yes (Delete Spot)</button>
+            <button onClick={closeModal} id='dontDeleteButton'>No (Keep Spot)</button>
         </>
     )
 }

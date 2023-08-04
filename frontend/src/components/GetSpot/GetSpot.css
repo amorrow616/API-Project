@@ -35,7 +35,7 @@
 
 #spotName {
     display: flex-start;
-    justify-content: start;
+    justify-content: flex-start;
 }
 
 #detailImage2 {
@@ -78,6 +78,7 @@
     grid-area: button;
     background-color: rgb(80, 70, 177);
     color: white;
+    cursor: pointer;
 }
 
 #detailName {

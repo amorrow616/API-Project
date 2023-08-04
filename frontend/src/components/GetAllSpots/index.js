@@ -20,9 +20,9 @@ export default function GetAllSpots() {
                     <li key={spot.id}>
                         <Link to={`/spots/${spot.id}`} id='spotLink'>
                             <img className='spotImage' src={spot.previewImage} alt='a preview of the spot you can book' title={spot.name}></img>
-                            <span className='spotLocation'>{spot.city}, {spot.state}</span>
-                            <span className='spotRating'><i class='fa-solid fa-star' /> {spot.avgRating || 'New'}</span>
-                            <div className='spotPrice'>${spot.price} night</div>
+                            <div className='spotLocation'>{spot.city}, {spot.state}</div>
+                            <div className='spotRating'><i class='fa-solid fa-star' /> {spot.avgRating || 'New'}</div>
+                            <div className='spotPrice'>${spot.price && spot.price} night</div>
                         </Link>
                     </li>
                 ))}

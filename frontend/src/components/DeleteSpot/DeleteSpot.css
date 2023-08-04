@@ -1,0 +1,16 @@
+#deleteButton {
+    background-color: red;
+}
+
+#dontDeleteButton {
+    cursor: pointer;
+}
+
+#deleteSpotHead {
+    display: flex;
+    justify-content: center;
+}
+
+#deleteSpotBlurb {
+    font-size: 70%;
+}
