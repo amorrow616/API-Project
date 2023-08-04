@@ -1,10 +1,26 @@
+.manageSpotButtons {
+    color: white;
+    background-color: gray;
+    border: 2px solid black;
+    box-shadow: 3px 3px black;
+    padding: 3px 5px;
+    margin-right: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
 #createButton {
     text-decoration: none;
     background-color: gray;
     color: white;
-    box-shadow: 5px 5px black;
+    box-shadow: 3px 3px black;
     border: 2px solid black;
     padding: 5px;
+    margin-left: 38px;
+}
+
+#manageSpotsHeading {
+    margin-left: 38px;
 }
 
 #noSpots {

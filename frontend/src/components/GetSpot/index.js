@@ -25,10 +25,10 @@ export default function GetSpot() {
                 <div>{spot.city && spot.city}, {spot.state && spot.state}, {spot.country && spot.country}</div>
                 <div className='detailImages'>
                     <img src={spot.SpotImages.length && spot.SpotImages[0].url} alt='preview of the spot' id='prevImg'></img>
-                    <img src='https://media.istockphoto.com/id/1263083361/photo/modern-home-with-intricate-detail-throughout.jpg?s=612x612&w=0&k=20&c=Ax4uHREjcKprK5sHPPURkhR-fz4Wct5m-zUoCnOYhiY=' id='detailImage2'></img>
-                    <img src='https://media.istockphoto.com/id/1297586166/photo/modern-elegant-kitchen-stock-photo.jpg?s=612x612&w=0&k=20&c=4qVGJq3EZ-DrVC08kFIXuZMGRe5NcEvziV-H4L9aFKc=' id='detailImage3'></img>
-                    <img src='https://media.istockphoto.com/id/1264323513/photo/scandinavian-bedroom-interior-stock-photo.jpg?s=612x612&w=0&k=20&c=jYMbmLtLDOezPThalkXCfrKjbgkYHpQX2oY3-vjPhVI=' id='detailImage4'></img>
-                    <img src='https://media.istockphoto.com/id/1291917591/photo/modern-bathroom-interior-stock-photo.jpg?s=612x612&w=0&k=20&c=pxqczxYLHDIm0zskG3QgktaO0ICwAd3H4x5b8vdIRuY=' id='detailImage5'></img>
+                    <img src='https://media.istockphoto.com/id/1263083361/photo/modern-home-with-intricate-detail-throughout.jpg?s=612x612&w=0&k=20&c=Ax4uHREjcKprK5sHPPURkhR-fz4Wct5m-zUoCnOYhiY=' id='detailImage2' alt='a view of the living room'></img>
+                    <img src='https://media.istockphoto.com/id/1297586166/photo/modern-elegant-kitchen-stock-photo.jpg?s=612x612&w=0&k=20&c=4qVGJq3EZ-DrVC08kFIXuZMGRe5NcEvziV-H4L9aFKc=' id='detailImage3' alt='a view of the kitchen'></img>
+                    <img src='https://media.istockphoto.com/id/1264323513/photo/scandinavian-bedroom-interior-stock-photo.jpg?s=612x612&w=0&k=20&c=jYMbmLtLDOezPThalkXCfrKjbgkYHpQX2oY3-vjPhVI=' id='detailImage4' alt='a view of one of the bedrooms'></img>
+                    <img src='https://media.istockphoto.com/id/1291917591/photo/modern-bathroom-interior-stock-photo.jpg?s=612x612&w=0&k=20&c=pxqczxYLHDIm0zskG3QgktaO0ICwAd3H4x5b8vdIRuY=' id='detailImage5' alt='a view of one of the bathrooms'></img>
                 </div>
                 <div className='bottomDetail'>
                     <h2 id='detailName'>Hosted by {spot.Owner.firstName && spot.Owner.firstName} {spot.Owner.lastName && spot.Owner.lastName}</h2>
@@ -41,7 +41,7 @@ export default function GetSpot() {
                     </div>
                 </div>
                 <hr />
-                <h3>Reviews will go here</h3>
+                <h3><i class='fa-solid fa-star' />{spot.avgStarRating && spot.avgStarRating} ~ {spot.numReviews && spot.numReviews} reviews</h3>
             </div>
         </>
     )

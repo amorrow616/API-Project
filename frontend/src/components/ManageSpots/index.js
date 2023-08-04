@@ -1,19 +1,16 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
+import { useModal } from "../../context/Modal";
+import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
+import DeleteSpot from "../DeleteSpot";
 import './ManageSpots.css';
 
 export default function ManageSpots() {
     const dispatch = useDispatch();
-    const history = useHistory();
     const spots = useSelector((state) => state.spots.allSpots);
-
-    const spotDelete = (e, spotId) => {
-        e.preventDefault();
-        dispatch(spotActions.deleteSpotThunk(spotId));
-        history.push('/');
-    };
+    const { closeModal } = useModal();
 
     useEffect(() => {
         dispatch(spotActions.fetchUserSpots());
@@ -22,7 +19,7 @@ export default function ManageSpots() {
     if (spots === undefined) return null;
     return (
         <>
-            <h1>Manage Your Spots</h1>
+            <h1 id='manageSpotsHeading'>Manage Your Spots</h1>
             {Object.keys(spots).length > 0 ? (
                 <>
                     <NavLink to='/spots' id='createButton'>Create a New Spot</NavLink>
@@ -35,8 +32,15 @@ export default function ManageSpots() {
                                     <div className='spotRating'><i class='fa-solid fa-star' /> {spot.avgRating || 'New'}</div>
                                     <div className='spotPrice'>${spot.price} night</div>
                                 </NavLink>
-                                <button>Update</button>
-                                <button onClick={(e) => spotDelete(e, spot.id)}>Delete</button>
+                                <button className='manageSpotButtons'>Update</button>
+                                {/* <OpenModalMenuItem
+                                    itemText='Delete'
+                                    onItemClick={closeModal}
+                                    className='manageSpotButtons'
+                                    modalComponent={<DeleteSpot />}
+                                /> */}
+                                {/* {(e) => spotDelete(e, spot.id)} */}
+                                <button className='manageSpotButtons'>Delete</button>
                             </li>
                         ))}
                     </ul>
