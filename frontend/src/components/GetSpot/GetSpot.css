@@ -1,9 +1,91 @@
+.bottomDetail {
+    display: grid;
+    grid-template-areas: "name box"
+        "description box";
+    margin-top: 20px;
+}
+
+.detailImages {
+    display: grid;
+    grid-template-areas: "preview img2 img3"
+        "preview img4 img5";
+    grid-gap: 3px;
+}
+
+.reserveBox {
+    border: 2px solid black;
+    display: grid;
+    grid-template-areas: "price rating reviews"
+        "button button button";
+    grid-area: box;
+    padding: 20px;
+    height: 80px;
+    border-radius: 5%;
+}
+
+.spotPage {
+    max-width: 1000px;
+}
+
 #prevImg {
-    width: 50%;
-    height: 50%;
+    width: 500px;
+    height: 343px;
+    grid-area: preview;
 }
 
 #spotName {
     display: flex-start;
     justify-content: start;
+}
+
+#detailImage2 {
+    grid-area: img2;
+    width: 250px;
+    height: 170px;
+}
+
+#detailImage3 {
+    grid-area: img3;
+    width: 250px;
+    height: 170px;
+}
+
+#detailImage4 {
+    grid-area: img4;
+    width: 250px;
+    height: 170px;
+}
+
+#detailImage5 {
+    grid-area: img5;
+    width: 250px;
+    height: 170px;
+}
+
+#detailPrice {
+    grid-area: price;
+}
+
+#detailRating {
+    grid-area: rating;
+}
+
+#detailReviews {
+    grid-area: reviews;
+}
+
+#detailsButton {
+    grid-area: button;
+    background-color: rgb(80, 70, 177);
+    color: white;
+}
+
+#detailName {
+    grid-area: name;
+    width: 500px;
+}
+
+#detailDescription {
+    grid-area: description;
+    width: 500px;
 }
