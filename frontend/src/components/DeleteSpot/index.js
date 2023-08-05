@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
-// import { useState } from "react";
 import { useModal } from "../../context/Modal";
 import * as spotActions from '../../store/spots';
+import './DeleteSpot.css';
 
 export default function DeleteSpot(props) {
     const dispatch = useDispatch();

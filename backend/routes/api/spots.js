@@ -259,21 +259,14 @@ const checkProvidedData = [
 ];
 
 router.post('/', requireAuth, checkProvidedData, async (req, res, next) => {
-    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    const { images, ...newSpot } = req.body;
     const { user } = req;
 
     const spot = await Spot.create({
         ownerId: user.id,
-        address,
-        city,
-        state,
-        country,
-        lat,
-        lng,
-        name,
-        description,
-        price
+        ...newSpot
     });
+    await SpotImage.bulkCreate(images.map((image) => ({ ...image, spotId: spot.id })));
     return res.status(201).json(spot);
 });
 

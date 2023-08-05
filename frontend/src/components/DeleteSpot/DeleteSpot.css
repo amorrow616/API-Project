@@ -1,9 +1,22 @@
 #deleteButton {
     background-color: red;
+    color: white;
+    border: 2px solid black;
+    box-shadow: 3px 3px black;
+    cursor: pointer;
+    width: 400px;
+    height: 50px;
+    margin-bottom: 10px;
 }
 
 #dontDeleteButton {
     cursor: pointer;
+    box-shadow: 3px 3px black;
+    color: white;
+    background-color: rgb(92, 87, 87);
+    width: 400px;
+    height: 50px;
+    margin-bottom: 10px;
 }
 
 #deleteSpotHead {
@@ -12,5 +25,7 @@
 }
 
 #deleteSpotBlurb {
-    font-size: 70%;
+    font-size: 120%;
+    padding-left: 10px;
+    padding-right: 10px;
 }

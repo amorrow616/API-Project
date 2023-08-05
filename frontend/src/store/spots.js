@@ -5,6 +5,7 @@ const ALL_SPOTS = '/spots/ALL_SPOTS';
 const SINGLE_SPOT = '/spots/SINGLE_SPOT';
 const DELETE_SPOT = '/spots/DELETE_SPOT';
 const CREATE_SPOT = '/spots/CREATE_SPOT';
+const SPOT_IMAGE = '/spots/SPOT_IMAGE';
 
 // action for getting all spots
 export const getSpots = (spots) => {
@@ -30,13 +31,20 @@ export const deleteSpot = (spotId) => {
     }
 };
 
-// // action for creating a spot
+// action for creating a spot
 export const createSpot = (spot) => {
     return {
         type: CREATE_SPOT,
         spot
     }
-}
+};
+
+// action for creating a spot image
+export const spotImage = () => {
+    return {
+        type: SPOT_IMAGE
+    }
+};
 
 // get all spots thunk
 export const fetchSpots = () => async (dispatch) => {
@@ -95,9 +103,28 @@ export const deleteSpotThunk = (spotId) => async (dispatch) => {
     });
     const spot = response.json();
 
-    dispatch(deleteSpot(spot.spotId));
+    dispatch(deleteSpot(spotId));
     return spot;
-}
+};
+
+// spot images thunk
+export const addSpotImage = (images, spotId, url) => async (dispatch) => {
+    images.map((image) => {
+        const newObj = {};
+        if (images.indexOf(image) === 0) {
+            newObj.preview = true;
+        } else {
+            newObj.preview = false;
+        }
+        newObj.spotId = spotId;
+        newObj.url = url;
+
+        return csrfFetch(`/api/spots/${spotId}/images`, {
+            method: 'POST',
+            body: JSON.stringify(newObj)
+        });
+    });
+};
 
 const initialState = {};
 // reducer
@@ -108,8 +135,9 @@ const spotsReducer = (state = initialState, action) => {
         case SINGLE_SPOT:
             return { ...state, singleSpot: { ...action.spot } }
         case DELETE_SPOT:
-            const newState = { ...state };
-            delete newState[action.spotId];
+            const newRef = { ...state.allSpots }
+            delete newRef[action.spotId];
+            const newState = { ...state, allSpots: { ...newRef } };
             return newState;
         case CREATE_SPOT:
             return { ...state, newSpot: { ...action.spot } }
