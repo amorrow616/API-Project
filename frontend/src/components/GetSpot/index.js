@@ -13,7 +13,7 @@ export default function GetSpot() {
         dispatch(spotActions.fetchOneSpot(spotId));
     }, [dispatch, spotId]);
 
-    if (spot === undefined) return null;
+    if (!spot.id) return null;
 
     const reserveButton = () => {
         alert('Feature coming soon');
@@ -24,14 +24,14 @@ export default function GetSpot() {
                 <h1 id='spotName'>{spot.name && spot.name}</h1>
                 <div>{spot.city && spot.city}, {spot.state && spot.state}, {spot.country && spot.country}</div>
                 <div className='detailImages'>
-                    <img src={spot.SpotImages.length && spot.SpotImages[0].url} alt='preview of the spot' id='prevImg'></img>
-                    <img src='https://media.istockphoto.com/id/1263083361/photo/modern-home-with-intricate-detail-throughout.jpg?s=612x612&w=0&k=20&c=Ax4uHREjcKprK5sHPPURkhR-fz4Wct5m-zUoCnOYhiY=' id='detailImage2' alt='a view of the living room'></img>
-                    <img src='https://media.istockphoto.com/id/1297586166/photo/modern-elegant-kitchen-stock-photo.jpg?s=612x612&w=0&k=20&c=4qVGJq3EZ-DrVC08kFIXuZMGRe5NcEvziV-H4L9aFKc=' id='detailImage3' alt='a view of the kitchen'></img>
-                    <img src='https://media.istockphoto.com/id/1264323513/photo/scandinavian-bedroom-interior-stock-photo.jpg?s=612x612&w=0&k=20&c=jYMbmLtLDOezPThalkXCfrKjbgkYHpQX2oY3-vjPhVI=' id='detailImage4' alt='a view of one of the bedrooms'></img>
-                    <img src='https://media.istockphoto.com/id/1291917591/photo/modern-bathroom-interior-stock-photo.jpg?s=612x612&w=0&k=20&c=pxqczxYLHDIm0zskG3QgktaO0ICwAd3H4x5b8vdIRuY=' id='detailImage5' alt='a view of one of the bathrooms'></img>
+                    <img src={spot.SpotImages && spot.SpotImages[0].url} alt='preview of the spot' id='prevImg'></img>
+                    <img src={spot.SpotImages && spot.SpotImages[1].url} id='detailImage2' alt='a view of the home'></img>
+                    <img src={spot.SpotImages && spot.SpotImages[2].url} id='detailImage3' alt='a view of the home2'></img>
+                    <img src={spot.SpotImages && spot.SpotImages[3].url} id='detailImage4' alt='a view of the home3'></img>
+                    <img src={spot.SpotImages && spot.SpotImages[4].url} id='detailImage5' alt='a view of the home4'></img>
                 </div>
                 <div className='bottomDetail'>
-                    <h2 id='detailName'>Hosted by {spot.Owner.firstName && spot.Owner.firstName} {spot.Owner.lastName && spot.Owner.lastName}</h2>
+                    <h2 id='detailName'>Hosted by {spot.Owner && spot.Owner.firstName} {spot.Owner && spot.Owner.lastName}</h2>
                     <div id='detailDescription'>{spot.description && spot.description}</div>
                     <div className='reserveBox'>
                         <div id='detailPrice'>${spot.price && spot.price} night</div>

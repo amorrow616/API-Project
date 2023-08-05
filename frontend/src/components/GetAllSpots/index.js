@@ -12,15 +12,15 @@ export default function GetAllSpots() {
         dispatch(spotActions.fetchSpots());
     }, [dispatch]);
 
-    if (spots === undefined) return null;
+    if (!Object.values(spots)) return null;
     return (
         <>
             <ul className='gridArea'>
                 {Object.values(spots).map((spot) => (
                     <li key={spot.id}>
                         <Link to={`/spots/${spot.id}`} id='spotLink'>
-                            <img className='spotImage' src={spot.previewImage} alt='a preview of the spot you can book' title={spot.name}></img>
-                            <div className='spotLocation'>{spot.city}, {spot.state}</div>
+                            <img className='spotImage' src={spot.previewImage && spot.previewImage} alt='a preview of the spot you can book' title={spot.name}></img>
+                            <div className='spotLocation'>{spot.city && spot.city}, {spot.state && spot.state}</div>
                             <div className='spotRating'><i class='fa-solid fa-star' /> {spot.avgRating || 'New'}</div>
                             <div className='spotPrice'>${spot.price && spot.price} night</div>
                         </Link>

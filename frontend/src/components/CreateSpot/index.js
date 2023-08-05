@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
@@ -22,6 +22,15 @@ export default function CreateSpot() {
     const [image4, setImage4] = useState('');
     const [image5, setImage5] = useState('');
     const [errors, setErrors] = useState({});
+
+    // useEffect(() => {
+    //     const errors = {};
+
+    //     if (description.length < 30) {
+    //         errors.description = 'Description needs a minumum of 30 characters'
+    //     }
+
+    // }, [description]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -58,11 +67,18 @@ export default function CreateSpot() {
                 }
             ]
         };
-        const returnfromThunk = spotActions.createSpotThunk(newSpot);
+        const returnfromThunk = spotActions.createSpotThunk(newSpot); // this returns a function
 
-        const dbSpot = await dispatch(returnfromThunk);
+        const dbSpot = await dispatch(returnfromThunk).catch(async (res) => {
+            const data = await res.json();
+            if (data && data.errors) {
+                setErrors(data.errors);
+            }
+        }); // awaiting the return from the function gives us the new spot
 
-        history.push(`/spots/${dbSpot.id}`);
+        if (dbSpot) {
+            history.push(`/spots/${dbSpot.id}`);
+        };
     };
     return (
         <>
@@ -78,7 +94,6 @@ export default function CreateSpot() {
                             onChange={(e) => setCountry(e.target.value)}
                             value={country}
                             placeholder='Country'
-                            required
                         />
                     </label>
                     <label>
@@ -88,7 +103,6 @@ export default function CreateSpot() {
                             onChange={(e) => setAddress(e.target.value)}
                             value={address}
                             placeholder='Address'
-                            required
                         />
                     </label>
                     <label>
@@ -98,7 +112,6 @@ export default function CreateSpot() {
                             onChange={(e) => setCity(e.target.value)}
                             value={city}
                             placeholder='City'
-                            required
                         />
                     </label>
                     ,
@@ -109,28 +122,25 @@ export default function CreateSpot() {
                             onChange={(e) => setState(e.target.value)}
                             value={state}
                             placeholder='STATE'
-                            required
                         />
                     </label>
                     <label>
-                        Latitude
+                        Latitude {errors.lat && <p>{errors.lat}</p>}
                         <input
                             type='text'
                             onChange={(e) => setLat(e.target.value)}
                             value={lat}
                             placeholder='Latitude'
-                            required
                         />
                     </label>
                     ,
                     <label>
-                        Longitude
+                        Longitude {errors.lng && <p>{errors.lng}</p>}
                         <input
                             type='text'
                             onChange={(e) => setLng(e.target.value)}
                             value={lng}
                             placeholder='Longitude'
-                            required
                         />
                     </label>
                     <h2>Describe your place to guests</h2>
@@ -141,7 +151,6 @@ export default function CreateSpot() {
                             onChange={(e) => setDescription(e.target.value)}
                             value={description}
                             placeholder='Please write at least 30 characters'
-                            required
                         />
                     </label>
                     {errors.description && <p>{errors.description}</p>}
@@ -153,7 +162,6 @@ export default function CreateSpot() {
                             onChange={(e) => setName(e.target.value)}
                             value={name}
                             placeholder='Name of your spot'
-                            required
                         />
                     </label>
                     {errors.name && <p>{errors.name}</p>}
@@ -165,7 +173,6 @@ export default function CreateSpot() {
                             onChange={(e) => setPrice(e.target.value)}
                             value={price}
                             placeholder='Price per night (USD)'
-                            required
                         />
                     </label>
                     {errors.price && <p>{errors.price}</p>}
@@ -177,35 +184,30 @@ export default function CreateSpot() {
                             onChange={(e) => setPreviewImg(e.target.value)}
                             value={previewImg}
                             placeholder='Preview Image URL'
-                            required
                         />
                         <input
                             type='text'
                             onChange={(e) => setImage2(e.target.value)}
                             value={image2}
                             placeholder='Image URL'
-                            required
                         />
                         <input
                             type='text'
                             onChange={(e) => setImage3(e.target.value)}
                             value={image3}
                             placeholder='Image URL'
-                            required
                         />
                         <input
                             type='text'
                             onChange={(e) => setImage4(e.target.value)}
                             value={image4}
                             placeholder='Image URL'
-                            required
                         />
                         <input
                             type='text'
                             onChange={(e) => setImage5(e.target.value)}
                             value={image5}
                             placeholder='Image URL'
-                            required
                         />
                     </label>
                     <button type='submit'>Create Spot</button>

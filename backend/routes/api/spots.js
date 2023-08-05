@@ -246,11 +246,11 @@ const checkProvidedData = [
     check('name')
         .exists({ checkFalsy: true })
         .notEmpty()
-        .withMessage('Name must be less than 50 characters'),
+        .withMessage('Name is required'),
     check('description')
         .exists({ checkFalsy: true })
         .notEmpty()
-        .withMessage('Description is required'),
+        .withMessage('Description needs a minimum of 30 characters'),
     check('price')
         .exists({ checkFalsy: true })
         .notEmpty()
