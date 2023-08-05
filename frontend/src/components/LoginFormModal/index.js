@@ -46,6 +46,7 @@ export default function LoginFormModal() {
                 )}
                 <label>
                     <input
+                        id='loginInput'
                         type="text"
                         placeholder='Username or Email'
                         value={credential}
@@ -55,6 +56,7 @@ export default function LoginFormModal() {
                 </label>
                 <label>
                     <input
+                        id='loginInput'
                         type="password"
                         placeholder='Password'
                         value={password}

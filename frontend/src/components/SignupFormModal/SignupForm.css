@@ -1,22 +1,38 @@
 .signupSubmit {
     color: white;
-    width: 400px;
+    width: 360px;
     height: 50px;
-    margin: 10px 15px;
-    background-color: rgb(96, 190, 190);
-    box-shadow: 5px 5px rgb(23, 153, 204);
+    margin-left: 6px;
+    background-color: rgb(211, 67, 87);
+    box-shadow: 5px 5px black;
     margin-bottom: 7%;
+    margin-top: 5%;
     cursor: pointer;
 }
 
-button:disabled {
-    background-color: rgba(150, 150, 150, 0.918);
+.signupSubmit:disabled {
+    background-color: rgba(212, 211, 211, 0.918);
+    color: rgb(122, 122, 122);
     box-shadow: none;
     cursor: not-allowed;
-    box-shadow: 5px 5px rgb(102, 99, 99);
+    box-shadow: 5px 5px rgb(122, 122, 122);
+    font-size: 105%;
 }
 
 #signupForm {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 430px;
+}
+
+#signupInput {
+    width: 350px;
+    height: 20px;
+    margin: 5px;
+    border: 3px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

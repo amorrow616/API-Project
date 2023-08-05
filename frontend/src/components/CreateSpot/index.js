@@ -87,66 +87,77 @@ export default function CreateSpot() {
                 <h2>Where's your place located?</h2>
                 <div>Guests will only get your exact address once they booked a reservation.</div>
                 <form onSubmit={handleSubmit} id='createFormForm'>
-                    <label>
+                    <label className='createLabel'>
                         Country {errors.country && <p>{errors.country}</p>}
                         <input
+                            className='createInput'
                             type='text'
                             onChange={(e) => setCountry(e.target.value)}
                             value={country}
                             placeholder='Country'
                         />
                     </label>
-                    <label>
+                    <label className='createLabel'>
                         Street Address {errors.address && <p>{errors.address}</p>}
                         <input
+                            className='createInput'
                             type='text'
                             onChange={(e) => setAddress(e.target.value)}
                             value={address}
                             placeholder='Address'
                         />
                     </label>
-                    <label>
-                        City {errors.city && <p>{errors.city}</p>}
-                        <input
-                            type='text'
-                            onChange={(e) => setCity(e.target.value)}
-                            value={city}
-                            placeholder='City'
-                        />
-                    </label>
-                    ,
-                    <label>
-                        State {errors.state && <p>{errors.state}</p>}
-                        <input
-                            type='text'
-                            onChange={(e) => setState(e.target.value)}
-                            value={state}
-                            placeholder='STATE'
-                        />
-                    </label>
-                    <label>
-                        Latitude {errors.lat && <p>{errors.lat}</p>}
-                        <input
-                            type='text'
-                            onChange={(e) => setLat(e.target.value)}
-                            value={lat}
-                            placeholder='Latitude'
-                        />
-                    </label>
-                    ,
-                    <label>
-                        Longitude {errors.lng && <p>{errors.lng}</p>}
-                        <input
-                            type='text'
-                            onChange={(e) => setLng(e.target.value)}
-                            value={lng}
-                            placeholder='Longitude'
-                        />
-                    </label>
+                    <div className='cityandstate'>
+                        <label className='createLabel'>
+                            City {errors.city && <p>{errors.city}</p>}
+                            <input
+                                className='createCity'
+                                type='text'
+                                onChange={(e) => setCity(e.target.value)}
+                                value={city}
+                                placeholder='City'
+                            />
+                        </label>
+                        ,
+                        <label className='createLabel'>
+                            State {errors.state && <p>{errors.state}</p>}
+                            <input
+                                className='createState'
+                                type='text'
+                                onChange={(e) => setState(e.target.value)}
+                                value={state}
+                                placeholder='STATE'
+                            />
+                        </label>
+                    </div>
+                    <div className='coordinates'>
+                        <label className='createLabel'>
+                            Latitude {errors.lat && <p>{errors.lat}</p>}
+                            <input
+                                className='createInput'
+                                type='text'
+                                onChange={(e) => setLat(e.target.value)}
+                                value={lat}
+                                placeholder='Latitude'
+                            />
+                        </label>
+                        ,
+                        <label className='createLabel'>
+                            Longitude {errors.lng && <p>{errors.lng}</p>}
+                            <input
+                                className='createInput'
+                                type='text'
+                                onChange={(e) => setLng(e.target.value)}
+                                value={lng}
+                                placeholder='Longitude'
+                            />
+                        </label>
+                    </div>
                     <h2>Describe your place to guests</h2>
-                    <label>
+                    <label className='createLabel'>
                         Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.
                         <textarea
+                            id='createTextarea'
                             type='text'
                             onChange={(e) => setDescription(e.target.value)}
                             value={description}
@@ -155,9 +166,10 @@ export default function CreateSpot() {
                     </label>
                     {errors.description && <p>{errors.description}</p>}
                     <h2>Create a title for your spot</h2>
-                    <label>
+                    <label className='createLabel'>
                         Catch guests' attention with a spot title that highlights what makes your place special.
                         <input
+                            className='createInput'
                             type='text'
                             onChange={(e) => setName(e.target.value)}
                             value={name}
@@ -166,9 +178,10 @@ export default function CreateSpot() {
                     </label>
                     {errors.name && <p>{errors.name}</p>}
                     <h2>Set a base price for your spot</h2>
-                    <label>
+                    <label className='createLabel'>
                         Competitive pricing can help your listing stand out and rank higher in search results.
                         $ <input
+                            className='createInput'
                             type='number'
                             onChange={(e) => setPrice(e.target.value)}
                             value={price}
@@ -177,40 +190,45 @@ export default function CreateSpot() {
                     </label>
                     {errors.price && <p>{errors.price}</p>}
                     <h2>Liven up your spot with photos</h2>
-                    <label>
+                    <label className='createLabel'>
                         Submit a link to at least one photo to publish your spot.
                         <input
+                            className='createInput'
                             type='text'
                             onChange={(e) => setPreviewImg(e.target.value)}
                             value={previewImg}
                             placeholder='Preview Image URL'
                         />
                         <input
+                            className='createInput'
                             type='text'
                             onChange={(e) => setImage2(e.target.value)}
                             value={image2}
                             placeholder='Image URL'
                         />
                         <input
+                            className='createInput'
                             type='text'
                             onChange={(e) => setImage3(e.target.value)}
                             value={image3}
                             placeholder='Image URL'
                         />
                         <input
+                            className='createInput'
                             type='text'
                             onChange={(e) => setImage4(e.target.value)}
                             value={image4}
                             placeholder='Image URL'
                         />
                         <input
+                            className='createInput'
                             type='text'
                             onChange={(e) => setImage5(e.target.value)}
                             value={image5}
                             placeholder='Image URL'
                         />
                     </label>
-                    <button type='submit'>Create Spot</button>
+                    <button type='submit' id='createSubmit'>Create Spot</button>
                 </form>
             </div>
         </>
