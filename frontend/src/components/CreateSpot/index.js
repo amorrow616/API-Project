@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
 import './CreateSpot.css';
 
-export default function CreateSpot() {
+export default function CreateSpot({ spot, formType }) {
     const dispatch = useDispatch();
     const history = useHistory();
     const [address, setAddress] = useState('');
@@ -23,14 +23,14 @@ export default function CreateSpot() {
     const [image5, setImage5] = useState('');
     const [errors, setErrors] = useState({});
 
-    // useEffect(() => {
-    //     const errors = {};
+    useEffect(() => {
+        const errors = {};
 
-    //     if (description.length < 30) {
-    //         errors.description = 'Description needs a minumum of 30 characters'
-    //     }
-
-    // }, [description]);
+        if (previewImg.length < 1) {
+            errors.previewImg = 'Preview image is required.'
+        };
+        setErrors(errors)
+    }, [previewImg]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -199,6 +199,7 @@ export default function CreateSpot() {
                             value={previewImg}
                             placeholder='Preview Image URL'
                         />
+                        {errors.previewImg && <p>{errors.previewImg}</p>}
                         <input
                             className='createInput'
                             type='text'

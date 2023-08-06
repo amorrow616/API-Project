@@ -36,7 +36,7 @@ export default function ManageSpots() {
                                     <div className='spotRating'><i class='fa-solid fa-star' /> {spot.avgRating || 'New'}</div>
                                     <div className='spotPrice'>${spot.price} night</div>
                                 </NavLink>
-                                <button className='manageSpotButtons'>Update</button>
+                                <NavLink to={`/spots/${spot.id}/edit`} className='manageSpotButtons'>Update</NavLink>
                                 <button onClick={openMenu} className='manageSpotButtons'> <OpenModalMenuItem
                                     itemText='Delete'
                                     modalComponent={<DeleteSpot props={spot.id} />}

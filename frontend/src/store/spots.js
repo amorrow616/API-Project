@@ -109,6 +109,21 @@ export const addSpotImage = (images, spotId, url) => async (dispatch) => {
     });
 };
 
+// update spot thunk
+export const updateSpotThunk = (spotId, payload) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spotId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+        const spot = await response.json();
+        dispatch(findSpot(spot));
+        return spot;
+    }
+}
+
 const initialState = { allSpots: {}, singleSpot: {} };
 // reducer
 const spotsReducer = (state = initialState, action) => {
