@@ -21,7 +21,7 @@ export default function GetAllSpots() {
                         <Link to={`/spots/${spot.id}`} id='spotLink'>
                             <img className='spotImage' src={spot.previewImage && spot.previewImage} alt='a preview of the spot you can book' title={spot.name}></img>
                             <div className='spotLocation'>{spot.city && spot.city}, {spot.state && spot.state}</div>
-                            <div className='spotRating'><i class='fa-solid fa-star' /> {spot.avgRating || 'New'}</div>
+                            <div className='spotRating'><i class='fa-solid fa-star' /> {spot.avgRating ? Math.round(spot.avgRating * 10) / 10 : 'New'}</div>
                             <div className='spotPrice'>${spot.price && spot.price} night</div>
                         </Link>
                     </li>

@@ -20,6 +20,7 @@
     box-shadow: 3px 3px black;
     height: 30px;
     width: 90px;
+    cursor: pointer;
 }
 
 #createTextarea {

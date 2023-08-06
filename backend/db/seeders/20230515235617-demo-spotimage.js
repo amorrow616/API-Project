@@ -71,7 +71,7 @@ const spotImages = [
   },
   {
     spotId: 3,
-    url: 'https://www.digsdigs.com/photos/2013/04/a-barn-bathroom-decorated-with-rough-weathered-wood-with-a-large-window-a-wooden-vanity-and-a-free-standing-tub.jpg',
+    url: 'https://media.istockphoto.com/id/1412912622/photo/frame-mockup-in-rustic-villa-bathroom-interior-background.jpg?s=612x612&w=0&k=20&c=sMjOa6AvWtMuvKo8xjUuXwGMmbErGX2Lp_PVe5mRsvQ=',
     preview: false
   },
   {

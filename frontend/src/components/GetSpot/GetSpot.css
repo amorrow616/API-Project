@@ -15,6 +15,7 @@
 .reserveBox {
     border: 2px solid black;
     display: grid;
+    grid-template-columns: 50% 25% 25%;
     grid-template-areas: "price rating reviews"
         "button button button";
     grid-area: box;
@@ -76,7 +77,7 @@
 
 #detailsButton {
     grid-area: button;
-    background-color: rgb(80, 70, 177);
+    background-color: rgb(226, 87, 106);
     color: white;
     cursor: pointer;
 }
@@ -89,4 +90,27 @@
 #detailDescription {
     grid-area: description;
     width: 500px;
+}
+
+#detailsCircle {
+    font-size: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#reviewsHeading {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 140px;
+}
+
+#reviewName {
+    font-weight: bold;
+    font-size: 130%;
+}
+
+#fullReview {
+    margin-bottom: 20px;
 }
