@@ -140,7 +140,7 @@ export default function spotsReducer(state = initialState, action) {
             return newState;
         // return { ...state, singleSpot: { ...action.spot } }
         case DELETE_SPOT:
-            const newRef = { ...state.allSpots }
+            const newRef = { ...state.allSpots };
             delete newRef[action.spotId];
             const newInfo = { ...state, allSpots: { ...newRef } };
             return newInfo;

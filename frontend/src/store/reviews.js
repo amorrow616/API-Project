@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 // to help with typos
 const SPOT_SLICE = '/reviews/SPOT_SLICE';
 const USER_SLICE = '/reviews/USER_SLICE';
+const DELETE_REVIEW = '/reviews/DELETE_REVIEW';
 
 // action for getting single spot reviews
 export const findSpotReviews = (spotReviews) => {
@@ -18,7 +19,15 @@ export const findUserReviews = (userReviews) => {
         type: USER_SLICE,
         userReviews
     }
-}
+};
+
+// action for deleting a review
+export const deleteReview = (reviewId) => {
+    return {
+        type: DELETE_REVIEW,
+        reviewId
+    }
+};
 
 // get all reviews for one spot thunk
 export const findSpotReviewsThunk = (spotId) => async (dispatch) => {
@@ -59,6 +68,17 @@ export const createReviewThunk = (payload, spotId) => async (dispatch) => {
         dispatch(findSpotReviews(review));
         return review;
     }
+};
+
+// delete a review thunk
+export const deleteReviewThunk = (reviewId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/reviews/${reviewId}`, {
+        method: 'DELETE'
+    });
+    const review = await response.json();
+
+    dispatch(deleteReview(reviewId));
+    return review;
 }
 
 const initialState = { spot: {}, user: {} };
@@ -74,6 +94,11 @@ const reviewsReducer = (state = initialState, action) => {
             newState = Object.assign({}, state);
             newState.user = action.userReviews;
             return newState;
+        case DELETE_REVIEW:
+            const newRef = { ...state.spot };
+            delete newRef[action.reviewId];
+            const newInfo = { ...state, spot: { ...newRef } }
+            return newInfo;
         default:
             return state;
     }

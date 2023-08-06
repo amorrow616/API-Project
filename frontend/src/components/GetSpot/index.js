@@ -1,8 +1,9 @@
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import CreateReview from '../CreateReview';
+import DeleteReview from '../DeleteReview';
 import * as spotActions from '../../store/spots';
 import * as reviewActions from '../../store/reviews';
 import './GetSpot.css';
@@ -12,6 +13,12 @@ export default function GetSpot() {
     const { spotId } = useParams();
     const spot = useSelector((state) => state.spots.singleSpot);
     const reviews = useSelector((state) => state.reviews.spot);
+    const [showMenu, setShowMenu] = useState(false);
+
+    const openMenu = () => {
+        if (showMenu) return;
+        setShowMenu(true);
+    };
 
     useEffect(() => {
         dispatch(spotActions.fetchOneSpot(spotId));
@@ -23,7 +30,7 @@ export default function GetSpot() {
 
     if (!spot.id) return null;
     if (!Object.values(reviews)) return null;
-
+    console.log(reviews)
     const reserveButton = () => {
         alert('Feature coming soon');
     }
@@ -45,22 +52,28 @@ export default function GetSpot() {
                     <div className='reserveBox'>
                         <div id='detailPrice'>${spot.price && spot.price} night</div>
                         <div id='detailRating'><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'}</div>
-                        <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div>
+                        {spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> : <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div>}
                         <button onClick={reserveButton} id='detailsButton'>Reserve</button>
                     </div>
                 </div>
                 <hr />
-                <h3><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'} ~ {spot.numReviews && spot.numReviews} reviews</h3>
+                <h3 id='reviewsHeading'><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'}<i class="fa-solid fa-circle" id='detailsCircle'></i>{spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> : <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div>}</h3>
                 <button className='manageSpotButtons'><OpenModalMenuItem
                     itemText='Post Your Review'
                     modalComponent={<CreateReview props={spot.id} />}
                 /></button>
                 <ul>
-                    {Object.values(reviews).forEach((review) => {
-                        <li key={review.id}>
-                            <div>{review.User && review.User.firstName}</div>
-                            <div>{review.createdAt && review.createdAt}</div>
-                            <div>{review.review && review.review}</div>
+                    {Object.values(reviews).length && Object.values(reviews).map((review) => {
+                        return <li key={review.id}>
+                            <div id='fullReview'>
+                                <div id='reviewName'>{review.User && review.User.firstName}</div>
+                                <div id='reviewDate'>{review.createdAt && review.createdAt}</div>
+                                <div id='reviewText'>{review.review && review.review}</div>
+                                <button onClick={openMenu} className='manageSpotButtons'> <OpenModalMenuItem
+                                    itemText='Delete'
+                                    modalComponent={<DeleteReview props={review.id} />}
+                                /></button>
+                            </div>
                         </li>
                     })}
                 </ul>
