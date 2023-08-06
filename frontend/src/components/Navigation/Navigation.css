@@ -3,8 +3,12 @@ li {
     list-style: none;
 }
 
-.homeLink {
+#homeLink {
     color: rgb(39, 114, 185);
     text-decoration: none;
-    font-size: 200%;
+    font-size: 250%;
+}
+
+#headerItems {
+    margin-bottom: 30px;
 }

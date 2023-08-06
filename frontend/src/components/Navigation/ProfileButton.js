@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
+import { NavLink, useHistory } from 'react-router-dom';
 import * as sessionActions from '../../store/session';
-import OpenModalMenuItem from "./OpemModalMenuItem";
+import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import './ProfileButton.css';
@@ -10,6 +11,7 @@ export default function ProfileButton({ user }) {
     const dispatch = useDispatch();
     const [showMenu, setShowMenu] = useState(false);
     const ulRef = useRef();
+    const history = useHistory();
 
     const openMenu = () => {
         if (showMenu) return;
@@ -36,12 +38,14 @@ export default function ProfileButton({ user }) {
         e.preventDefault();
         dispatch(sessionActions.logout());
         closeMenu();
+        history.push('/');
     };
 
     const ulClassName = "profile-dropdown" + (showMenu ? "" : "-hidden");
 
     return (
         <>
+            {user ? (<NavLink to='/spots' className='header'>Create a New Spot</NavLink>) : (<><div></div></>)}
             <button onClick={openMenu} className='profileButton'>
                 <i className='fa-solid fa-bars' />
                 <i className="fas fa-user-circle" />
@@ -51,9 +55,12 @@ export default function ProfileButton({ user }) {
                     <>
                         <li>Hello, {user.firstName}</li>
                         <li>{user.email}</li>
-                        <li>link to manage spots</li>
+                        <hr />
                         <li>
-                            <button onClick={logout}>Log Out</button>
+                            <NavLink to='/spots/current' className='manageLink'> Manage Spots</NavLink>
+                        </li>
+                        <li>
+                            <button onClick={logout} id='logoutButton'>Log Out</button>
                         </li >
                     </>
                 ) : (

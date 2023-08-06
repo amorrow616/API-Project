@@ -39,10 +39,14 @@ export default function LoginFormModal() {
     };
     return (
         <>
-            <h1>Log In</h1>
+            <h1 className='loginTitle'>Log In</h1>
             <form onSubmit={handleSubmit} id='loginForm'>
+                {errors.credential && (
+                    <p>{errors.credential}</p>
+                )}
                 <label>
                     <input
+                        id='loginInput'
                         type="text"
                         placeholder='Username or Email'
                         value={credential}
@@ -52,6 +56,7 @@ export default function LoginFormModal() {
                 </label>
                 <label>
                     <input
+                        id='loginInput'
                         type="password"
                         placeholder='Password'
                         value={password}
@@ -59,9 +64,6 @@ export default function LoginFormModal() {
                         required
                     />
                 </label>
-                {errors.credential && (
-                    <p>{errors.credential}</p>
-                )}
                 <button type="submit" className='loginButton' disabled={Object.keys(errors) > 0 || credential.length < 4 || password.length < 6}>Log In</button>
             </form>
             <button onClick={demoUser} className='demoUser'>Demo User</button>

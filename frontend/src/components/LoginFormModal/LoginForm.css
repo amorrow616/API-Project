@@ -1,31 +1,26 @@
-form {
+#loginForm {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-input {
-    width: 400px;
-    height: 30px;
-    border-radius: 10px;
-    margin: 10px;
-}
-
-h1,
-h2 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+#loginInput {
+    width: 350px;
+    height: 20px;
+    margin: 5px;
+    border: 3px solid black;
 }
 
 p {
     color: red;
 }
 
-button:disabled {
-    background-color: rgba(150, 150, 150, 0.918);
+.loginButton:disabled {
+    background-color: white;
+    color: gray;
     cursor: not-allowed;
+    width: 350px;
 }
 
 .demoUser {
@@ -35,21 +30,23 @@ button:disabled {
     font-size: 150%;
     position: relative;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     margin-bottom: 40px;
     cursor: pointer;
 }
 
 .loginButton {
-    background-color: rgb(80, 70, 177);
+    background-color: rgb(211, 67, 87);
     color: white;
     font-size: 100%;
     font-family: Arial, Helvetica, sans-serif;
-    width: 410px;
+    width: 350px;
     height: 50px;
-    border-radius: 10px;
-    margin-bottom: 10%;
+    margin-bottom: 8%;
+    margin-top: 5%;
     cursor: pointer;
+    box-shadow: 3px 3px black;
+}
+
+.loginTitle {
+    margin-bottom: 3px;
 }
