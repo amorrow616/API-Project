@@ -126,20 +126,25 @@ export const updateSpotThunk = (spotId, payload) => async (dispatch) => {
 
 const initialState = { allSpots: {}, singleSpot: {} };
 // reducer
-const spotsReducer = (state = initialState, action) => {
+export default function spotsReducer(state = initialState, action) {
+    let newState;
     switch (action.type) {
         case ALL_SPOTS:
-            return { ...state, allSpots: { ...action.spots } }
+            newState = Object.assign({}, state);
+            newState.allSpots = action.spots;
+            return newState;
+        // return { ...state, allSpots: { ...action.spots } }
         case SINGLE_SPOT:
-            return { ...state, singleSpot: { ...action.spot } }
+            newState = Object.assign({}, state);
+            newState.singleSpot = action.spot;
+            return newState;
+        // return { ...state, singleSpot: { ...action.spot } }
         case DELETE_SPOT:
             const newRef = { ...state.allSpots }
             delete newRef[action.spotId];
-            const newState = { ...state, allSpots: { ...newRef } };
-            return newState;
+            const newInfo = { ...state, allSpots: { ...newRef } };
+            return newInfo;
         default:
             return state;
     }
 };
-
-export default spotsReducer;
