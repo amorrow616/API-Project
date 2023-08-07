@@ -14,7 +14,6 @@ export default function GetSpot() {
     const spot = useSelector((state) => state.spots.singleSpot);
     const reviews = useSelector((state) => state.reviews.spot);
     const sessionUser = useSelector((state) => state.session.user);
-    // const usersReviews = useSelector((state) => state.reviews.user);
     const [showMenu, setShowMenu] = useState(false);
 
     const openMenu = () => {
@@ -107,7 +106,7 @@ export default function GetSpot() {
                     <div className='reserveBox'>
                         <div id='detailPrice'>${spot.price && spot.price} night</div>
                         <div id='detailRating'><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'}</div>
-                        {spot.numReviews && spot.numReviews ? <i class="fa-solid fa-circle" id='detailsCircle1'></i> : ''}
+                        {spot.numReviews ? <i class="fa-solid fa-circle" id='detailsCircle1'></i> : ''}
                         {spot.numReviews && +spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> :
                             +spot.numReviews > 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div> :
                                 spot.numReviews = ''}
@@ -120,7 +119,7 @@ export default function GetSpot() {
                         +spot.numReviews > 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div> :
                             spot.numReviews = ''}</h3>
                 {hidePostButton()}
-                <ul>
+                {!spot.numReviews && spot.ownerId !== sessionUser.id ? <h3>Be the first to post a review!</h3> : <ul>
                     {Object.values(reviews).map((review) => (
                         <li key={review.id}>
                             <div id='fullReview'>
@@ -134,7 +133,7 @@ export default function GetSpot() {
                             </div>
                         </li>
                     )).reverse()}
-                </ul>
+                </ul>}
             </div >
         </>
     )
