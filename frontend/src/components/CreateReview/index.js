@@ -4,34 +4,36 @@ import { useModal } from "../../context/Modal";
 import * as reviewActions from '../../store/reviews';
 import './CreateReview.css';
 
-export default function CreateReview() {
+export default function CreateReview({ spotId }) {
     const dispatch = useDispatch();
     const { closeModal } = useModal();
     const [review, setReview] = useState('');
-    const [rating, setRating] = useState(null);
+    const [stars, setStars] = useState(0);
+    const [hover, setHover] = useState(null);
     const [errors, setErrors] = useState({});
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newReview = {
             review,
-            rating
+            stars
         };
-        const returnFromThunk = reviewActions.createReviewThunk(newReview);
-        return dispatch(returnFromThunk).then(closeModal).catch(async (res) => {
+        const returnFromThunk = reviewActions.createReviewThunk(newReview, spotId);
+        return dispatch(returnFromThunk).then(() => {
+            dispatch(reviewActions.findSpotReviewsThunk(spotId));
+            closeModal()
+        }).catch(async (res) => {
             const data = await res.json();
             if (data && data.errors) {
                 setErrors(data.errors)
             }
         });
-    }
-
+    };
     return (
         <>
             <h1>How was your stay?</h1>
             <form onSubmit={handleSubmit}>
-                {errors.message && <p>{errors.message}</p>}
+                {errors.review && <p>{errors.review}</p>}
                 <textarea
                     type='text'
                     value={review}
@@ -39,21 +41,25 @@ export default function CreateReview() {
                     placeholder='Leave your review here...' />
                 <div id='stars'>
                     {[...Array(5)].map((star, index) => {
-                        const ratingValue = index + 1;
-
+                        const currentRating = index + 1;
                         return (
                             <label>
                                 <input
-                                    type='radio'
                                     className='starsRadio'
-                                    value={ratingValue}
-                                    onClick={(e) => setRating(e.target.value)} />
-                                <i class='fa-solid fa-star' id='starMenu' color={ratingValue <= rating ? '#ffc107' : '#e4e5e9'} />
+                                    type='radio'
+                                    value={currentRating}
+                                    onClick={(e) => setStars(e.target.value)}
+                                />
+                                <i class="fa-solid fa-star"
+                                    id='starMenu'
+                                    color={currentRating <= (hover || stars) ? '#fefe33' : '#e4e5e9'}
+                                    onMouseEnter={() => setHover(currentRating)}
+                                    onMouseLeave={() => setHover(null)}></i>
                             </label>
                         )
-                    })}
+                    })} Stars
                 </div>
-                <button disabled={review.length < 10 || rating <= 0}>Submit Your Review</button>
+                <button type='submit' disabled={review.length < 10 || stars === 0}>Submit Your Review</button>
             </form>
         </>
     )

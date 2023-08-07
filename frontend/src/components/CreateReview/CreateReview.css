@@ -2,7 +2,12 @@
     display: none;
 }
 
-
 #starMenu {
     cursor: pointer;
+    font-size: 150%;
+    color: #e4e5e9;
+}
+
+#starMenu:hover {
+    color: yellow;
 }

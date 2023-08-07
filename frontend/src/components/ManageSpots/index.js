@@ -33,7 +33,7 @@ export default function ManageSpots() {
                                 <NavLink to={`/spots/${spot.id}`} id='spotLink'>
                                     <img className='spotImage' src={spot.previewImage} alt='a preview of the spot you can book' title={spot.name}></img>
                                     <div className='spotLocation'>{spot.city}, {spot.state}</div>
-                                    <div className='spotRating'><i class='fa-solid fa-star' /> {spot.avgRating || 'New'}</div>
+                                    <div className='spotRating'><i class='fa-solid fa-star' /> {spot.avgRating ? Math.round(spot.avgRating * 10) / 10 : 'New'}</div>
                                     <div className='spotPrice'>${spot.price} night</div>
                                 </NavLink>
                                 <NavLink to={`/spots/${spot.id}/edit`} className='manageSpotButtons'>Update</NavLink>
