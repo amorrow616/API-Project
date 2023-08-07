@@ -14,14 +14,33 @@ export default function GetSpot() {
     const spot = useSelector((state) => state.spots.singleSpot);
     const reviews = useSelector((state) => state.reviews.spot);
     const sessionUser = useSelector((state) => state.session.user);
+    // const usersReviews = useSelector((state) => state.reviews.user);
     const [showMenu, setShowMenu] = useState(false);
 
-    // console.log(sessionUser.id)
-    // console.log(spot.ownerId)
     const openMenu = () => {
         if (showMenu) return;
         setShowMenu(true);
     };
+
+    const hidePostButton = () => {
+        if (!sessionUser) {
+            return '';
+        } else if (spot.ownerId === sessionUser.id) {
+            return '';
+        } else {
+            return (
+                <button className='manageSpotButtons'><OpenModalMenuItem
+                    itemText='Post Your Review'
+                    modalComponent={<CreateReview spotId={spot.id} />}
+                /></button>
+            )
+        }
+    };
+
+    useEffect(() => {
+        dispatch(spotActions.fetchOneSpot(spotId));
+        dispatch(reviewActions.findSpotReviewsThunk(spotId));
+    }, [dispatch, spotId]);
 
     const setReviewText = () => {
         if (spot.numReviews === 0) {
@@ -36,11 +55,6 @@ export default function GetSpot() {
             )
         }
     };
-
-    useEffect(() => {
-        dispatch(spotActions.fetchOneSpot(spotId));
-        dispatch(reviewActions.findSpotReviewsThunk(spotId));
-    }, [dispatch, spotId]);
 
     const convertMonth = (number) => {
         if (number === '01') {
@@ -79,7 +93,7 @@ export default function GetSpot() {
         if (number === '12') {
             return 'December'
         }
-    }
+    };
 
 
     if (!spot.id) return null;
@@ -112,10 +126,7 @@ export default function GetSpot() {
                 </div>
                 <hr />
                 <h3 id='reviewsHeading'><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'}{spot.numReviews ? <i class="fa-solid fa-circle" id='detailsCircle'></i> : ''}{setReviewText()}</h3>
-                <button className='manageSpotButtons'><OpenModalMenuItem
-                    itemText='Post Your Review'
-                    modalComponent={<CreateReview spotId={spot.id} />}
-                /></button>
+                {hidePostButton()}
                 <ul>
                     {Object.values(reviews).map((review) => (
                         <li key={review.id}>
