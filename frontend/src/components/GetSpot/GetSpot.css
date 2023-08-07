@@ -102,8 +102,8 @@
 #reviewsHeading {
     display: flex;
     flex-direction: row;
+    width: 150px;
     justify-content: space-around;
-    width: 140px;
 }
 
 #reviewName {

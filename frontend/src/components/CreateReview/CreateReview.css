@@ -1,5 +1,18 @@
+.reviewModal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 15px;
+}
+
 .starsRadio {
     display: none;
+}
+
+#reviewTextarea {
+    width: 370px;
+    height: 140px;
 }
 
 #starMenu {
@@ -10,4 +23,11 @@
 
 #starMenu:hover {
     color: yellow;
+}
+
+#stars {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 5px;
 }

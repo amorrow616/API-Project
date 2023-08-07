@@ -133,7 +133,6 @@ export default function CreateSpot({ spot, formType }) {
                                 placeholder='City'
                             />
                         </label>
-                        ,
                         <label className='createLabel'>
                             State {errors.state && <p>{errors.state}</p>}
                             <input
@@ -149,18 +148,17 @@ export default function CreateSpot({ spot, formType }) {
                         <label className='createLabel'>
                             Latitude {errors.lat && <p>{errors.lat}</p>}
                             <input
-                                className='createInput'
+                                className='createInput2'
                                 type='text'
                                 onChange={(e) => setLat(e.target.value)}
                                 value={lat}
                                 placeholder='Latitude'
                             />
                         </label>
-                        ,
                         <label className='createLabel'>
                             Longitude {errors.lng && <p>{errors.lng}</p>}
                             <input
-                                className='createInput'
+                                className='createInput2'
                                 type='text'
                                 onChange={(e) => setLng(e.target.value)}
                                 value={lng}
@@ -195,7 +193,7 @@ export default function CreateSpot({ spot, formType }) {
                     <h2>Set a base price for your spot</h2>
                     <label className='createLabel'>
                         Competitive pricing can help your listing stand out and rank higher in search results.
-                        $ <input
+                        $<input
                             className='createInput'
                             type='number'
                             onChange={(e) => setPrice(e.target.value)}

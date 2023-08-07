@@ -16,9 +16,25 @@ export default function GetSpot() {
     const sessionUser = useSelector((state) => state.session.user);
     const [showMenu, setShowMenu] = useState(false);
 
+    // console.log(sessionUser.id)
+    // console.log(spot.ownerId)
     const openMenu = () => {
         if (showMenu) return;
         setShowMenu(true);
+    };
+
+    const setReviewText = () => {
+        if (spot.numReviews === 0) {
+            return '';
+        } else if (spot.numReviews === 1) {
+            return (
+                <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div>
+            )
+        } else {
+            return (
+                <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div>
+            )
+        }
     };
 
     useEffect(() => {
@@ -90,12 +106,12 @@ export default function GetSpot() {
                     <div className='reserveBox'>
                         <div id='detailPrice'>${spot.price && spot.price} night</div>
                         <div id='detailRating'><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'}</div>
-                        {spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> : <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div>}
+                        {setReviewText()}
                         <button onClick={reserveButton} id='detailsButton'>Reserve</button>
                     </div>
                 </div>
                 <hr />
-                <h3 id='reviewsHeading'><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'}<i class="fa-solid fa-circle" id='detailsCircle'></i>{spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> : <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div>}</h3>
+                <h3 id='reviewsHeading'><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'}{spot.numReviews ? <i class="fa-solid fa-circle" id='detailsCircle'></i> : ''}{setReviewText()}</h3>
                 <button className='manageSpotButtons'><OpenModalMenuItem
                     itemText='Post Your Review'
                     modalComponent={<CreateReview spotId={spot.id} />}
@@ -107,13 +123,13 @@ export default function GetSpot() {
                                 <div id='reviewName'>{review.User && review.User.firstName}</div>
                                 <div id='reviewDate'>{review.createdAt && convertMonth(review.createdAt.slice(5, 7))} {parseInt(review.createdAt)}</div>
                                 <div id='reviewText'>{review.review && review.review}</div>
-                                {+spot.ownerId === +sessionUser.userId ? <button onClick={openMenu} className='manageSpotButtons'> <OpenModalMenuItem
+                                {sessionUser && review.userId === sessionUser.id ? <button onClick={openMenu} className='manageSpotButtons'> <OpenModalMenuItem
                                     itemText='Delete'
                                     modalComponent={<DeleteReview props={review.id} />}
-                                /></button> : 'not a match'}
+                                /></button> : ''}
                             </div>
                         </li>
-                    ))}
+                    )).reverse()}
                 </ul>
             </div >
         </>

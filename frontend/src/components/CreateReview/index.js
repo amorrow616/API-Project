@@ -31,36 +31,39 @@ export default function CreateReview({ spotId }) {
     };
     return (
         <>
-            <h1>How was your stay?</h1>
-            <form onSubmit={handleSubmit}>
-                {errors.review && <p>{errors.review}</p>}
-                <textarea
-                    type='text'
-                    value={review}
-                    onChange={(e) => setReview(e.target.value)}
-                    placeholder='Leave your review here...' />
-                <div id='stars'>
-                    {[...Array(5)].map((star, index) => {
-                        const currentRating = index + 1;
-                        return (
-                            <label>
-                                <input
-                                    className='starsRadio'
-                                    type='radio'
-                                    value={currentRating}
-                                    onClick={(e) => setStars(e.target.value)}
-                                />
-                                <i class="fa-solid fa-star"
-                                    id='starMenu'
-                                    color={currentRating <= (hover || stars) ? '#fefe33' : '#e4e5e9'}
-                                    onMouseEnter={() => setHover(currentRating)}
-                                    onMouseLeave={() => setHover(null)}></i>
-                            </label>
-                        )
-                    })} Stars
-                </div>
-                <button type='submit' disabled={review.length < 10 || stars === 0}>Submit Your Review</button>
-            </form>
+            <div className='reviewModal'>
+                <h1>How was your stay?</h1>
+                <form onSubmit={handleSubmit}>
+                    {errors.message && <p>{errors.message}</p>}
+                    <textarea
+                        id='reviewTextarea'
+                        type='text'
+                        value={review}
+                        onChange={(e) => setReview(e.target.value)}
+                        placeholder='Leave your review here...' />
+                    <div id='stars'>
+                        {[...Array(5)].map((star, index) => {
+                            const currentRating = index + 1;
+                            return (
+                                <label>
+                                    <input
+                                        className='starsRadio'
+                                        type='radio'
+                                        value={currentRating}
+                                        onClick={(e) => setStars(e.target.value)}
+                                    />
+                                    <i class="fa-solid fa-star"
+                                        id='starMenu'
+                                        color={currentRating <= (hover || stars) ? '#fefe33' : '#e4e5e9'}
+                                        onMouseEnter={() => setHover(currentRating)}
+                                        onMouseLeave={() => setHover(null)}></i>
+                                </label>
+                            )
+                        })} Stars
+                    </div>
+                    <button type='submit' className='signupSubmit' disabled={review.length < 10 || stars === 0}>Submit Your Review</button>
+                </form>
+            </div>
         </>
     )
 }

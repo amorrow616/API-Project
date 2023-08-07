@@ -34,8 +34,6 @@ export const fetchSpots = () => async (dispatch) => {
     const response = await csrfFetch('/api/spots');
     const spots = await response.json();
 
-    // if (spots && spots.errors) return console.log(spots.errors);
-
     const emptyObj = {};
     spots.Spots.map((spot) => {
         return emptyObj[spot.id] = spot;
