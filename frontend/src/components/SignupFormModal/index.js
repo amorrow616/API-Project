@@ -57,6 +57,14 @@ export default function SignupFormModal() {
             <div id='signupForm'>
                 <h1>Sign Up</h1>
                 <form onSubmit={handleSubmit}>
+                    {errors.email && <p>{errors.email}</p>}
+                    {errors.username && <p>{errors.username}</p>}
+                    {errors.firstName && <p>{errors.firstName}</p>}
+                    {errors.lastName && <p>{errors.lastName}</p>}
+                    {errors.password && <p>{errors.password}</p>}
+                    {errors.confirmPassword && (
+                        <p>{errors.confirmPassword}</p>
+                    )}
                     <label>
                         <input
                             id='signupInput'
@@ -67,7 +75,6 @@ export default function SignupFormModal() {
                             required
                         />
                     </label>
-                    {errors.email && <p>{errors.email}</p>}
                     <label>
                         <input
                             id='signupInput'
@@ -78,7 +85,6 @@ export default function SignupFormModal() {
                             required
                         />
                     </label>
-                    {errors.username && <p>{errors.username}</p>}
                     <label>
                         <input
                             id='signupInput'
@@ -89,7 +95,6 @@ export default function SignupFormModal() {
                             required
                         />
                     </label>
-                    {errors.firstName && <p>{errors.firstName}</p>}
                     <label>
                         <input
                             id='signupInput'
@@ -100,7 +105,6 @@ export default function SignupFormModal() {
                             required
                         />
                     </label>
-                    {errors.lastName && <p>{errors.lastName}</p>}
                     <label>
                         <input
                             id='signupInput'
@@ -111,7 +115,6 @@ export default function SignupFormModal() {
                             required
                         />
                     </label>
-                    {errors.password && <p>{errors.password}</p>}
                     <label>
                         <input
                             id='signupInput'
@@ -122,16 +125,13 @@ export default function SignupFormModal() {
                             required
                         />
                     </label>
-                    {errors.confirmPassword && (
-                        <p>{errors.confirmPassword}</p>
-                    )}
                     <button type="submit" className='signupSubmit' disabled={
                         Object.keys(errors) > 0 ||
                         email.length < 1 ||
                         username.length < 4 ||
                         firstName.length < 1 ||
                         lastName.length < 1 ||
-                        password < 6 ||
+                        password.length < 6 ||
                         confirmPassword < 1}>Sign Up</button>
                 </form>
             </div>
