@@ -19,7 +19,7 @@
     border: 2px solid black;
     box-shadow: 3px 3px black;
     height: 30px;
-    width: 90px;
+    width: 120px;
     cursor: pointer;
 }
 
@@ -56,7 +56,18 @@
     width: 125px;
 }
 
-/* .coordinates {
+.latlng {
+    width: 200px;
+    margin-left: 10px;
+}
+
+.coordinates {
     display: flex;
     flex-direction: row;
-} */
+}
+
+.createInput2 {
+    width: 170px;
+    border: 2px solid black;
+    margin-right: 13px;
+}

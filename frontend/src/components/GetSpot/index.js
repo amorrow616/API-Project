@@ -13,6 +13,8 @@ export default function GetSpot() {
     const { spotId } = useParams();
     const spot = useSelector((state) => state.spots.singleSpot);
     const reviews = useSelector((state) => state.reviews.spot);
+    const sessionUser = useSelector((state) => state.session.user);
+    // const usersReviews = useSelector((state) => state.reviews.user);
     const [showMenu, setShowMenu] = useState(false);
 
     const openMenu = () => {
@@ -20,17 +22,83 @@ export default function GetSpot() {
         setShowMenu(true);
     };
 
-    useEffect(() => {
-        dispatch(spotActions.fetchOneSpot(spotId));
-    }, [dispatch, spotId]);
+    const hidePostButton = () => {
+        if (!sessionUser) {
+            return '';
+        } else if (spot.ownerId === sessionUser.id) {
+            return '';
+        } else {
+            return (
+                <button className='manageSpotButtons'><OpenModalMenuItem
+                    itemText='Post Your Review'
+                    modalComponent={<CreateReview spotId={spot.id} />}
+                /></button>
+            )
+        }
+    };
 
     useEffect(() => {
+        dispatch(spotActions.fetchOneSpot(spotId));
         dispatch(reviewActions.findSpotReviewsThunk(spotId));
     }, [dispatch, spotId]);
 
+    const setReviewText = () => {
+        if (spot.numReviews === 0) {
+            return '';
+        } else if (spot.numReviews === 1) {
+            return (
+                <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div>
+            )
+        } else {
+            return (
+                <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div>
+            )
+        }
+    };
+
+    const convertMonth = (number) => {
+        if (number === '01') {
+            return 'January'
+        }
+        if (number === '02') {
+            return 'February'
+        }
+        if (number === '03') {
+            return 'March'
+        }
+        if (number === '04') {
+            return 'April'
+        }
+        if (number === '05') {
+            return 'May'
+        }
+        if (number === '06') {
+            return 'June'
+        }
+        if (number === '07') {
+            return 'July'
+        }
+        if (number === '08') {
+            return 'August'
+        }
+        if (number === '09') {
+            return 'September'
+        }
+        if (number === '10') {
+            return 'October'
+        }
+        if (number === '11') {
+            return 'November'
+        }
+        if (number === '12') {
+            return 'December'
+        }
+    };
+
+
     if (!spot.id) return null;
     if (!Object.values(reviews)) return null;
-    console.log(reviews)
+
     const reserveButton = () => {
         alert('Feature coming soon');
     }
@@ -52,30 +120,27 @@ export default function GetSpot() {
                     <div className='reserveBox'>
                         <div id='detailPrice'>${spot.price && spot.price} night</div>
                         <div id='detailRating'><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'}</div>
-                        {spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> : <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div>}
+                        {setReviewText()}
                         <button onClick={reserveButton} id='detailsButton'>Reserve</button>
                     </div>
                 </div>
                 <hr />
-                <h3 id='reviewsHeading'><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'}<i class="fa-solid fa-circle" id='detailsCircle'></i>{spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> : <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div>}</h3>
-                <button className='manageSpotButtons'><OpenModalMenuItem
-                    itemText='Post Your Review'
-                    modalComponent={<CreateReview props={spot.id} />}
-                /></button>
+                <h3 id='reviewsHeading'><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'}{spot.numReviews ? <i class="fa-solid fa-circle" id='detailsCircle'></i> : ''}{setReviewText()}</h3>
+                {hidePostButton()}
                 <ul>
-                    {Object.values(reviews).length && Object.values(reviews).map((review) => {
-                        return <li key={review.id}>
+                    {Object.values(reviews).map((review) => (
+                        <li key={review.id}>
                             <div id='fullReview'>
                                 <div id='reviewName'>{review.User && review.User.firstName}</div>
-                                <div id='reviewDate'>{review.createdAt && review.createdAt}</div>
+                                <div id='reviewDate'>{review.createdAt && convertMonth(review.createdAt.slice(5, 7))} {parseInt(review.createdAt)}</div>
                                 <div id='reviewText'>{review.review && review.review}</div>
-                                <button onClick={openMenu} className='manageSpotButtons'> <OpenModalMenuItem
+                                {sessionUser && review.userId === sessionUser.id ? <button onClick={openMenu} className='manageSpotButtons'> <OpenModalMenuItem
                                     itemText='Delete'
                                     modalComponent={<DeleteReview props={review.id} />}
-                                /></button>
+                                /></button> : ''}
                             </div>
                         </li>
-                    })}
+                    )).reverse()}
                 </ul>
             </div >
         </>

@@ -1,21 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
 import './CreateSpot.css';
 
 export default function CreateSpot({ spot, formType }) {
     const dispatch = useDispatch();
+    const { spotId } = useParams();
     const history = useHistory();
-    const [address, setAddress] = useState('');
-    const [city, setCity] = useState('');
-    const [state, setState] = useState('');
-    const [country, setCountry] = useState('');
-    const [lat, setLat] = useState('');
-    const [lng, setLng] = useState('');
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [price, setPrice] = useState('');
+    const [address, setAddress] = useState(formType === 'Update Spot' ? spot.address : '');
+    const [city, setCity] = useState(formType === 'Update Spot' ? spot.city : '');
+    const [state, setState] = useState(formType === 'Update Spot' ? spot.state : '');
+    const [country, setCountry] = useState(formType === 'Update Spot' ? spot.country : '');
+    const [lat, setLat] = useState(formType === 'Update Spot' ? spot.lat : '');
+    const [lng, setLng] = useState(formType === 'Update Spot' ? spot.lng : '');
+    const [name, setName] = useState(formType === 'Update Spot' ? spot.name : '');
+    const [description, setDescription] = useState(formType === 'Update Spot' ? spot.description : '');
+    const [price, setPrice] = useState(formType === 'Update Spot' ? spot.price : '');
     const [previewImg, setPreviewImg] = useState('');
     const [image2, setImage2] = useState('');
     const [image3, setImage3] = useState('');
@@ -67,23 +68,37 @@ export default function CreateSpot({ spot, formType }) {
                 }
             ]
         };
-        const returnfromThunk = spotActions.createSpotThunk(newSpot); // this returns a function
 
-        const dbSpot = await dispatch(returnfromThunk).catch(async (res) => {
-            const data = await res.json();
-            if (data && data.errors) {
-                setErrors(data.errors);
-            }
-        }); // awaiting the return from the function gives us the new spot
+        if (formType === 'Update Spot') {
+            const returnFromThunk = spotActions.updateSpotThunk(spotId, newSpot);
+            const dbSpot = await dispatch(returnFromThunk).catch(async (res) => {
+                const data = await res.json();
+                if (data && data.errors) {
+                    setErrors(data.errors);
+                }
+            });
+            if (dbSpot) {
+                history.push(`/spots/${dbSpot.id}`);
+            };
+        } else {
+            const returnfromThunk = spotActions.createSpotThunk(newSpot); // this returns a function
 
-        if (dbSpot) {
-            history.push(`/spots/${dbSpot.id}`);
-        };
+            const dbSpot = await dispatch(returnfromThunk).catch(async (res) => {
+                const data = await res.json();
+                if (data && data.errors) {
+                    setErrors(data.errors);
+                }
+            }); // awaiting the return from the function gives us the new spot
+
+            if (dbSpot) {
+                history.push(`/spots/${dbSpot.id}`);
+            };
+        }
     };
     return (
         <>
             <div id='createFormPage'>
-                <h1>Create a New Spot</h1>
+                {formType === 'Update Spot' ? <h1>Update your Spot</h1> : <h1>Create a New Spot</h1>}
                 <h2>Where's your place located?</h2>
                 <div>Guests will only get your exact address once they booked a reservation.</div>
                 <form onSubmit={handleSubmit} id='createFormForm'>
@@ -118,7 +133,6 @@ export default function CreateSpot({ spot, formType }) {
                                 placeholder='City'
                             />
                         </label>
-                        ,
                         <label className='createLabel'>
                             State {errors.state && <p>{errors.state}</p>}
                             <input
@@ -134,18 +148,17 @@ export default function CreateSpot({ spot, formType }) {
                         <label className='createLabel'>
                             Latitude {errors.lat && <p>{errors.lat}</p>}
                             <input
-                                className='createInput'
+                                className='createInput2'
                                 type='text'
                                 onChange={(e) => setLat(e.target.value)}
                                 value={lat}
                                 placeholder='Latitude'
                             />
                         </label>
-                        ,
                         <label className='createLabel'>
                             Longitude {errors.lng && <p>{errors.lng}</p>}
                             <input
-                                className='createInput'
+                                className='createInput2'
                                 type='text'
                                 onChange={(e) => setLng(e.target.value)}
                                 value={lng}
@@ -180,7 +193,7 @@ export default function CreateSpot({ spot, formType }) {
                     <h2>Set a base price for your spot</h2>
                     <label className='createLabel'>
                         Competitive pricing can help your listing stand out and rank higher in search results.
-                        $ <input
+                        $<input
                             className='createInput'
                             type='number'
                             onChange={(e) => setPrice(e.target.value)}
@@ -229,7 +242,7 @@ export default function CreateSpot({ spot, formType }) {
                             placeholder='Image URL'
                         />
                     </label>
-                    <button type='submit' id='createSubmit'>Create Spot</button>
+                    {formType === 'Update Spot' ? <button type='submit' id='createSubmit'>Update your Spot</button> : <button type='submit' id='createSubmit'>Create Spot</button>}
                 </form>
             </div>
         </>
