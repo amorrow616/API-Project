@@ -21,7 +21,7 @@ export default function CreateReview({ spotId }) {
         const returnFromThunk = reviewActions.createReviewThunk(newReview, spotId);
         return dispatch(returnFromThunk).then(() => {
             dispatch(reviewActions.findSpotReviewsThunk(spotId));
-            closeModal()
+            closeModal();
         }).catch(async (res) => {
             const data = await res.json();
             if (data && data.errors) {
@@ -29,6 +29,7 @@ export default function CreateReview({ spotId }) {
             }
         });
     };
+
     return (
         <>
             <div className='reviewModal'>

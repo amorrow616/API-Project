@@ -39,7 +39,7 @@ export default function GetSpot() {
     useEffect(() => {
         dispatch(spotActions.fetchOneSpot(spotId));
         dispatch(reviewActions.findSpotReviewsThunk(spotId));
-    }, [dispatch, spotId]);
+    }, [dispatch, spotId, reviews.spot]);
 
 
     const convertMonth = (number) => {
@@ -106,7 +106,7 @@ export default function GetSpot() {
                     <div className='reserveBox'>
                         <div id='detailPrice'>${spot.price && spot.price} night</div>
                         <div id='detailRating'><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'}</div>
-                        {spot.numReviews ? <i class="fa-solid fa-circle" id='detailsCircle1'></i> : ''}
+                        {+spot.numReviews > 0 ? <i class="fa-solid fa-circle" id='detailsCircle1'></i> : ''}
                         {spot.numReviews && +spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> :
                             +spot.numReviews > 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div> :
                                 spot.numReviews = ''}
@@ -119,7 +119,7 @@ export default function GetSpot() {
                         +spot.numReviews > 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div> :
                             spot.numReviews = ''}</h3>
                 {hidePostButton()}
-                {!spot.numReviews && spot.ownerId !== sessionUser.id ? <h3>Be the first to post a review!</h3> : <ul>
+                {sessionUser && !spot.numReviews && spot.ownerId !== sessionUser.id ? <h3>Be the first to post a review!</h3> : <ul>
                     {Object.values(reviews).map((review) => (
                         <li key={review.id}>
                             <div id='fullReview'>
