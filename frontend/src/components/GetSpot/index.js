@@ -107,18 +107,18 @@ export default function GetSpot() {
                     <div className='reserveBox'>
                         <div id='detailPrice'>${spot.price && spot.price} night</div>
                         <div id='detailRating'><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'}</div>
-                        {spot.numReviews ? <i class="fa-solid fa-circle" id='detailsCircle1'></i> : ''}
-                        {spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> :
-                            spot.numReviews > 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div> :
-                                null}
+                        {spot.numReviews && spot.numReviews ? <i class="fa-solid fa-circle" id='detailsCircle1'></i> : ''}
+                        {spot.numReviews && +spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> :
+                            +spot.numReviews > 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div> :
+                                spot.numReviews = ''}
                         <button onClick={reserveButton} id='detailsButton'>Reserve</button>
                     </div>
                 </div>
                 <hr />
                 <h3 id='reviewsHeading'><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'}{spot.numReviews ? <i class="fa-solid fa-circle" id='detailsCircle'></i> :
-                    ''}{spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> :
-                        spot.numReviews > 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div> :
-                            null}</h3>
+                    ''}{spot.numReviews && +spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> :
+                        +spot.numReviews > 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div> :
+                            spot.numReviews = ''}</h3>
                 {hidePostButton()}
                 <ul>
                     {Object.values(reviews).map((review) => (
