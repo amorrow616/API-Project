@@ -88,7 +88,8 @@ export default function CreateSpot({ spot, formType }) {
                 if (data && data.errors) {
                     setErrors(data.errors);
                 }
-            }); // awaiting the return from the function gives us the new spot
+            });
+            // awaiting the return from the function gives us the new spot
 
             if (dbSpot) {
                 history.push(`/spots/${dbSpot.id}`);

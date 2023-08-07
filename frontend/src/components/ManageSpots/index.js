@@ -23,7 +23,7 @@ export default function ManageSpots() {
     if (spots === undefined) return null;
     return (
         <>
-            <h1 id='manageSpotsHeading'>Manage Your Spots</h1>
+            <h1 id='manageSpotsHeading'>Manage Spots</h1>
             {Object.keys(spots).length > 0 ? (
                 <>
                     <NavLink to='/spots' id='createButton'>Create a New Spot</NavLink>

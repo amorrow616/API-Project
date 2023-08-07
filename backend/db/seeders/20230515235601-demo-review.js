@@ -26,7 +26,7 @@ const reviews = [
     spotId: 4,
     userId: 2,
     review: 'What a relaxing stay! The French concierge even took care of our kids so we could go out.',
-    stars: 5.0
+    stars: 4.9
   }
 ];
 

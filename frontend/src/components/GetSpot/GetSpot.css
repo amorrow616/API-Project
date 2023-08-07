@@ -15,11 +15,11 @@
 .reserveBox {
     border: 2px solid black;
     display: grid;
-    grid-template-columns: 50% 25% 25%;
-    grid-template-areas: "price rating reviews"
-        "button button button";
+    grid-template-columns: 50% 20% 5% 20%;
+    grid-template-areas: "price rating dot reviews"
+        "button button button button";
     grid-area: box;
-    padding: 20px;
+    padding: 15px;
     height: 80px;
     border-radius: 5%;
 }
@@ -112,5 +112,14 @@
 }
 
 #fullReview {
+    margin-bottom: 20px;
+}
+
+#detailsCircle1 {
+    font-size: 4px;
+    display: flex;
+    grid-area: dot;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 20px;
 }

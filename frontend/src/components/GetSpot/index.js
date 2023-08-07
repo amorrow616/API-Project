@@ -37,11 +37,6 @@ export default function GetSpot() {
         }
     };
 
-    useEffect(() => {
-        dispatch(spotActions.fetchOneSpot(spotId));
-        dispatch(reviewActions.findSpotReviewsThunk(spotId));
-    }, [dispatch, spotId]);
-
     const setReviewText = () => {
         if (spot.numReviews === 0) {
             return '';
@@ -55,6 +50,11 @@ export default function GetSpot() {
             )
         }
     };
+    useEffect(() => {
+        dispatch(spotActions.fetchOneSpot(spotId));
+        dispatch(reviewActions.findSpotReviewsThunk(spotId));
+    }, [dispatch, spotId]);
+
 
     const convertMonth = (number) => {
         if (number === '01') {
@@ -120,6 +120,7 @@ export default function GetSpot() {
                     <div className='reserveBox'>
                         <div id='detailPrice'>${spot.price && spot.price} night</div>
                         <div id='detailRating'><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'}</div>
+                        {spot.numReviews ? <i class="fa-solid fa-circle" id='detailsCircle1'></i> : ''}
                         {setReviewText()}
                         <button onClick={reserveButton} id='detailsButton'>Reserve</button>
                     </div>
