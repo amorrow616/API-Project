@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
+import { FaStar } from 'react-icons/fa';
 import * as reviewActions from '../../store/reviews';
 import './CreateReview.css';
 
@@ -53,11 +54,12 @@ export default function CreateReview({ spotId }) {
                                         value={currentRating}
                                         onClick={(e) => setStars(e.target.value)}
                                     />
-                                    <i class="fa-solid fa-star"
+                                    <FaStar className="reviewStars"
                                         id='starMenu'
-                                        color={currentRating <= (hover || stars) ? '#fefe33' : '#e4e5e9'}
+                                        color={currentRating <= (hover || stars) ? '#ffc107' : '#e4e5e9'}
                                         onMouseEnter={() => setHover(currentRating)}
-                                        onMouseLeave={() => setHover(null)}></i>
+                                        onMouseLeave={() => setHover(null)}
+                                    />
                                 </label>
                             )
                         })} Stars
