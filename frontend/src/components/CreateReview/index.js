@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { FaStar } from 'react-icons/fa';
 import * as reviewActions from '../../store/reviews';
+import * as spotActions from '../../store/spots';
 import './CreateReview.css';
 
 export default function CreateReview({ spotId }) {
@@ -22,6 +23,7 @@ export default function CreateReview({ spotId }) {
         const returnFromThunk = reviewActions.createReviewThunk(newReview, spotId);
         return dispatch(returnFromThunk).then(() => {
             dispatch(reviewActions.findSpotReviewsThunk(spotId));
+            dispatch(spotActions.fetchOneSpot(spotId));
             closeModal();
         }).catch(async (res) => {
             const data = await res.json();

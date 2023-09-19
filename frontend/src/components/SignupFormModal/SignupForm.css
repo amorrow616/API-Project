@@ -13,7 +13,6 @@
 .signupSubmit:disabled {
     background-color: rgba(212, 211, 211, 0.918);
     color: rgb(122, 122, 122);
-    box-shadow: none;
     cursor: not-allowed;
     box-shadow: 5px 5px rgb(122, 122, 122);
     font-size: 105%;

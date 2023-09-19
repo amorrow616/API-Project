@@ -1,16 +1,19 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as spotReviews from '../../store/reviews';
+import * as spotActions from '../../store/spots';
 import './DeleteReview.css';
 
 export default function DeleteReview(props) {
     const dispatch = useDispatch();
     const { closeModal } = useModal();
     const reviewId = props.props;
+    const spotId = useSelector((state) => state.spots.singleSpot.id)
 
-    const reviewDelete = (e, reviewId) => {
+    const reviewDelete = async (e, reviewId) => {
         e.preventDefault();
-        dispatch(spotReviews.deleteReviewThunk(reviewId));
+        await dispatch(spotReviews.deleteReviewThunk(reviewId));
+        await dispatch(spotActions.fetchOneSpot(spotId));
         closeModal();
     };
     return (
