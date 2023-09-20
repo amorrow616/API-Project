@@ -1,33 +1,36 @@
 .gridArea {
     display: grid;
-    grid-template-columns: repeat(4, minmax(200px, 1fr));
-    margin-top: 25px;
+    grid-template-columns: repeat(4, 25%);
+}
+
+.homePageSpots {
+    flex: 1;
 }
 
 .spotImage {
     grid-area: image;
-    width: 220px;
-    height: 220px;
+    width: 300px;
+    height: 250px;
+    border-radius: 8px;
 }
 
 .spotLocation {
     grid-area: location;
-    margin-top: 5px;
-    width: 180px;
+    margin-top: 2%;
+    width: 90%;
 }
 
 .spotRating {
     grid-area: reviews;
-    margin-top: 5px;
+    margin-top: 4%;
     display: flex;
     justify-content: flex-end;
     position: relative;
-    margin-top: 5px;
 }
 
 .spotPrice {
     grid-area: price;
-    margin-top: 5px;
+    margin-top: 3%;
 }
 
 #spotLink {
@@ -39,5 +42,5 @@
         "price .";
     max-width: 220px;
     max-height: 300px;
-    margin-bottom: 30px;
+    margin-bottom: 3%;
 }
