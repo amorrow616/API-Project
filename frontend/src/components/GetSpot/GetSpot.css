@@ -26,6 +26,7 @@
 
 .spotPage {
     max-width: 1000px;
+    margin: 0 auto;
 }
 
 #prevImg {
@@ -112,7 +113,7 @@
 }
 
 #fullReview {
-    margin-bottom: 20px;
+    margin-bottom: 2%;
 }
 
 #detailsCircle1 {
