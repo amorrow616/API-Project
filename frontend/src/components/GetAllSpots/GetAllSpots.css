@@ -5,12 +5,14 @@
 
 .homePageSpots {
     flex: 1;
+    margin: 2%;
+    max-width: 80%;
 }
 
 .spotImage {
     grid-area: image;
-    width: 300px;
-    height: 250px;
+    width: 100%;
+    height: 25vh;
     border-radius: 8px;
 }
 
@@ -30,7 +32,7 @@
 
 .spotPrice {
     grid-area: price;
-    margin-top: 3%;
+    margin-top: 2%;
 }
 
 #spotLink {
@@ -40,7 +42,4 @@
     grid-template-areas: "image image"
         "location reviews"
         "price .";
-    max-width: 220px;
-    max-height: 300px;
-    margin-bottom: 3%;
 }
