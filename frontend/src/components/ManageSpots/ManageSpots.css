@@ -9,6 +9,7 @@
     cursor: pointer;
     text-decoration: none;
     font-size: 95%;
+    transition: box-shadow 0.5s ease;
 }
 
 .manageSpotButtons:hover {
@@ -24,6 +25,7 @@
     border: 2px solid black;
     padding: 5px;
     margin-left: 2.5%;
+    transition: box-shadow 0.5s ease;
 }
 
 #createButton:hover {
