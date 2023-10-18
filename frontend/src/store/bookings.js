@@ -1,14 +1,20 @@
 import { csrfFetch } from "./csrf";
 
-const BOOKING_SLICE = '/bookings/BOOKING_SLICE';
 const USER_BOOKINGS = '/bookings/USER_BOOKINGS';
 const SPOT_BOOKINGS = '/bookings/SPOT_BOOKINGS';
 const DELETE_BOOKING = '/bookings/DELETE_BOOKING';
 
-export const userBookings = (bookings) => {
+export const userBookings = (userBookings) => {
     return {
         type: USER_BOOKINGS,
-        bookings
+        userBookings
+    }
+};
+
+export const spotBookings = (spotBookings) => {
+    return {
+        type: SPOT_BOOKINGS,
+        spotBookings
     }
 };
 
@@ -19,7 +25,7 @@ export const deleteBooking = (bookingId) => {
     }
 };
 
-export const findUserBookings = (userId) => async (dispatch) => {
+export const findUserBookings = () => async (dispatch) => {
     const response = await csrfFetch('/api/bookings/current');
     const bookings = await response.json();
 
@@ -31,11 +37,60 @@ export const findUserBookings = (userId) => async (dispatch) => {
     dispatch(userBookings(flatten));
 };
 
-const initialState = { booking: {}, user: {} };
+export const findSpotBookings = (spotId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spotId}/bookings`);
+    const bookings = await response.json();
+
+    const flatten = {};
+    bookings.Bookings.map((booking) => {
+        return flatten[booking.id] = booking;
+    });
+
+    dispatch(spotBookings(flatten));
+};
+
+export const createBookingThunk = (payload, spotId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spotId}/bookings`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+        const booking = await response.json();
+        dispatch(findUserBookings());
+        return booking;
+    }
+};
+
+export const deleteBookingThunk = (bookingId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/bookings/${bookingId}`, {
+        method: 'DELETE'
+    });
+    const booking = await response.json();
+
+    dispatch(deleteBooking(bookingId));
+    return booking;
+}
+
+const initialState = { user: {}, spot: {} };
 
 const bookingsReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
+        case USER_BOOKINGS:
+            newState = Object.assign({}, state);
+            newState.user = action.userBookings;
+            return newState;
+        case SPOT_BOOKINGS:
+            newState = Object.assign({}, state);
+            newState.spot = action.spotBookings;
+            return newState;
+        case DELETE_BOOKING:
+            const newRef = { ...state.spot };
+            delete newRef[action.bookingId];
+            const newInfo = { ...state, spot: { ...newRef } };
+            return newInfo;
         default:
             return state;
     }

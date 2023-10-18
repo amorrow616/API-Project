@@ -43,7 +43,7 @@ export const findSpotReviewsThunk = (spotId) => async (dispatch) => {
 };
 
 // get all reviews for current user thunk
-export const findUserReviewsThunk = (userId) => async (dispatch) => {
+export const findUserReviewsThunk = () => async (dispatch) => {
     const response = await csrfFetch('/api/reviews/current');
     const reviews = await response.json();
 
@@ -97,7 +97,7 @@ const reviewsReducer = (state = initialState, action) => {
         case DELETE_REVIEW:
             const newRef = { ...state.spot };
             delete newRef[action.reviewId];
-            const newInfo = { ...state, spot: { ...newRef } }
+            const newInfo = { ...state, spot: { ...newRef } };
             return newInfo;
         default:
             return state;
