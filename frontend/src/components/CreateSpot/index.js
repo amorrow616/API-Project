@@ -170,6 +170,7 @@ export default function CreateSpot({ spot, formType }) {
                     <h2>Describe your place to guests</h2>
                     <label className='createLabel'>
                         Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.
+                        {errors.description && <p>{errors.description}</p>}
                         <textarea
                             id='createTextarea'
                             type='text'
@@ -178,7 +179,6 @@ export default function CreateSpot({ spot, formType }) {
                             placeholder='Please write at least 30 characters'
                         />
                     </label>
-                    {errors.description && <p>{errors.description}</p>}
                     <h2>Create a title for your spot</h2>
                     <label className='createLabel'>
                         Catch guests' attention with a spot title that highlights what makes your place special.

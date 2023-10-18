@@ -32,6 +32,20 @@ const users = [
     hashedPassword: bcrypt.hashSync('password4'),
     firstName: 'Larry',
     lastName: 'TheDog'
+  },
+  {
+    email: 'demo5@demos.com',
+    username: 'TestUser5',
+    hashedPassword: bcrypt.hashSync('password5'),
+    firstName: 'Marcus',
+    lastName: 'Morrow'
+  },
+  {
+    email: 'demo6@demos.com',
+    username: 'TestUser6',
+    hashedPassword: bcrypt.hashSync('password6'),
+    firstName: 'Amanda',
+    lastName: 'Noelle'
   }
 ];
 
