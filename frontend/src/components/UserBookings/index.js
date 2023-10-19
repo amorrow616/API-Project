@@ -22,9 +22,7 @@ export default function UserBookings() {
                         <div className='bookingInfo'>
                             <div>From {booking.startDate.slice(0, 10)} to {booking.endDate.slice(0, 10)}</div>
                             <div>{booking.Spot.address}</div>
-                            <div>{booking.Spot.city}</div>
-                            <div>{booking.Spot.state}</div>
-                            <div>{booking.Spot.country}</div>
+                            <div>{booking.Spot.city}, {booking.Spot.state}</div>
                         </div>
                     </li>
                 ))}

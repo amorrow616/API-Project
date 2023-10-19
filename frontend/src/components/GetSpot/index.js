@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
@@ -11,11 +11,15 @@ import './GetSpot.css';
 
 export default function GetSpot() {
     const dispatch = useDispatch();
+    const history = useHistory();
     const { spotId } = useParams();
     const spot = useSelector((state) => state.spots.singleSpot);
     const reviews = useSelector((state) => state.reviews.spot);
     const sessionUser = useSelector((state) => state.session.user);
     const [showMenu, setShowMenu] = useState(false);
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [errors, setErrors] = useState({});
 
     const openMenu = () => {
         if (showMenu) return;
@@ -88,8 +92,24 @@ export default function GetSpot() {
     if (!spot.id) return null;
     if (!Object.values(reviews)) return null;
 
-    const reserveButton = () => {
-        alert('Feature coming soon');
+    const reserveButton = async (e) => {
+        e.preventDefault();
+        const newBooking = {
+            startDate,
+            endDate
+        }
+
+        const returnFromThunk = bookingActions.createBookingThunk(newBooking, spotId);
+        const createdBooking = await dispatch(returnFromThunk).catch(async (res) => {
+            const data = await res.json();
+            if (data && data.errors) {
+                setErrors(data.errors);
+            }
+        });
+
+        if (createdBooking) {
+            history.push('/bookings/current');
+        }
     }
     return (
         <>
@@ -113,7 +133,27 @@ export default function GetSpot() {
                         {spot.numReviews && +spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> :
                             +spot.numReviews > 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div> :
                                 spot.numReviews = ''}
-                        <button onClick={reserveButton} id='detailsButton'>Reserve</button>
+                        <form>
+                            <label>
+                                Check-In
+                                <input
+                                    type='date'
+                                    value={startDate}
+                                    onChange={(e) => setStartDate(e.target.value)}
+                                />
+                            </label>
+                            <label>
+                                Checkout
+                                <input
+                                    type='date'
+                                    value={endDate}
+                                    onChange={(e) => setEndDate(e.target.value)}
+                                />
+                            </label>
+                            {errors.startDate && <p>{errors.startDate}</p>}
+                            <button onClick={reserveButton} id='detailsButton'>Reserve</button>
+                        </form>
+
                     </div>
                 </div>
                 <hr />
