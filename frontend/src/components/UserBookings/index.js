@@ -14,6 +14,7 @@ export default function UserBookings() {
     if (!Object.values(bookings)) return null;
     return (
         <>
+            <h1 id='bookingsTitle'>Your Bookings</h1>
             <ul className='userBookingsList'>
                 {Object.values(bookings).map((booking) => (
                     <li key={booking.id}>

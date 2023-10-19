@@ -6,6 +6,7 @@ import CreateReview from '../CreateReview';
 import DeleteReview from '../DeleteReview';
 import * as spotActions from '../../store/spots';
 import * as reviewActions from '../../store/reviews';
+import * as bookingActions from '../../store/bookings';
 import './GetSpot.css';
 
 export default function GetSpot() {
@@ -25,6 +26,8 @@ export default function GetSpot() {
         if (!sessionUser) {
             return '';
         } else if (spot.ownerId === sessionUser.id) {
+            return '';
+        } else if (Object.values(reviews).some((review) => review.userId === sessionUser.id)) {
             return '';
         } else {
             return (

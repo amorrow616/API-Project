@@ -1,6 +1,7 @@
 .bookingImage {
-    width: 100%;
-    height: auto;
+    width: 80%;
+    height: 200px;
+    margin-left: 10%;
 }
 
 .bookingInfo {
@@ -12,4 +13,9 @@
 .userBookingsList {
     display: grid;
     grid-template-columns: repeat(4, 25%);
+}
+
+#bookingsTitle {
+    display: flex;
+    justify-content: center;
 }
