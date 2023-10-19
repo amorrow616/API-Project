@@ -1,0 +1,15 @@
+.bookingImage {
+    width: 100%;
+    height: auto;
+}
+
+.bookingInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.userBookingsList {
+    display: grid;
+    grid-template-columns: repeat(4, 25%);
+}
