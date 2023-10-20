@@ -1,11 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as bookingActions from '../../store/bookings';
+import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
+import DeleteBooking from "../DeleteBooking";
 import './UserBookings.css';
 
 export default function UserBookings() {
     const dispatch = useDispatch();
     const bookings = useSelector((state) => state.bookings.user);
+    const [showMenu, setShowMenu] = useState(false);
+
+    const openMenu = () => {
+        if (showMenu) return;
+        setShowMenu(true);
+    };
 
     useEffect(() => {
         dispatch(bookingActions.findUserBookings());
@@ -24,6 +32,10 @@ export default function UserBookings() {
                             <div>{booking.Spot.address}</div>
                             <div>{booking.Spot.city}, {booking.Spot.state}</div>
                         </div>
+                        <button onClick={openMenu} className='manageSpotButtons'> <OpenModalMenuItem
+                            itemText='Delete'
+                            modalComponent={<DeleteBooking props={booking.id} />}
+                        /></button>
                     </li>
                 ))}
             </ul>
