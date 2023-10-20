@@ -127,30 +127,32 @@ export default function GetSpot() {
                     <h2 id='detailName'>Hosted by {spot.Owner && spot.Owner.firstName} {spot.Owner && spot.Owner.lastName}</h2>
                     <div id='detailDescription'>{spot.description && spot.description}</div>
                     <div className='reserveBox'>
-                        <div id='detailPrice'>${spot.price && spot.price} night</div>
+                        <div id='detailPrice'><b>${spot.price && spot.price}</b> night</div>
                         <div id='detailRating'><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'}</div>
-                        {+spot.numReviews > 0 ? <i class="fa-solid fa-circle" id='detailsCircle1'></i> : ''}
                         {spot.numReviews && +spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> :
                             +spot.numReviews > 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div> :
                                 spot.numReviews = ''}
                         <form>
-                            <label>
-                                Check-In
-                                <input
-                                    type='date'
-                                    value={startDate}
-                                    onChange={(e) => setStartDate(e.target.value)}
-                                />
-                            </label>
-                            <label>
-                                Checkout
-                                <input
-                                    type='date'
-                                    value={endDate}
-                                    onChange={(e) => setEndDate(e.target.value)}
-                                />
-                            </label>
-                            {errors.startDate && <p>{errors.startDate}</p>}
+                            <div id='datesContainer'>
+                                <label>
+                                    Check-In
+                                    <input
+                                        type='date'
+                                        value={startDate}
+                                        onChange={(e) => setStartDate(e.target.value)}
+                                    />
+                                </label>
+                                <label>
+                                    Checkout
+                                    <input
+                                        type='date'
+                                        value={endDate}
+                                        onChange={(e) => setEndDate(e.target.value)}
+                                    />
+                                </label>
+                            </div>
+                            {errors.startDate && <p>{errors.message}</p>}
+                            {errors.endDate && <p>{errors.message}</p>}
                             <button onClick={reserveButton} id='detailsButton'>Reserve</button>
                         </form>
 

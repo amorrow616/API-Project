@@ -3,6 +3,10 @@
     color: black;
 }
 
+.manageLink:hover {
+    font-weight: bold;
+}
+
 .profile-dropdown {
     text-decoration: none;
     position: absolute;
@@ -53,6 +57,7 @@
     font-size: 120%;
     border-radius: 10px;
     padding: .5%;
+    transition: background-color 0.3s ease;
 }
 
 .header:hover {

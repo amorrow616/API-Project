@@ -15,13 +15,14 @@
 .reserveBox {
     border: 2px solid black;
     display: grid;
-    grid-template-columns: 50% 20% 5% 20%;
-    grid-template-areas: "price rating dot reviews"
-        "button button button button";
+    grid-template-columns: 50% 20% 20%;
+    grid-template-areas: "price rating reviews"
+        ". dates ."
+        "button button button";
     grid-area: box;
     padding: 15px;
-    height: 80px;
-    border-radius: 5%;
+    height: 80%;
+    border-radius: 8px;
 }
 
 .spotPage {
@@ -81,6 +82,17 @@
     background-color: rgb(226, 87, 106);
     color: white;
     cursor: pointer;
+    width: 157%;
+    height: 40%;
+    margin-left: 20%;
+    margin-top: 4%;
+    margin-bottom: 6%;
+    border-radius: 8px;
+    transition: background-color 0.4s ease;
+}
+
+#detailsButton:hover {
+    background-color: rgb(25, 142, 219);
 }
 
 #detailName {
@@ -91,13 +103,6 @@
 #detailDescription {
     grid-area: description;
     width: 500px;
-}
-
-#detailsCircle {
-    font-size: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 #reviewsHeading {
@@ -116,11 +121,29 @@
     margin-bottom: 2%;
 }
 
+#detailsCircle {
+    font-size: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3%;
+}
+
 #detailsCircle1 {
     font-size: 4px;
     display: flex;
-    grid-area: dot;
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
+}
+
+#datesContainer {
+    display: flex;
+    margin-left: 20%;
+    margin-top: 4%;
+    border: 1px solid black;
+    grid-area: dates;
+    width: 150%;
+    padding: 3%;
+    border-radius: 8px;
 }
