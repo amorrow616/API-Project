@@ -133,30 +133,33 @@ export default function GetSpot() {
                         {spot.numReviews && +spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> :
                             +spot.numReviews > 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div> :
                                 spot.numReviews = ''}
-                        <form>
-                            <div id='datesContainer'>
-                                <label>
-                                    Check-In
-                                    <input
-                                        type='date'
-                                        value={startDate}
-                                        onChange={(e) => setStartDate(e.target.value)}
-                                    />
-                                </label>
-                                <label>
-                                    Checkout
-                                    <input
-                                        type='date'
-                                        value={endDate}
-                                        onChange={(e) => setEndDate(e.target.value)}
-                                    />
-                                </label>
-                            </div>
-                            {errors.startDate && <p>{errors.message}</p>}
-                            {errors.endDate && <p>{errors.message}</p>}
-                            <button onClick={reserveButton} id='detailsButton'>Reserve</button>
-                        </form>
-
+                        {sessionUser.id !== spot.ownerId ?
+                            <form>
+                                <div id='datesContainer'>
+                                    <label>
+                                        Check-In
+                                        <input
+                                            type='date'
+                                            value={startDate}
+                                            onChange={(e) => setStartDate(e.target.value)}
+                                        />
+                                    </label>
+                                    <label>
+                                        Checkout
+                                        <input
+                                            type='date'
+                                            value={endDate}
+                                            onChange={(e) => setEndDate(e.target.value)}
+                                        />
+                                    </label>
+                                </div>
+                                {errors.startDate && <p>{errors.message}</p>}
+                                {errors.endDate && <p>{errors.message}</p>}
+                                <button onClick={reserveButton} id='detailsButton'>Reserve</button>
+                            </form>
+                            :
+                            <div id='cannotBookBlurb'>Unable to book your own spot.</div>
+                        }
                     </div>
                 </div>
                 <hr />
