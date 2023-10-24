@@ -70,6 +70,17 @@ export const createReviewThunk = (payload, spotId) => async (dispatch) => {
     }
 };
 
+export const updateReviewThunk = (reviewId, payload) => async (dispatch) => {
+    const response = await csrfFetch(`/api/reviews/${reviewId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+    const review = await response.json();
+    if (review && !review.errors) dispatch(findSpotReviews(review));
+    return review;
+};
+
 // delete a review thunk
 export const deleteReviewThunk = (reviewId) => async (dispatch) => {
     const response = await csrfFetch(`/api/reviews/${reviewId}`, {

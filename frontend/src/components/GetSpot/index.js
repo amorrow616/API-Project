@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import CreateReview from '../CreateReview';
 import DeleteReview from '../DeleteReview';
+import UpdateReview from '../UpdateReview';
 import * as spotActions from '../../store/spots';
 import * as reviewActions from '../../store/reviews';
 import * as bookingActions from '../../store/bookings';
@@ -171,6 +172,10 @@ export default function GetSpot() {
                                 <div id='reviewName'>{review.User && review.User.firstName}</div>
                                 <div id='reviewDate'>{review.createdAt && convertMonth(review.createdAt.slice(5, 7))} {parseInt(review.createdAt)}</div>
                                 <div id='reviewText'>{review.review && review.review}</div>
+                                {sessionUser && review.userId === sessionUser.id ? <button onClick={openMenu} className='manageSpotButtons'> <OpenModalMenuItem
+                                    itemText='Update'
+                                    modalComponent={<UpdateReview review={review} />}
+                                /></button> : ''}
                                 {sessionUser && review.userId === sessionUser.id ? <button onClick={openMenu} className='manageSpotButtons'> <OpenModalMenuItem
                                     itemText='Delete'
                                     modalComponent={<DeleteReview props={review.id} />}
