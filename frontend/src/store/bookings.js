@@ -63,6 +63,17 @@ export const createBookingThunk = (payload, spotId) => async (dispatch) => {
     }
 };
 
+export const updateBookingThunk = (bookingId, payload) => async (dispatch) => {
+    const response = await csrfFetch(`/api/bookings/${bookingId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+    const booking = await response.json();
+    if (booking && !booking.errors) dispatch(findUserBookings());
+    return booking;
+};
+
 export const deleteBookingThunk = (bookingId) => async (dispatch) => {
     const response = await csrfFetch(`/api/bookings/${bookingId}`, {
         method: 'DELETE'

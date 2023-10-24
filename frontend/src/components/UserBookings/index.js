@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import * as bookingActions from '../../store/bookings';
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import DeleteBooking from "../DeleteBooking";
+import UpdateBooking from "../UpdateBooking";
 import './UserBookings.css';
 
 export default function UserBookings() {
@@ -31,6 +32,10 @@ export default function UserBookings() {
                             <div>From {booking.startDate.slice(0, 10)} to {booking.endDate.slice(0, 10)}</div>
                             <div>{booking.Spot.address}</div>
                             <div>{booking.Spot.city}, {booking.Spot.state}</div>
+                            <button onClick={openMenu} className='deleteBookingButton'> <OpenModalMenuItem
+                                itemText='Update'
+                                modalComponent={<UpdateBooking props={booking} />}
+                            /></button>
                             <button onClick={openMenu} className='deleteBookingButton'> <OpenModalMenuItem
                                 itemText='Delete'
                                 modalComponent={<DeleteBooking props={booking.id} />}

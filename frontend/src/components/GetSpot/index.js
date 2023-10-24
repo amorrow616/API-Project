@@ -5,6 +5,8 @@ import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import CreateReview from '../CreateReview';
 import DeleteReview from '../DeleteReview';
 import UpdateReview from '../UpdateReview';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import * as spotActions from '../../store/spots';
 import * as reviewActions from '../../store/reviews';
 import * as bookingActions from '../../store/bookings';
@@ -18,8 +20,13 @@ export default function GetSpot() {
     const reviews = useSelector((state) => state.reviews.spot);
     const sessionUser = useSelector((state) => state.session.user);
     const [showMenu, setShowMenu] = useState(false);
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(() => {
+        const today = new Date();
+        const futureDate = new Date();
+        futureDate.setDate(today.getDate() + 5);
+        return futureDate;
+    });
     const [errors, setErrors] = useState({});
 
     const openMenu = () => {
@@ -89,9 +96,11 @@ export default function GetSpot() {
         }
     };
 
-
-    if (!spot.id) return null;
-    if (!Object.values(reviews)) return null;
+    const setToMidnight = (date) => {
+        const newDate = new Date(date);
+        newDate.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to zero
+        return newDate;
+    };
 
     const reserveButton = async (e) => {
         e.preventDefault();
@@ -111,7 +120,10 @@ export default function GetSpot() {
         if (createdBooking) {
             history.push('/bookings/current');
         }
-    }
+    };
+
+    if (!spot.id) return null;
+    if (!Object.values(reviews)) return null;
     return (
         <>
             <div className='spotPage'>
@@ -138,18 +150,18 @@ export default function GetSpot() {
                                 <div id='datesContainer'>
                                     <label>
                                         Check-In
-                                        <input
-                                            type='date'
-                                            value={startDate}
-                                            onChange={(e) => setStartDate(e.target.value)}
+                                        <DatePicker
+                                            selected={startDate}
+                                            onChange={(date) => setStartDate(setToMidnight(date))}
+                                            shouldCloseOnSelect={true}
                                         />
                                     </label>
                                     <label>
                                         Checkout
-                                        <input
-                                            type='date'
-                                            value={endDate}
-                                            onChange={(e) => setEndDate(e.target.value)}
+                                        <DatePicker
+                                            selected={endDate}
+                                            onChange={(date) => setEndDate(setToMidnight(date))}
+                                            shouldCloseOnSelect={true}
                                         />
                                     </label>
                                 </div>
