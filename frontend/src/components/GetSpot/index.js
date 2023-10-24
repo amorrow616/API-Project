@@ -166,11 +166,11 @@ export default function GetSpot() {
                             spot.numReviews = ''}</h3>
                 {hidePostButton()}
                 {sessionUser && !spot.numReviews && spot.ownerId !== sessionUser.id ? <h3>Be the first to post a review!</h3> : <ul>
-                    {Object.values(reviews).map((review) => (
+                    {Object.values(reviews) && Object.values(reviews).map((review) => (
                         <li key={review.id}>
                             <div id='fullReview'>
                                 <div id='reviewName'>{review.User && review.User.firstName}</div>
-                                <div id='reviewDate'>{review.createdAt && convertMonth(review.createdAt.slice(5, 7))} {parseInt(review.createdAt)}</div>
+                                <div id='reviewDate'>{review.createdAt && convertMonth(review.createdAt.slice(5, 7))} {review.createdAt && !isNaN(parseInt(review.createdAt)) ? parseInt(review.createdAt) : 'Review is loading...'}</div>
                                 <div id='reviewText'>{review.review && review.review}</div>
                                 {sessionUser && review.userId === sessionUser.id ? <button onClick={openMenu} className='manageSpotButtons'> <OpenModalMenuItem
                                     itemText='Update'
