@@ -145,32 +145,35 @@ export default function GetSpot() {
                         {spot.numReviews && +spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> :
                             +spot.numReviews > 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div> :
                                 spot.numReviews = ''}
-                        {sessionUser.id !== spot.ownerId ?
-                            <form>
-                                <div id='datesContainer'>
-                                    <label>
-                                        Check-In
-                                        <DatePicker
-                                            selected={startDate}
-                                            onChange={(date) => setStartDate(setToMidnight(date))}
-                                            shouldCloseOnSelect={true}
-                                        />
-                                    </label>
-                                    <label>
-                                        Checkout
-                                        <DatePicker
-                                            selected={endDate}
-                                            onChange={(date) => setEndDate(setToMidnight(date))}
-                                            shouldCloseOnSelect={true}
-                                        />
-                                    </label>
-                                </div>
-                                {errors.startDate && <p>{errors.message}</p>}
-                                {errors.endDate && <p>{errors.message}</p>}
-                                <button onClick={reserveButton} id='detailsButton'>Reserve</button>
-                            </form>
+                        {sessionUser ?
+                            sessionUser.id !== spot.ownerId ?
+                                <form>
+                                    <div id='datesContainer'>
+                                        <label>
+                                            Check-In
+                                            <DatePicker
+                                                selected={startDate}
+                                                onChange={(date) => setStartDate(setToMidnight(date))}
+                                                shouldCloseOnSelect={true}
+                                            />
+                                        </label>
+                                        <label>
+                                            Checkout
+                                            <DatePicker
+                                                selected={endDate}
+                                                onChange={(date) => setEndDate(setToMidnight(date))}
+                                                shouldCloseOnSelect={true}
+                                            />
+                                        </label>
+                                    </div>
+                                    {errors.startDate && <p>{errors.message}</p>}
+                                    {errors.endDate && <p>{errors.message}</p>}
+                                    <button onClick={reserveButton} id='detailsButton'>Reserve</button>
+                                </form>
+                                :
+                                <div id='cannotBookBlurb'>Unable to book your own spot.</div>
                             :
-                            <div id='cannotBookBlurb'>Unable to book your own spot.</div>
+                            ''
                         }
                     </div>
                 </div>

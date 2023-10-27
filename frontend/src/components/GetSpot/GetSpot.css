@@ -2,7 +2,7 @@
     display: grid;
     grid-template-areas: "name box"
         "description box";
-    margin-top: 20px;
+    margin-top: 1%;
 }
 
 .detailImages {
@@ -21,8 +21,9 @@
         "button button button";
     grid-area: box;
     padding: 15px;
-    height: 78%;
+    max-height: 78%;
     border-radius: 8px;
+    width: 90%;
 }
 
 .spotPage {
@@ -103,7 +104,7 @@
 
 #detailDescription {
     grid-area: description;
-    width: 500px;
+    width: 570px;
 }
 
 #reviewsHeading {
@@ -140,11 +141,11 @@
 
 #datesContainer {
     display: flex;
-    margin-left: 20%;
+    margin-left: 12%;
     margin-top: 4%;
     border: 1px solid black;
     grid-area: dates;
-    width: 150%;
+    width: 170%;
     padding: 3%;
     border-radius: 8px;
 }
