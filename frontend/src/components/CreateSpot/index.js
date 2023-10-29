@@ -104,7 +104,8 @@ export default function CreateSpot({ spot, formType }) {
                 <div>Guests will only get your exact address once they booked a reservation.</div>
                 <form onSubmit={handleSubmit} id='createFormForm'>
                     <label className='createLabel'>
-                        Country {errors.country && <p>{errors.country}</p>}
+                        {/* Country */}
+                        {errors.country && <p>{errors.country}</p>}
                         <input
                             className='createInput'
                             type='text'
@@ -114,7 +115,8 @@ export default function CreateSpot({ spot, formType }) {
                         />
                     </label>
                     <label className='createLabel'>
-                        Street Address {errors.address && <p>{errors.address}</p>}
+                        {/* Street Address */}
+                        {errors.address && <p>{errors.address}</p>}
                         <input
                             className='createInput'
                             type='text'
@@ -123,29 +125,29 @@ export default function CreateSpot({ spot, formType }) {
                             placeholder='Address'
                         />
                     </label>
-                    <div className='cityandstate'>
-                        <label className='createLabel'>
-                            City {errors.city && <p>{errors.city}</p>}
-                            <input
-                                className='createCity'
-                                type='text'
-                                onChange={(e) => setCity(e.target.value)}
-                                value={city}
-                                placeholder='City'
-                            />
-                        </label>
-                        <label className='createLabel'>
-                            State {errors.state && <p>{errors.state}</p>}
-                            <input
-                                className='createState'
-                                type='text'
-                                onChange={(e) => setState(e.target.value)}
-                                value={state}
-                                placeholder='STATE'
-                            />
-                        </label>
-                    </div>
-                    <div className='coordinates'>
+                    <label className='createLabel'>
+                        {/* City */}
+                        {errors.city && <p>{errors.city}</p>}
+                        <input
+                            className='createInput'
+                            type='text'
+                            onChange={(e) => setCity(e.target.value)}
+                            value={city}
+                            placeholder='City'
+                        />
+                    </label>
+                    <label className='createLabel'>
+                        {/* State */}
+                        {errors.state && <p>{errors.state}</p>}
+                        <input
+                            className='createInput'
+                            type='text'
+                            onChange={(e) => setState(e.target.value)}
+                            value={state}
+                            placeholder='STATE'
+                        />
+                    </label>
+                    {/* <div className='coordinates'>
                         <label className='createLabel'>
                             Latitude {errors.lat && <p>{errors.lat}</p>}
                             <input
@@ -166,7 +168,7 @@ export default function CreateSpot({ spot, formType }) {
                                 placeholder='Longitude'
                             />
                         </label>
-                    </div>
+                    </div> */}
                     <h2>Describe your place to guests</h2>
                     <label className='createLabel'>
                         Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.
@@ -194,7 +196,7 @@ export default function CreateSpot({ spot, formType }) {
                     <h2>Set a base price for your spot</h2>
                     <label className='createLabel'>
                         Competitive pricing can help your listing stand out and rank higher in search results.
-                        $<input
+                        <input
                             className='createInput'
                             type='number'
                             onChange={(e) => setPrice(e.target.value)}
