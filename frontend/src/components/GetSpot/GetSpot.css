@@ -84,8 +84,8 @@
     background-color: rgb(226, 87, 106);
     color: white;
     cursor: pointer;
-    width: 157%;
-    height: 40%;
+    width: 35vh;
+    height: 5vh;
     margin-left: 20%;
     margin-top: 4%;
     margin-bottom: 8%;
@@ -95,6 +95,11 @@
 
 #detailsButton:hover {
     background-color: rgb(25, 142, 219);
+}
+
+#detailsButton:disabled {
+    cursor: not-allowed;
+    background-color: rgb(175, 172, 172);
 }
 
 #detailName {

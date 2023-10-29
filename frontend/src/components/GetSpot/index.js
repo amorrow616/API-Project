@@ -29,11 +29,6 @@ export default function GetSpot() {
     });
     const [errors, setErrors] = useState({});
 
-    const openMenu = () => {
-        if (showMenu) return;
-        setShowMenu(true);
-    };
-
     const hidePostButton = () => {
         if (!sessionUser) {
             return '';
@@ -100,7 +95,7 @@ export default function GetSpot() {
         const newDate = new Date(date);
         newDate.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to zero
         return newDate;
-    };
+    }; // having issues where date would be one day ahead of chosen date, this function is to fix that
 
     const reserveButton = async (e) => {
         e.preventDefault();
@@ -120,6 +115,24 @@ export default function GetSpot() {
         if (createdBooking) {
             history.push('/bookings/current');
         }
+    };
+
+    useEffect(() => {
+        const errors = {};
+
+        if (startDate < setToMidnight(new Date())) {
+            errors.startDate = 'Start date cannot be before today.'
+        };
+
+        if (endDate <= startDate) {
+            errors.endDate = 'End date cannot be on or before start date.'
+        }
+        setErrors(errors)
+    }, [startDate, endDate]);
+
+    const openMenu = () => {
+        if (showMenu) return;
+        setShowMenu(true);
     };
 
     if (!spot.id) return null;
@@ -151,6 +164,7 @@ export default function GetSpot() {
                                     <div id='datesContainer'>
                                         <label>
                                             Check-In
+                                            {errors.startDate && <p>{errors.startDate}</p>}
                                             <DatePicker
                                                 selected={startDate}
                                                 onChange={(date) => setStartDate(setToMidnight(date))}
@@ -159,6 +173,7 @@ export default function GetSpot() {
                                         </label>
                                         <label>
                                             Checkout
+                                            {errors.endDate && <p>{errors.endDate}</p>}
                                             <DatePicker
                                                 selected={endDate}
                                                 onChange={(date) => setEndDate(setToMidnight(date))}
@@ -166,9 +181,7 @@ export default function GetSpot() {
                                             />
                                         </label>
                                     </div>
-                                    {errors.startDate && <p>{errors.message}</p>}
-                                    {errors.endDate && <p>{errors.message}</p>}
-                                    <button onClick={reserveButton} id='detailsButton'>Reserve</button>
+                                    <button onClick={reserveButton} id='detailsButton' disabled={startDate < setToMidnight(new Date()) || endDate <= startDate}>Reserve</button>
                                 </form>
                                 :
                                 <div id='cannotBookBlurb'>Unable to book your own spot.</div>

@@ -125,11 +125,11 @@ router.delete('/:bookingId', [requireAuth, bookingExists], async (req, res, next
         });
     }
 
-    if (booking.startDate < new Date()) {
-        return res.status(403).json({
-            message: "Bookings that have been started can't be deleted"
-        });
-    }
+    // if (booking.startDate < new Date()) {
+    //     return res.status(403).json({
+    //         message: "Bookings that have been started can't be deleted"
+    //     });
+    // }
 
     await booking.destroy();
     res.status(200).json({
