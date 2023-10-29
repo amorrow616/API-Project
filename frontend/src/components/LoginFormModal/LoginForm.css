@@ -6,10 +6,11 @@
 }
 
 #loginInput {
-    width: 350px;
-    height: 20px;
-    margin: 5px;
+    width: 40vh;
+    height: 3vh;
+    margin: 1vh;
     border: 3px solid black;
+    border-radius: 8px;
 }
 
 p {
@@ -18,7 +19,7 @@ p {
 
 .loginButton:disabled {
     background-color: white;
-    color: gray;
+    color: black;
     cursor: not-allowed;
     width: 350px;
 }
@@ -32,6 +33,11 @@ p {
     width: 100%;
     margin-bottom: 40px;
     cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.demoUser:hover {
+    color: rgb(27, 164, 206);
 }
 
 .loginButton {
@@ -45,6 +51,11 @@ p {
     margin-top: 5%;
     cursor: pointer;
     box-shadow: 3px 3px black;
+    transition: background-color 0.4s ease;
+}
+
+.loginButton:hover {
+    background-color: rgb(25, 142, 219);
 }
 
 .loginTitle {

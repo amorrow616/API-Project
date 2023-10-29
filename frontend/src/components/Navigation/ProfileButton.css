@@ -1,3 +1,14 @@
+.loginSignupButtons {
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    font-size: 105%;
+}
+
+.loginSignupButtons:hover {
+    font-weight: bold;
+}
+
 .manageLink {
     text-decoration: none;
     color: black;

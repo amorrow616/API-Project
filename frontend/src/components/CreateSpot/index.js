@@ -245,7 +245,7 @@ export default function CreateSpot({ spot, formType }) {
                             placeholder='Image URL'
                         />
                     </label>
-                    {formType === 'Update Spot' ? <button type='submit' id='createSubmit'>Update your Spot</button> : <button type='submit' id='createSubmit'>Create Spot</button>}
+                    {formType === 'Update Spot' ? <button type='submit' id='createSubmit'>Update Spot</button> : <button type='submit' id='createSubmit'>Create Spot</button>}
                 </form>
             </div>
         </>
