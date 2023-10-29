@@ -1,0 +1,22 @@
+#updateBookingButton {
+    background-color: rgb(226, 87, 106);
+    color: white;
+    cursor: pointer;
+    width: 80%;
+    height: 60%;
+    border-radius: 8px;
+    transition: background-color 0.4s ease;
+}
+
+#updateBookingButton:hover {
+    background-color: rgb(25, 142, 219);
+}
+
+#updateContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 4%;
+    border: 1px solid black;
+    padding: 3%;
+    border-radius: 8px;
+}

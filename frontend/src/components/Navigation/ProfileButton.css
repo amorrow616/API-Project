@@ -1,14 +1,28 @@
+.loginSignupButtons {
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    font-size: 105%;
+}
+
+.loginSignupButtons:hover {
+    font-weight: bold;
+}
+
 .manageLink {
     text-decoration: none;
     color: black;
 }
 
+.manageLink:hover {
+    font-weight: bold;
+}
+
 .profile-dropdown {
     text-decoration: none;
-    cursor: pointer;
-    position: fixed;
+    position: absolute;
     right: 0;
-    margin-right: 17px;
+    margin-right: 1%;
     top: 70px;
     font-size: 100%;
     border: 3px solid black;
@@ -31,10 +45,15 @@
     display: flex;
     justify-content: space-around;
     top: 0;
-    margin-top: 15px;
+    margin-top: .8%;
     margin-right: 15px;
     border-radius: 45%;
     padding: 10px;
+    transition: box-shadow 0.3s ease;
+}
+
+.profileButton:hover {
+    box-shadow: 0 4px 5px 0 gray;
 }
 
 .header {
@@ -45,8 +64,15 @@
     top: 0;
     position: absolute;
     right: 0;
-    margin-top: 30px;
+    margin-top: 1%;
     font-size: 120%;
+    border-radius: 10px;
+    padding: .5%;
+    transition: background-color 0.3s ease;
+}
+
+.header:hover {
+    background-color: rgb(230, 227, 227);
 }
 
 #logoutButton {
@@ -55,7 +81,12 @@
     color: white;
     border-radius: 25%;
     font-size: 100%;
-    margin-left: 20px;
     padding: 10px;
     cursor: pointer;
+    margin-left: 25%;
+    margin-top: 5%;
+}
+
+#logoutButton:hover {
+    background-color: rgb(236, 22, 22);
 }

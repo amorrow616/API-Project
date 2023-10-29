@@ -6,11 +6,11 @@ import * as reviewActions from '../../store/reviews';
 import * as spotActions from '../../store/spots';
 import './CreateReview.css';
 
-export default function CreateReview({ spotId }) {
+export default function CreateReview({ spotId, createdReview, formType }) {
     const dispatch = useDispatch();
     const { closeModal } = useModal();
-    const [review, setReview] = useState('');
-    const [stars, setStars] = useState(0);
+    const [review, setReview] = useState(formType === 'Update Review' ? createdReview.review : '');
+    const [stars, setStars] = useState(formType === 'Update Review' ? createdReview.stars : 0);
     const [hover, setHover] = useState(null);
     const [errors, setErrors] = useState({});
 
@@ -20,17 +20,32 @@ export default function CreateReview({ spotId }) {
             review,
             stars
         };
-        const returnFromThunk = reviewActions.createReviewThunk(newReview, spotId);
-        return dispatch(returnFromThunk).then(() => {
-            dispatch(reviewActions.findSpotReviewsThunk(spotId));
-            dispatch(spotActions.fetchOneSpot(spotId));
-            closeModal();
-        }).catch(async (res) => {
-            const data = await res.json();
-            if (data && data.errors) {
-                setErrors(data.errors)
-            }
-        });
+
+        if (formType === 'Update Review') {
+            const returnFromThunk = reviewActions.updateReviewThunk(createdReview.id, newReview);
+            return dispatch(returnFromThunk).then(async () => {
+                await dispatch(reviewActions.findSpotReviewsThunk(createdReview.spotId));
+                await dispatch(spotActions.fetchOneSpot(createdReview.spotId));
+                closeModal();
+            }).catch(async (res) => {
+                const data = await res.json();
+                if (data && data.errors) {
+                    setErrors(data.errors)
+                }
+            });
+        } else {
+            const returnFromThunk = reviewActions.createReviewThunk(newReview, spotId);
+            return dispatch(returnFromThunk).then(async () => {
+                await dispatch(reviewActions.findSpotReviewsThunk(spotId));
+                await dispatch(spotActions.fetchOneSpot(spotId));
+                closeModal();
+            }).catch(async (res) => {
+                const data = await res.json();
+                if (data && data.errors) {
+                    setErrors(data.errors)
+                }
+            });
+        }
     };
 
     return (

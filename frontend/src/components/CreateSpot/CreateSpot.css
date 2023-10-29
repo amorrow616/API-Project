@@ -22,36 +22,24 @@
 }
 
 #createTextarea {
-    height: 150px;
+    height: 20vh;
+    width: 60%;
+    margin: 0 auto;
 }
 
 .createLabel {
     display: flex;
     flex-direction: column;
+    margin: 1%;
+    text-align: center;
 }
 
 .createInput {
     border: 2px solid black;
-    width: 380px;
-    margin-bottom: 8px;
-    margin-top: 2px;
-}
-
-.cityandstate {
-    display: flex;
-    flex-direction: row;
-    width: 380px;
-}
-
-.createCity {
-    border: 2px solid black;
-    width: 200px;
-    margin-right: 40px;
-}
-
-.createState {
-    border: 2px solid black;
-    width: 125px;
+    width: 45vh;
+    height: 3vh;
+    margin: 0 auto;
+    border-radius: 8px;
 }
 
 .latlng {

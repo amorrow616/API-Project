@@ -43,7 +43,7 @@ export const findSpotReviewsThunk = (spotId) => async (dispatch) => {
 };
 
 // get all reviews for current user thunk
-export const findUserReviewsThunk = (userId) => async (dispatch) => {
+export const findUserReviewsThunk = () => async (dispatch) => {
     const response = await csrfFetch('/api/reviews/current');
     const reviews = await response.json();
 
@@ -68,6 +68,17 @@ export const createReviewThunk = (payload, spotId) => async (dispatch) => {
         dispatch(findSpotReviews(review));
         return review;
     }
+};
+
+export const updateReviewThunk = (reviewId, payload) => async (dispatch) => {
+    const response = await csrfFetch(`/api/reviews/${reviewId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+    const review = await response.json();
+    if (review && !review.errors) dispatch(findSpotReviews(review));
+    return review;
 };
 
 // delete a review thunk
@@ -97,7 +108,7 @@ const reviewsReducer = (state = initialState, action) => {
         case DELETE_REVIEW:
             const newRef = { ...state.spot };
             delete newRef[action.reviewId];
-            const newInfo = { ...state, spot: { ...newRef } }
+            const newInfo = { ...state, spot: { ...newRef } };
             return newInfo;
         default:
             return state;

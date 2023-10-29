@@ -7,6 +7,11 @@
     width: 400px;
     height: 50px;
     margin-bottom: 10px;
+    transition: box-shadow 0.5s ease;
+}
+
+#deleteButton:hover {
+    box-shadow: none;
 }
 
 #dontDeleteButton {
@@ -17,6 +22,11 @@
     width: 400px;
     height: 50px;
     margin-bottom: 10px;
+    transition: box-shadow 0.5s ease;
+}
+
+#dontDeleteButton:hover {
+    box-shadow: none;
 }
 
 #deleteSpotHead {

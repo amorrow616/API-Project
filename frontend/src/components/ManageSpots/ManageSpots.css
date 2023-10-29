@@ -4,9 +4,17 @@
     border: 2px solid black;
     box-shadow: 3px 3px black;
     padding: 3px 5px;
-    margin-right: 10px;
+    margin-right: 3%;
+    margin-top: 1%;
     cursor: pointer;
     text-decoration: none;
+    font-size: 95%;
+    transition: box-shadow 0.5s ease;
+}
+
+.manageSpotButtons:hover {
+    box-shadow: none;
+    background-color: rgb(25, 142, 219);
 }
 
 #createButton {
@@ -16,11 +24,17 @@
     box-shadow: 3px 3px black;
     border: 2px solid black;
     padding: 5px;
-    margin-left: 38px;
+    margin-left: 2.5%;
+    transition: box-shadow 0.5s ease;
+}
+
+#createButton:hover {
+    box-shadow: none;
+    background-color: rgb(25, 142, 219);
 }
 
 #manageSpotsHeading {
-    margin-left: 38px;
+    margin-left: 2.5%;
 }
 
 #noSpots {

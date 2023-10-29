@@ -7,6 +7,7 @@ import GetSpot from './components/GetSpot';
 import CreateSpot from './components/CreateSpot';
 import ManageSpots from './components/ManageSpots';
 import UpdateSpot from './components/UpdateSpot';
+import UserBookings from './components/UserBookings';
 import * as sessionActions from './store/session';
 
 function App() {
@@ -21,20 +22,23 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route exact path='/'>
-            <GetAllSpots />
-          </Route>
           <Route exact path='/spots'>
             <CreateSpot />
           </Route>
           <Route exact path='/spots/current'>
             <ManageSpots />
           </Route>
+          <Route exact path='/spots/:spotId/edit'>
+            <UpdateSpot />
+          </Route>
           <Route exact path='/spots/:spotId'>
             <GetSpot />
           </Route>
-          <Route exact path='/spots/:spotId/edit'>
-            <UpdateSpot />
+          <Route exact path='/bookings/current'>
+            <UserBookings />
+          </Route>
+          <Route exact path='/'>
+            <GetAllSpots />
           </Route>
         </Switch>
       )}

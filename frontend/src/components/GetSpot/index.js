@@ -1,30 +1,40 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import CreateReview from '../CreateReview';
 import DeleteReview from '../DeleteReview';
+import UpdateReview from '../UpdateReview';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import * as spotActions from '../../store/spots';
 import * as reviewActions from '../../store/reviews';
+import * as bookingActions from '../../store/bookings';
 import './GetSpot.css';
 
 export default function GetSpot() {
     const dispatch = useDispatch();
+    const history = useHistory();
     const { spotId } = useParams();
     const spot = useSelector((state) => state.spots.singleSpot);
     const reviews = useSelector((state) => state.reviews.spot);
     const sessionUser = useSelector((state) => state.session.user);
     const [showMenu, setShowMenu] = useState(false);
-
-    const openMenu = () => {
-        if (showMenu) return;
-        setShowMenu(true);
-    };
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(() => {
+        const today = new Date();
+        const futureDate = new Date();
+        futureDate.setDate(today.getDate() + 5);
+        return futureDate;
+    });
+    const [errors, setErrors] = useState({});
 
     const hidePostButton = () => {
         if (!sessionUser) {
             return '';
         } else if (spot.ownerId === sessionUser.id) {
+            return '';
+        } else if (Object.values(reviews).some((review) => review.userId === sessionUser.id)) {
             return '';
         } else {
             return (
@@ -81,13 +91,52 @@ export default function GetSpot() {
         }
     };
 
+    const setToMidnight = (date) => {
+        const newDate = new Date(date);
+        newDate.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to zero
+        return newDate;
+    }; // having issues where date would be one day ahead of chosen date, this function is to fix that
+
+    const reserveButton = async (e) => {
+        e.preventDefault();
+        const newBooking = {
+            startDate,
+            endDate
+        }
+
+        const returnFromThunk = bookingActions.createBookingThunk(newBooking, spotId);
+        const createdBooking = await dispatch(returnFromThunk).catch(async (res) => {
+            const data = await res.json();
+            if (data && data.errors) {
+                setErrors(data.errors);
+            }
+        });
+
+        if (createdBooking) {
+            history.push('/bookings/current');
+        }
+    };
+
+    useEffect(() => {
+        const errors = {};
+
+        if (startDate < setToMidnight(new Date())) {
+            errors.startDate = 'Start date cannot be before today.'
+        };
+
+        if (endDate <= startDate) {
+            errors.endDate = 'End date cannot be on or before start date.'
+        }
+        setErrors(errors)
+    }, [startDate, endDate]);
+
+    const openMenu = () => {
+        if (showMenu) return;
+        setShowMenu(true);
+    };
 
     if (!spot.id) return null;
     if (!Object.values(reviews)) return null;
-
-    const reserveButton = () => {
-        alert('Feature coming soon');
-    }
     return (
         <>
             <div className='spotPage'>
@@ -104,13 +153,41 @@ export default function GetSpot() {
                     <h2 id='detailName'>Hosted by {spot.Owner && spot.Owner.firstName} {spot.Owner && spot.Owner.lastName}</h2>
                     <div id='detailDescription'>{spot.description && spot.description}</div>
                     <div className='reserveBox'>
-                        <div id='detailPrice'>${spot.price && spot.price} night</div>
+                        <div id='detailPrice'><b>${spot.price && spot.price}</b> night</div>
                         <div id='detailRating'><i class='fa-solid fa-star' />{spot.avgStarRating ? Math.round(spot.avgStarRating * 10) / 10 : 'New'}</div>
-                        {+spot.numReviews > 0 ? <i class="fa-solid fa-circle" id='detailsCircle1'></i> : ''}
                         {spot.numReviews && +spot.numReviews === 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} review</div> :
                             +spot.numReviews > 1 ? <div id='detailReviews'>{spot.numReviews && spot.numReviews} reviews</div> :
                                 spot.numReviews = ''}
-                        <button onClick={reserveButton} id='detailsButton'>Reserve</button>
+                        {sessionUser ?
+                            sessionUser.id !== spot.ownerId ?
+                                <form>
+                                    <div id='datesContainer'>
+                                        <label>
+                                            Check-In
+                                            {errors.startDate && <p>{errors.startDate}</p>}
+                                            <DatePicker
+                                                selected={startDate}
+                                                onChange={(date) => setStartDate(setToMidnight(date))}
+                                                shouldCloseOnSelect={true}
+                                            />
+                                        </label>
+                                        <label>
+                                            Checkout
+                                            {errors.endDate && <p>{errors.endDate}</p>}
+                                            <DatePicker
+                                                selected={endDate}
+                                                onChange={(date) => setEndDate(setToMidnight(date))}
+                                                shouldCloseOnSelect={true}
+                                            />
+                                        </label>
+                                    </div>
+                                    <button onClick={reserveButton} id='detailsButton' disabled={startDate < setToMidnight(new Date()) || endDate <= startDate}>Reserve</button>
+                                </form>
+                                :
+                                <div id='cannotBookBlurb'>Unable to book your own spot.</div>
+                            :
+                            ''
+                        }
                     </div>
                 </div>
                 <hr />
@@ -120,12 +197,16 @@ export default function GetSpot() {
                             spot.numReviews = ''}</h3>
                 {hidePostButton()}
                 {sessionUser && !spot.numReviews && spot.ownerId !== sessionUser.id ? <h3>Be the first to post a review!</h3> : <ul>
-                    {Object.values(reviews).map((review) => (
+                    {Object.values(reviews) && Object.values(reviews).map((review) => (
                         <li key={review.id}>
                             <div id='fullReview'>
                                 <div id='reviewName'>{review.User && review.User.firstName}</div>
-                                <div id='reviewDate'>{review.createdAt && convertMonth(review.createdAt.slice(5, 7))} {parseInt(review.createdAt)}</div>
+                                <div id='reviewDate'>{review.createdAt && convertMonth(review.createdAt.slice(5, 7))} {review.createdAt && !isNaN(parseInt(review.createdAt)) ? parseInt(review.createdAt) : 'Review is loading...'}</div>
                                 <div id='reviewText'>{review.review && review.review}</div>
+                                {sessionUser && review.userId === sessionUser.id ? <button onClick={openMenu} className='manageSpotButtons'> <OpenModalMenuItem
+                                    itemText='Update'
+                                    modalComponent={<UpdateReview review={review} />}
+                                /></button> : ''}
                                 {sessionUser && review.userId === sessionUser.id ? <button onClick={openMenu} className='manageSpotButtons'> <OpenModalMenuItem
                                     itemText='Delete'
                                     modalComponent={<DeleteReview props={review.id} />}
